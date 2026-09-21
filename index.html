@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DLS Consultant - Quản Lý Chỗ Ngồi & Duty Board Tự Động</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Sans+Mono:wght@400;500;600;700&display=swap');
+    body { font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+    :root {
+      --xa: #b5560c; --xa-soft: #fbe9d9;
+      --dd: #0a8f7f; --dd-soft: #dcf1ee;
+      --vk: #4338ca; --vk-soft: #e6e4fb;
+      --mt: #a3195b; --mt-soft: #f8dfea;
+    }
+    .badge-xa { background: var(--xa-soft); color: var(--xa); }
+    .badge-dd { background: var(--dd-soft); color: var(--dd); }
+    .badge-vk { background: var(--vk-soft); color: var(--vk); }
+    .badge-mt { background: var(--mt-soft); color: var(--mt); }
+    .dot-xa { background: var(--xa); }
+    .dot-dd { background: var(--dd); }
+    .dot-vk { background: var(--vk); }
+    .dot-mt { background: var(--mt); }
+
+    /* Hiệu ứng nhấp nháy phát sáng khi Backup được kích hoạt */
+    @keyframes backup-glow {
+      0% { box-shadow: 0 0 0 0px rgba(234, 88, 12, 0.7); border-color: #ea580c; }
+      50% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); border-color: #f97316; }
+      100% { box-shadow: 0 0 0 0px rgba(234, 88, 12, 0.7); border-color: #ea580c; }
+    }
+    .seat-backup-active {
+      animation: backup-glow 1.6s infinite;
+      border-width: 2px !important;
+    }
+
+    @media print {
+      header, .no-print { display: none !important; }
+      #view-duty { display: block !important; }
+      body { background: #ffffff !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP HEADER -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="bg-indigo-600 text-white p-2.5 rounded-xl font-extrabold text-xl tracking-wider shadow-sm">DLS</div>
+        <div>
+          <h1 class="font-bold text-slate-900 text-base leading-tight">DLS Consultant - Quản Lý Chỗ Ngồi & Duty Board</h1>
+          <p class="text-xs text-slate-500">Hệ thống lưu trữ lịch theo tháng • Quy tắc xoay vòng 3-2 & 3 Backup</p>
+        </div>
+      </div>
+
+      <!-- User Quick Controls -->
+      <div class="flex items-center gap-3">
+        <button onclick="openStatusModal()" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+          <i class="fa-solid fa-bell text-amber-600"></i> Báo Nghỉ / Đi Site / WFH
+        </button>
+
+        <div class="flex items-center gap-2 border-l border-slate-200 pl-3">
+          <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs border border-indigo-200">
+            VK
+          </div>
+          <div class="hidden sm:block text-left">
+            <div class="text-xs font-bold text-slate-800">Vũ Khiêm</div>
+            <span class="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">Admin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+    <!-- NAVIGATION TABS -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-200 pb-4 no-print">
+      <div class="flex flex-wrap gap-2">
+        <button id="tab-floorplan-btn" onclick="switchTab('floorplan')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition flex items-center gap-2">
+          <i class="fa-solid fa-map-location-dot"></i>Sơ Đồ Chỗ Ngồi (Floor Map)
+        </button>
+        <button id="tab-duty-btn" onclick="switchTab('duty')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+          <i class="fa-solid fa-calendar-check"></i>Lịch Trực Mobile Theo Tháng (Admin)
+        </button>
+        <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
+          <i class="fa-solid fa-users"></i>Danh Sách Nhân Sự
+        </button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
+        <div class="flex items-center gap-2 bg-slate-100 border border-slate-300 px-3 py-1.5 rounded-lg text-xs">
+          <i class="fa-regular fa-calendar-days text-indigo-600"></i>
+          <span class="text-slate-600">Ngày đang xem:</span>
+          <strong id="current-viewing-date-label" class="text-indigo-950 font-bold font-mono">21/09/2026</strong>
+        </div>
+        <button onclick="openModal()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center gap-1.5">
+          <i class="fa-solid fa-user-plus"></i>Thêm Nhân Sự
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 1: VISUAL FLOOR PLAN (SƠ ĐỒ 16 CHỖ NGỒI) -->
+    <div id="view-floorplan" class="space-y-6">
+      
+      <!-- Real-time sync bar -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 bg-indigo-500 rounded-xl text-white">
+            <i class="fa-solid fa-desktop text-lg"></i>
+          </div>
+          <div>
+            <div class="text-xs text-slate-400">Trạng thái sơ đồ ghế thực tế ngày: <b id="fp-current-date" class="text-emerald-400">21/09/2026</b></div>
+            <h3 class="text-sm font-bold text-white mt-0.5">Bàn 1A & 2A đồng bộ tự động theo Lịch Trực của ngày đang chọn</h3>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="switchTab('duty')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5">
+            <i class="fa-solid fa-calendar-days"></i>Xem / Đổi Lịch Trực
+          </button>
+        </div>
+      </div>
+
+      <!-- Backup Alert Banner -->
+      <div id="backup-active-banner" class="hidden p-4 rounded-xl bg-amber-50 border-2 border-amber-400 text-amber-950 flex justify-between items-center animate-pulse">
+        <div class="flex items-center gap-3">
+          <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl"></i>
+          <div>
+            <h4 class="font-bold text-xs sm:text-sm text-amber-900">⚡ CẢNH BÁO: ĐÃ KÍCH HOẠT NHÂN SỰ BACKUP VÀO VĂN PHÒNG!</h4>
+            <p id="backup-active-msg" class="text-xs text-amber-800 mt-0.5"></p>
+          </div>
+        </div>
+        <span class="text-xs font-bold uppercase bg-amber-200 text-amber-900 px-2.5 py-1 rounded">Backup Active</span>
+      </div>
+
+      <!-- Floor Plan Pod Container -->
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-3 gap-2">
+          <div>
+            <h2 class="text-base font-bold text-slate-800">Sơ Đồ Bố Trí Bàn Làm Việc (Floor Plan 16 Chỗ)</h2>
+            <p class="text-xs text-slate-500">Mỗi hàng gồm 4 vị trí: Cột A, B, C, D • Ngăn cách bởi Lối Đi</p>
+          </div>
+          <div class="flex flex-wrap gap-3 text-xs">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Có mặt</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> Mobile Seat (Trực)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> WFH / Vắng / Đi Site</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-300 inline-block"></span> Not Used</span>
+          </div>
+        </div>
+
+        <!-- Cụm Dãy Trước: Hàng 1 & Hàng 2 -->
+        <div class="space-y-3">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-indigo-500"></i> Cụm Dãy Trước (Hàng 1 & Hàng 2)
+          </div>
+
+          <!-- Hàng 1 -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
+              <span>HÀNG 1</span>
+              <span>1A (Mobile) • 1B • 1C • 1D</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-1-grid"></div>
+          </div>
+
+          <!-- Hàng 2 -->
+          <div class="pt-2">
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
+              <span>HÀNG 2</span>
+              <span>2A (Mobile) • 2B • 2C • 2D</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-2-grid"></div>
+          </div>
+        </div>
+
+        <!-- LỐI ĐI CHÍNH (AISLE) -->
+        <div class="py-2.5 my-2 border-y-2 border-dashed border-slate-200 bg-slate-100/70 rounded-lg flex items-center justify-center gap-3 text-slate-400 font-bold text-xs uppercase tracking-widest">
+          <i class="fa-solid fa-arrows-left-right"></i> LỐI ĐI TRUNG TÂM (AISLE) <i class="fa-solid fa-arrows-left-right"></i>
+        </div>
+
+        <!-- Cụm Dãy Sau: Hàng 3 & Hàng 4 -->
+        <div class="space-y-3">
+          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-layer-group text-slate-500"></i> Cụm Dãy Sau (Hàng 3 & Hàng 4)
+          </div>
+
+          <!-- Hàng 3 -->
+          <div>
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
+              <span>HÀNG 3</span>
+              <span>3A (Not used) • 3B • 3C • 3D</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-3-grid"></div>
+          </div>
+
+          <!-- Hàng 4 -->
+          <div class="pt-2">
+            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
+              <span>HÀNG 4 (Toàn bộ Not Used)</span>
+              <span>4A • 4B • 4C • 4D</span>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-4-grid"></div>
+          </div>
+        </div>
+
+        <!-- Lãnh đạo cấp cao không xếp chỗ -->
+        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+          <span class="flex items-center gap-2">
+            <i class="fa-solid fa-crown text-amber-500 text-sm"></i>
+            <span><strong>Lãnh đạo cấp cao:</strong> Trần Hoàng Duy (Không sắp xếp vị trí cố định tại khu vực nhân viên).</span>
+          </span>
+          <span class="font-mono text-[11px] bg-slate-100 px-2.5 py-1 rounded font-semibold text-slate-600">Executive Level</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: LỊCH TRỰC MOBILE & THIẾT LẬP THEO THÁNG (ADMIN) -->
+    <div id="view-duty" class="hidden space-y-6">
+      
+      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <!-- Month Controller Bar -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+              Duty Board Storage & Planner
+            </div>
+            <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Lịch Phân Bổ Chỗ Ngồi Mobile & Backup</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Lịch được ghi nhớ theo từng tháng riêng biệt. Chỉ hiển thị các tháng đã được Admin thiết lập.</p>
+          </div>
+
+          <!-- Month Selector & Storage Tools -->
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-1 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
+              <button onclick="changeMonth(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
+                <i class="fa-solid fa-chevron-left text-xs"></i>
+              </button>
+              <div class="text-center px-3 min-w-[130px]">
+                <div class="text-xs font-bold text-slate-800" id="duty-month-display">Tháng 09 / 2026</div>
+                <div class="text-[10px] text-slate-400" id="duty-status-badge">Đã thiết lập</div>
+              </div>
+              <button onclick="changeMonth(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
+                <i class="fa-solid fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+
+            <!-- Backup File Buttons -->
+            <button onclick="exportScheduleJSON()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition" title="Lưu trữ toàn bộ dữ liệu lịch ra file">
+              <i class="fa-solid fa-download mr-1"></i>Lưu File JSON
+            </button>
+            <label class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer transition" title="Nhập dữ liệu lịch từ file">
+              <i class="fa-solid fa-upload mr-1"></i>Đọc File
+              <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
+            </label>
+            <button onclick="window.print()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold transition">
+              <i class="fa-solid fa-print mr-1"></i>In Lịch
+            </button>
+          </div>
+        </div>
+
+        <!-- MÀN HÌNH NẾU THÁNG CHƯA THIẾT LẬP -->
+        <div id="duty-unconfigured-container" class="hidden py-12 px-6 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50 space-y-4">
+          <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner">
+            <i class="fa-solid fa-calendar-plus"></i>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-800" id="unconfigured-month-title">Tháng này chưa được thiết lập lịch trực</h3>
+            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
+              Bạn có thể sử dụng bộ tạo tự động theo nguyên tắc: <strong>Mỗi tuần đảo nhau (tuần làm 3 ngày, tuần làm 2 ngày)</strong> và phân bổ đều <strong>mỗi người 3 ngày Backup</strong>.
+            </p>
+          </div>
+          <button onclick="generateScheduleByRule()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition inline-flex items-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Tự Động Khởi Tạo Lịch Cho Tháng Này
+          </button>
+        </div>
+
+        <!-- MÀN HÌNH LỊCH ĐÃ THIẾT LẬP -->
+        <div id="duty-configured-container" class="space-y-4">
+          <!-- Staff Legend & Quick Note -->
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="flex flex-wrap gap-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full dot-xa"></span>X. ANH (Xuân Anh)
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full dot-dd"></span>D. DUY (Đặng Duy)
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full dot-vk"></span>V. KHIEM (Vũ Khiêm)
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
+                <span class="w-2.5 h-2.5 rounded-full dot-mt"></span>M. TRUNG (Minh Trung)
+              </span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="generateScheduleByRule(true)" class="text-[11px] text-indigo-600 hover:underline font-sans font-semibold">
+                <i class="fa-solid fa-arrows-rotate mr-1"></i>Tạo lại theo quy tắc 3-2
+              </button>
+            </div>
+          </div>
+
+          <!-- Calendar Grid -->
+          <div class="overflow-x-auto custom-scrollbar">
+            <div class="min-w-[980px]">
+              <div class="grid grid-cols-7 gap-2 mb-2 font-mono text-xs font-bold text-slate-400 uppercase tracking-wider">
+                <span class="pl-2">Thứ 2 (Mon)</span>
+                <span class="pl-2">Thứ 3 (Tue)</span>
+                <span class="pl-2">Thứ 4 (Wed)</span>
+                <span class="pl-2">Thứ 5 (Thu)</span>
+                <span class="pl-2">Thứ 6 (Fri)</span>
+                <span class="pl-2 text-slate-300">Thứ 7 (Sat)</span>
+                <span class="pl-2 text-slate-300">Chủ Nhật (Sun)</span>
+              </div>
+
+              <div class="grid grid-cols-7 gap-2" id="duty-calendar-grid"></div>
+            </div>
+          </div>
+
+          <!-- Monthly Working-Day Breakdown -->
+          <div class="mt-8 pt-6 border-t border-slate-200 space-y-4">
+            <div class="flex justify-between items-center">
+              <div>
+                <h3 class="text-base font-bold text-slate-900">Thống Kê Ngày Làm Việc Tại Văn Phòng (On-site vs Online)</h3>
+                <p class="text-xs text-slate-500">Tự động tổng hợp số ngày làm cố định và ngày nhận nhiệm vụ Backup</p>
+              </div>
+              <span id="duty-total-workdays-badge" class="text-xs font-mono font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full">20 Ngày làm việc</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="duty-stats-rows"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- TAB 3: DANH SÁCH NHÂN SỰ -->
+    <div id="view-dashboard" class="hidden space-y-6">
+      
+      <!-- KPI Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng Nhân Sự Quản Lý</p>
+          <h3 id="stat-total-headcount" class="text-3xl font-extrabold text-slate-900 mt-2">0</h3>
+          <p class="text-[11px] text-slate-500 mt-1">Đã loại trừ tài khoản ẩn</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ghế Cố Định (Dãy)</p>
+          <h3 class="text-3xl font-extrabold text-emerald-600 mt-2">7 <span class="text-xs text-slate-400 font-normal">/ 16 Ghế</span></h3>
+          <p class="text-[11px] text-slate-500 mt-1">1B-1D, 2B-2D, 3B-3D</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Mobile & Backup</p>
+          <h3 class="text-3xl font-extrabold text-indigo-600 mt-2">4 <span class="text-xs text-slate-400 font-normal">Nhân sự</span></h3>
+          <p class="text-[11px] text-slate-500 mt-1">Sử dụng ghế 1A & 2A theo ca</p>
+        </div>
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ghế Khóa (Not Used)</p>
+          <h3 class="text-3xl font-extrabold text-slate-600 mt-2">5 <span class="text-xs text-slate-400 font-normal">Ghế</span></h3>
+          <p class="text-[11px] text-slate-500 mt-1">3A và Hàng 4 (4A-4D)</p>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-3">
+        <div class="flex-1 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="search-input" oninput="applyFilters()" placeholder="Tìm kiếm theo họ tên, email, chỗ ngồi..." 
+                 class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <select id="filter-role" onchange="applyFilters()" class="py-2 px-3 text-xs border border-slate-300 rounded-lg focus:outline-none bg-white">
+          <option value="ALL">Tất cả Vai trò</option>
+          <option value="Admin">Admin</option>
+          <option value="Manager">Manager</option>
+          <option value="User">User</option>
+        </select>
+        <select id="filter-status" onchange="applyFilters()" class="py-2 px-3 text-xs border border-slate-300 rounded-lg focus:outline-none bg-white">
+          <option value="ALL">Tất cả Trạng thái</option>
+          <option value="Active">Đang có mặt (Active)</option>
+          <option value="WFH">WFH</option>
+          <option value="On Site">On Site (Công tác)</option>
+          <option value="Day Off">Day Off (Nghỉ phép)</option>
+        </select>
+      </div>
+
+      <!-- Employee Table -->
+      <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="px-5 py-3 border-b border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
+          <span>Danh sách nhân sự (Trạng thái theo ngày <strong id="table-date-sync">21/09/2026</strong>)</span>
+          <span id="table-count" class="font-bold text-indigo-600">0 nhân sự</span>
+        </div>
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-semibold uppercase">
+                <th class="py-3.5 px-4 w-12 text-center">STT</th>
+                <th class="py-3.5 px-4">Họ Và Tên</th>
+                <th class="py-3.5 px-4">Vai Trò</th>
+                <th class="py-3.5 px-4">Email Công Ty</th>
+                <th class="py-3.5 px-4">Email Cá Nhân</th>
+                <th class="py-3.5 px-4">Vị Trí Chỗ Ngồi</th>
+                <th class="py-3.5 px-4 text-center">Trạng Thái</th>
+                <th class="py-3.5 px-4 text-center">Thao Tác</th>
+              </tr>
+            </thead>
+            <tbody id="employee-table-body" class="divide-y divide-slate-200"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- MODAL 1: BÁO NGHỈ / RA NGOÀI (KÍCH HOẠT BACKUP TỨC THÌ) -->
+  <div id="status-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-clipboard-user text-indigo-600"></i>
+          <h3 class="font-bold text-slate-800 text-sm">Báo Cáo Trạng Thái Đi Làm / Ra Ngoài</h3>
+        </div>
+        <button onclick="closeModal('status-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs">
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Chọn Nhân Sự Báo Trạng Thái</label>
+          <select id="status-user-select" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white font-medium"></select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Tình Trạng Làm Việc</label>
+          <select id="status-action-select" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white font-medium">
+            <option value="Active">🟢 Có mặt tại văn phòng (Active)</option>
+            <option value="WFH">🏠 Làm việc từ xa (Work From Home - WFH)</option>
+            <option value="On Site">🚗 Đi công trường / Công tác (On Site)</option>
+            <option value="In Meeting">🤝 Họp bên ngoài cả ngày (In Meeting)</option>
+            <option value="Day Off">🔴 Nghỉ phép / Báo ốm (Day Off / Leave)</option>
+          </select>
+        </div>
+
+        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px] space-y-1">
+          <div class="font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-bolt text-amber-600"></i> Tự Động Kích Hoạt Vị Trí Backup:
+          </div>
+          <p>Khi nhân sự cố định vắng mặt, vị trí bàn đó trên sơ đồ sẽ <strong>lập tức phát sáng nhấp nháy</strong> báo hiệu cho người làm Backup của ngày hôm đó vào trám chỗ!</p>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('status-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
+          <button type="button" onclick="submitStatusUpdate()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Cập Nhật Trạng Thái</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADMIN ĐIỀU CHỈNH LỊCH NGÀY CỤ THỂ -->
+  <div id="duty-edit-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <div>
+          <h3 class="font-bold text-slate-800 text-sm">Điều Chỉnh Lịch Ngày <span id="duty-edit-date-title" class="text-indigo-600 font-mono">--</span></h3>
+          <p class="text-[11px] text-slate-500">Phân công 2 ghế trực (1A & 2A) và vị trí Backup</p>
+        </div>
+        <button onclick="closeModal('duty-edit-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-5 space-y-4 text-xs">
+        <input type="hidden" id="duty-edit-day-num">
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Ghế 1A (Mobile 1)</label>
+          <select id="duty-edit-ws1" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono"></select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Ghế 2A (Mobile 2)</label>
+          <select id="duty-edit-ws2" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono"></select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Vị Trí Dự Phòng (Backup)</label>
+          <select id="duty-edit-backup" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono">
+            <option value="">-- Không xếp Backup --</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Tự Động Phân Làm Online / WFH</label>
+          <div id="duty-edit-online-chips" class="flex flex-wrap gap-2 pt-1 font-mono"></div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('duty-edit-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
+          <button type="button" onclick="saveDutyEdit()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Lưu Thay Đổi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: THÊM / SỬA NHÂN SỰ + CHỌN GHẾ THEO SƠ ĐỒ HÌNH ẢNH (VISUAL SEAT PICKER) -->
+  <div id="employee-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <h3 id="modal-title" class="font-bold text-slate-800 text-sm">Thêm Nhân Sự Mới</h3>
+        <button onclick="closeModal('employee-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="employee-form" onsubmit="handleSaveEmployee(event)" class="p-5 space-y-4 text-xs overflow-y-auto custom-scrollbar flex-1">
+        <input type="hidden" id="form-id">
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Họ Và Tên Đầy Đủ <span class="text-rose-500">*</span></label>
+          <input type="text" id="form-fullname" required placeholder="Ví dụ: NGUYEN VAN AN" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 uppercase font-medium">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Vai Trò (Role) <span class="text-rose-500">*</span></label>
+            <select id="form-role" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+              <option value="User">User</option>
+              <option value="Manager">Manager</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Vị Trí Ghế Đang Chọn</label>
+            <input type="text" id="form-seating-display" readonly class="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-bold font-mono text-indigo-700">
+            <input type="hidden" id="form-seating">
+          </div>
+        </div>
+
+        <!-- VISUAL SEAT PICKER -->
+        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+          <div class="flex justify-between items-center">
+            <label class="font-bold text-slate-700 flex items-center gap-1.5">
+              <i class="fa-solid fa-hand-pointer text-indigo-600"></i> Click Vào Ghế Để Gán Nhanh:
+            </label>
+            <div class="flex gap-1.5">
+              <button type="button" onclick="selectSeatPicker('Mobile')" class="px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[10px] font-bold font-mono">Mobile Pool</button>
+              <button type="button" onclick="selectSeatPicker('')" class="px-2 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold">Không xếp chỗ</button>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-4 gap-1.5 pt-1" id="mini-seat-picker-grid"></div>
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Email Công Ty <span class="text-rose-500">*</span></label>
+          <input type="email" id="form-email-company" required placeholder="name@dlsconsultant.com" class="w-full p-2 border border-slate-300 rounded-lg">
+        </div>
+
+        <div>
+          <label class="block font-medium text-slate-700 mb-1">Email Cá Nhân</label>
+          <input type="email" id="form-email-personal" placeholder="name@gmail.com" class="w-full p-2 border border-slate-300 rounded-lg">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-medium text-slate-700 mb-1">Trạng Thái Ban Đầu</label>
+            <select id="form-status" class="w-full p-2 border border-slate-300 rounded-lg bg-white">
+              <option value="Active">Active (Có mặt)</option>
+              <option value="WFH">WFH (Làm từ xa)</option>
+              <option value="On Site">On Site (Công tác)</option>
+              <option value="In Meeting">In Meeting (Họp)</option>
+              <option value="Day Off">Day Off (Nghỉ phép)</option>
+            </select>
+          </div>
+          <div class="flex items-end pb-2">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="form-is-hidden" class="rounded border-slate-300 text-indigo-600">
+              <span class="text-slate-700 font-medium">Ẩn nhân sự này</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('employee-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Lưu Thông Tin</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT SYSTEM CORE -->
+  <script>
+    // 1. DATASET NHÂN SỰ GỐC
+    const INITIAL_EMPLOYEES = [
+      { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "", seating: "", status: "Active", isHidden: false },
+      { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
+      { id: "NV003", fullName: "DANG DUY", role: "Manager", emailCompany: "duy.dang@dlsconsultant.com", emailPersonal: "", seating: "Mobile", status: "Active", isHidden: false },
+      { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "", seating: "Mobile", status: "Active", isHidden: false },
+      { id: "NV005", fullName: "NGUYEN XUAN ANH", role: "Manager", emailCompany: "anh.nguyenxuan@dlsconsultant.com", emailPersonal: "", seating: "Mobile", status: "Active", isHidden: false },
+
+      // Cố định Hàng 1
+      { id: "NV010", fullName: "VU VAN HIEU", role: "User", emailCompany: "hieu.vu@dlsconsultant.com", emailPersonal: "", seating: "1B", status: "Active", isHidden: false },
+      { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "", seating: "1C", status: "Active", isHidden: false },
+      { id: "NV006", fullName: "NGUYEN THANH DAO", role: "User", emailCompany: "dao.nguyen@dlsconsultant.com", emailPersonal: "", seating: "1D", status: "Active", isHidden: false },
+
+      // Cố định Hàng 2
+      { id: "NV012", fullName: "NGUYEN HUU LONG", role: "User", emailCompany: "long.nguyen@dlsconsultant.com", emailPersonal: "", seating: "2B", status: "Active", isHidden: false },
+      { id: "NV008", fullName: "HUYNH NHAN TRI", role: "User", emailCompany: "tri.huynh@dlsconsultant.com", emailPersonal: "", seating: "2C", status: "Active", isHidden: false },
+      { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "", seating: "2D", status: "Active", isHidden: false },
+
+      // Cố định Hàng 3 (Sau lối đi)
+      { id: "NV014", fullName: "NGUYEN HOANG MANH", role: "User", emailCompany: "manh.nguyen@dlsconsultant.com", emailPersonal: "", seating: "3B", status: "Active", isHidden: false },
+      { id: "NV011", fullName: "NGUYEN THI LIEN", role: "User", emailCompany: "lien.nguyenthi@dlsconsultant.com", emailPersonal: "", seating: "3C", status: "Active", isHidden: false },
+      { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "", seating: "3D", status: "Active", isHidden: false }
+    ];
+
+    // CẤU TRÚC 16 VỊ TRÍ GHẾ
+    const SEAT_LAYOUT = [
+      { code: "1A", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
+      { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "fixed" },
+      { code: "3A", type: "unused" }, { code: "3B", type: "fixed" }, { code: "3C", type: "fixed" }, { code: "3D", type: "fixed" },
+      { code: "4A", type: "unused" }, { code: "4B", type: "unused" }, { code: "4C", type: "unused" }, { code: "4D", type: "unused" }
+    ];
+
+    const STAFF_DUTY = {
+      XA: { name: "X. ANH", fullName: "NGUYEN XUAN ANH", cls: "xa" },
+      DD: { name: "D. DUY", fullName: "DANG DUY", cls: "dd" },
+      VK: { name: "V. KHIEM", fullName: "VU KHIEM", cls: "vk" },
+      MT: { name: "M. TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt" },
+    };
+
+    // KHO LƯU TRỮ LỊCH THEO TỪNG THÁNG (Format key: YYYY-MM)
+    let SCHEDULE_STORE = {
+      "2026-09": {
+        3:  { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
+        4:  { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
+        7:  { ws1:"XA", ws2:"DD", backup:"MT", online:["VK"], tc:true },
+        8:  { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
+        9:  { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
+        10: { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
+        11: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
+        14: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
+        15: { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
+        16: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
+        17: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
+        18: { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
+        21: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
+        22: { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
+        23: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
+        24: { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
+        25: { ws1:"XA", ws2:"DD", backup:"MT", online:["VK"], tc:true },
+        28: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
+        29: { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
+        30: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
+      }
+    };
+
+    let employees = [];
+    let currentViewingDay = 21;
+    let currentMonth = 8; // Tháng 9 (0-index)
+    let currentYear = 2026;
+
+    function getMonthKey(year, month) {
+      return `${year}-${String(month + 1).padStart(2, '0')}`;
+    }
+
+// DÁN LINK /exec CỦA BẠN VÀO GIỮA HAI DẤU NGOẶC KÉP DƯỚI ĐÂY:
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
+
+// Hàm hiển thị trạng thái đang đồng bộ trên giao diện
+function setSyncStatus(text, isSaving = false) {
+  const badge = document.getElementById('duty-status-badge');
+  if (badge) {
+    badge.innerText = text;
+    badge.className = isSaving ? "text-[10px] text-amber-500 animate-pulse font-bold" : "text-[10px] text-emerald-600 font-bold";
+  }
+}
+
+// 1. Tải dữ liệu từ Google Sheets về Web
+async function loadData() {
+  const storedEmp = localStorage.getItem('dls_v8_emp');
+  const storedStore = localStorage.getItem('dls_v8_sched_store');
+
+  if (storedEmp) {
+    try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
+  } else {
+    employees = [...INITIAL_EMPLOYEES];
+  }
+
+  if (storedStore) {
+    try { SCHEDULE_STORE = JSON.parse(storedStore); } catch(e) {}
+  }
+
+  // Nếu đã gắn link Google Script thì tải dữ liệu mới nhất từ Sheet
+  if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
+    setSyncStatus("Đang đồng bộ Sheets...", true);
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL);
+      const onlineData = await response.json();
+
+      if (onlineData && onlineData.employees && onlineData.schedule) {
+        employees = onlineData.employees;
+        SCHEDULE_STORE = onlineData.schedule;
+        localStorage.setItem('dls_v8_emp', JSON.stringify(employees));
+        localStorage.setItem('dls_v8_sched_store', JSON.stringify(SCHEDULE_STORE));
+        renderAll();
+        setSyncStatus("Đã đồng bộ Sheets");
+      } else {
+        // Lần đầu chạy chưa có dữ liệu trên Sheet -> Tự đẩy dữ liệu ban đầu lên
+        saveData();
+      }
+    } catch (err) {
+      console.warn("Dùng dữ liệu offline tạm thời:", err);
+      setSyncStatus("Offline / Local");
+    }
+  }
+}
+
+// 2. Tự động lưu lên Google Sheets mỗi khi có ai chỉnh sửa
+async function saveData() {
+  localStorage.setItem('dls_v8_emp', JSON.stringify(employees));
+  localStorage.setItem('dls_v8_sched_store', JSON.stringify(SCHEDULE_STORE));
+
+  if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
+    setSyncStatus("Đang lưu lên Sheets...", true);
+    try {
+      const payload = JSON.stringify({
+        employees: employees,
+        schedule: SCHEDULE_STORE,
+        lastUpdated: new Date().toISOString()
+      });
+
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: payload
+      });
+
+      setTimeout(() => setSyncStatus("Đã lưu Sheets"), 800);
+    } catch (err) {
+      console.error("Lỗi lưu Sheets:", err);
+      setSyncStatus("Lưu thất bại");
+    }
+  }
+}
+
+    // 2. THUẬT TOÁN TỰ ĐỘNG TẠO LỊCH THEO NGUYÊN TẮC:
+    // - Tuần 1: Nhóm A làm 3 ngày (T2, T4, T6), Nhóm B làm 2 ngày (T3, T5)
+    // - Tuần 2: Nhóm B làm 3 ngày (T2, T4, T6), Nhóm A làm 2 ngày (T3, T5) -> Đảo nhau
+    // - Vị trí Backup được phân bổ để mỗi nhân sự có đúng 3 ngày Backup trong tháng
+    function generateScheduleByRule(force = false) {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      if (SCHEDULE_STORE[monthKey] && !force) {
+        if (!confirm(`Tháng ${monthKey} đã có lịch. Bạn có chắc muốn tạo lại mới?`)) return;
+      }
+
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const newMonthSched = {};
+
+      const groupA = ["XA", "DD"];
+      const groupB = ["VK", "MT"];
+      const backupCandidates = ["XA", "DD", "VK", "MT"];
+      let backupIndex = 0;
+      let backupCount = { XA: 0, DD: 0, VK: 0, MT: 0 };
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const d = new Date(currentYear, currentMonth, day);
+        const dow = (d.getDay() + 6) % 7; // 0=Mon .. 6=Sun
+        if (dow >= 5) continue; // Bỏ qua Thứ 7, Chủ Nhật
+
+        // Tính tuần thứ mấy trong tháng
+        const weekNum = Math.floor((day + (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7 - 1) / 7);
+        const isGroupATriple = (weekNum % 2 === 0);
+
+        let activePair;
+        // Ngày T2 (0), T4 (2), T6 (4)
+        if (dow === 0 || dow === 2 || dow === 4) {
+          activePair = isGroupATriple ? groupA : groupB;
+        } else {
+          // Ngày T3 (1), T5 (3)
+          activePair = isGroupATriple ? groupB : groupA;
+        }
+
+        const idlePair = (activePair === groupA) ? groupB : groupA;
+
+        // Phân bổ Backup: Chọn người trong nhóm idle chưa vượt quá 3 ngày backup
+        let backupPerson = null;
+        for (let i = 0; i < idlePair.length; i++) {
+          let candidate = idlePair[(backupIndex + i) % idlePair.length];
+          if (backupCount[candidate] < 3) {
+            backupPerson = candidate;
+            backupCount[candidate]++;
+            backupIndex++;
+            break;
+          }
+        }
+
+        const onlineList = idlePair.filter(k => k !== backupPerson);
+
+        newMonthSched[day] = {
+          ws1: activePair[0],
+          ws2: activePair[1],
+          backup: backupPerson,
+          online: onlineList,
+          tc: backupPerson !== null
+        };
+      }
+
+      SCHEDULE_STORE[monthKey] = newMonthSched;
+      saveData();
+      renderAll();
+      alert(`Đã khởi tạo thành công lịch trực chuẩn 3-2 & 3 Backup cho Tháng ${monthKey}!`);
+    }
+
+    // 3. ĐỒNG BỘ THEO NGÀY TRÊN SƠ ĐỒ THỰC TẾ
+    function syncDayStatus(dayNum) {
+      currentViewingDay = dayNum;
+      const formattedDate = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+      document.getElementById('current-viewing-date-label').innerText = formattedDate;
+      document.getElementById('fp-current-date').innerText = formattedDate;
+      document.getElementById('table-date-sync').innerText = formattedDate;
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const currentMonthSched = SCHEDULE_STORE[monthKey];
+
+      if (currentMonthSched && currentMonthSched[dayNum]) {
+        const sched = currentMonthSched[dayNum];
+        // 2 người trực 1A & 2A -> Active
+        const empWs1 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
+        const empWs2 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
+        if (empWs1) empWs1.status = "Active";
+        if (empWs2) empWs2.status = "Active";
+
+        // Backup -> Sẵn sàng
+        if (sched.backup) {
+          const empBackup = employees.find(e => e.fullName === STAFF_DUTY[sched.backup]?.fullName);
+          if (empBackup && empBackup.status !== "Active") empBackup.status = "Active";
+        }
+
+        // Online -> WFH
+        if (sched.online) {
+          sched.online.forEach(k => {
+            const empOnline = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
+            if (empOnline) empOnline.status = "WFH";
+          });
+        }
+      }
+
+      renderAll();
+    }
+
+    // 4. RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN) & KIỂM TRA PHÁT SÁNG BACKUP
+    function renderFloorplan() {
+      const row1El = document.getElementById('row-1-grid');
+      const row2El = document.getElementById('row-2-grid');
+      const row3El = document.getElementById('row-3-grid');
+      const row4El = document.getElementById('row-4-grid');
+
+      row1El.innerHTML = ''; row2El.innerHTML = ''; row3El.innerHTML = ''; row4El.innerHTML = '';
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const currentMonthSched = SCHEDULE_STORE[monthKey];
+      const daySched = (currentMonthSched && currentMonthSched[currentViewingDay]) ? currentMonthSched[currentViewingDay] : { ws1: null, ws2: null, backup: null };
+
+      // Kiểm tra xem có người ngồi cố định nào báo vắng không
+      const absentFixedUsers = employees.filter(e => !e.isHidden && e.seating && e.seating !== "Mobile" && e.status !== "Active");
+      const isBackupTriggered = absentFixedUsers.length > 0;
+
+      const banner = document.getElementById('backup-active-banner');
+      const msg = document.getElementById('backup-active-msg');
+      if (isBackupTriggered) {
+        banner.classList.remove('hidden');
+        const absentNames = absentFixedUsers.map(u => `${u.fullName} (${u.seating}: ${u.status})`).join(', ');
+        const backupPersonName = daySched.backup ? STAFF_DUTY[daySched.backup].fullName : "Nhân sự Backup";
+        msg.innerHTML = `Vị trí vắng: <strong>${absentNames}</strong>. Lập tức điều động <strong>${backupPersonName}</strong> vào trám chỗ ngồi!`;
+      } else {
+        banner.classList.add('hidden');
+      }
+
+      SEAT_LAYOUT.forEach(seat => {
+        let cardHTML = '';
+
+        if (seat.type === "unused") {
+          cardHTML = `
+            <div class="p-3 rounded-xl border border-dashed border-slate-300 bg-slate-100/60 flex flex-col justify-between h-24 text-slate-400">
+              <div class="flex justify-between items-center text-[10px] font-mono font-bold">
+                <span>${seat.code}</span>
+                <span class="bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">NOT USED</span>
+              </div>
+              <div class="text-center my-auto">
+                <i class="fa-solid fa-ban text-slate-300 text-sm"></i>
+                <div class="text-[11px] font-medium text-slate-400 mt-0.5">Khóa / Trống</div>
+              </div>
+            </div>
+          `;
+        } else if (seat.type === "mobile") {
+          const dutyKey = seat.code === "1A" ? daySched.ws1 : daySched.ws2;
+          const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
+
+          cardHTML = `
+            <div class="p-3 rounded-xl border-2 border-indigo-500 bg-indigo-50/70 flex flex-col justify-between h-24 shadow-sm transition relative">
+              <div class="flex justify-between items-center text-[10px] font-mono font-bold">
+                <span class="text-indigo-800">${seat.code}</span>
+                <span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider">Mobile</span>
+              </div>
+              <div class="my-auto">
+                <div class="font-extrabold text-xs text-indigo-950 truncate">${staffObj ? staffObj.fullName : "Chưa xếp ca"}</div>
+                <div class="text-[10px] text-indigo-600 font-medium">Ca trực ngày ${currentViewingDay}</div>
+              </div>
+              <div class="text-[9.5px] font-mono text-emerald-700 flex items-center gap-1 font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Đang trực tại bàn
+              </div>
+            </div>
+          `;
+        } else {
+          // Fixed Seat
+          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
+          if (occupant) {
+            let isAbsent = occupant.status !== "Active";
+            let colorClass = 'border-emerald-300 bg-emerald-50/80 text-emerald-950';
+            let statusPill = `<span class="inline-flex items-center gap-1 text-[9px] text-emerald-700 font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Có mặt</span>`;
+            let extraGlowClass = "";
+            let backupNotice = "";
+
+            if (isAbsent) {
+              colorClass = 'border-amber-400 bg-amber-50 text-amber-950';
+              extraGlowClass = 'seat-backup-active'; // VIỀN NHẤP NHÁY SÁNG LÊN
+              statusPill = `<span class="inline-flex items-center gap-1 text-[9px] text-rose-700 font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ${occupant.status}</span>`;
+              const backupName = daySched.backup ? STAFF_DUTY[daySched.backup].name : "Backup";
+              backupNotice = `<div class="text-[9px] font-bold text-amber-800 bg-amber-200/90 px-1 py-0.5 rounded truncate mt-1 animate-pulse">⚡ ${backupName} VÀO TRÁM</div>`;
+            }
+
+            cardHTML = `
+              <div onclick="openStatusModal('${occupant.id}')" title="Nhấp để thay đổi trạng thái" 
+                   class="p-3 rounded-xl border ${colorClass} ${extraGlowClass} flex flex-col justify-between h-24 shadow-sm cursor-pointer hover:shadow-md transition relative">
+                <div class="flex justify-between items-center text-[10px] font-bold font-mono">
+                  <span class="bg-white/80 px-1.5 py-0.5 rounded border border-slate-200">${seat.code}</span>
+                  ${statusPill}
+                </div>
+                <div class="my-auto">
+                  <div class="font-bold text-xs truncate">${occupant.fullName}</div>
+                  <div class="text-[10px] text-slate-500 truncate">${occupant.role}</div>
+                  ${backupNotice}
+                </div>
+              </div>
+            `;
+          } else {
+            cardHTML = `
+              <div class="p-3 rounded-xl border border-dashed border-slate-300 bg-white flex flex-col justify-between h-24 text-slate-400">
+                <div class="font-mono text-[10px] font-bold">${seat.code}</div>
+                <div class="text-center text-[11px] my-auto">Ghế trống</div>
+              </div>
+            `;
+          }
+        }
+
+        if (seat.code.startsWith('1')) row1El.innerHTML += cardHTML;
+        else if (seat.code.startsWith('2')) row2El.innerHTML += cardHTML;
+        else if (seat.code.startsWith('3')) row3El.innerHTML += cardHTML;
+        else if (seat.code.startsWith('4')) row4El.innerHTML += cardHTML;
+      });
+    }
+
+    // 5. RENDER LỊCH THEO THÁNG
+    function renderDutyBoard() {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const isConfigured = !!SCHEDULE_STORE[monthKey];
+
+      document.getElementById('duty-month-display').innerText = `Tháng ${String(currentMonth + 1).padStart(2, '0')} / ${currentYear}`;
+      document.getElementById('duty-status-badge').innerText = isConfigured ? "Đã thiết lập" : "Chưa tạo lịch";
+      document.getElementById('duty-status-badge').className = isConfigured ? "text-[10px] text-emerald-600 font-bold" : "text-[10px] text-amber-600 font-bold";
+
+      const unconfigContainer = document.getElementById('duty-unconfigured-container');
+      const configContainer = document.getElementById('duty-configured-container');
+
+      if (!isConfigured) {
+        unconfigContainer.classList.remove('hidden');
+        configContainer.classList.add('hidden');
+        document.getElementById('unconfigured-month-title').innerText = `Tháng ${String(currentMonth + 1).padStart(2, '0')}/${currentYear} chưa được thiết lập lịch`;
+        return;
+      }
+
+      unconfigContainer.classList.add('hidden');
+      configContainer.classList.remove('hidden');
+
+      const currentMonthSched = SCHEDULE_STORE[monthKey];
+      const grid = document.getElementById("duty-calendar-grid");
+      const firstOfMonth = new Date(currentYear, currentMonth, 1);
+      const isoDow = (firstOfMonth.getDay() + 6) % 7;
+      const gridStart = new Date(firstOfMonth);
+      gridStart.setDate(1 - isoDow);
+
+      let cells = "";
+      for (let i = 0; i < 35; i++) {
+        const d = new Date(gridStart);
+        d.setDate(gridStart.getDate() + i);
+        const inMonth = d.getMonth() === currentMonth;
+        const dateNum = d.getDate();
+        const dow = (d.getDay() + 6) % 7;
+        const isWeekend = dow >= 5;
+        const isViewing = inMonth && dateNum === currentViewingDay;
+
+        if (!inMonth) {
+          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-xl min-h-[148px]"></div>`;
+          continue;
+        }
+        if (isWeekend) {
+          cells += `
+            <div class="bg-slate-100/70 border border-slate-200 rounded-xl p-3 items-center justify-center text-center flex flex-col min-h-[148px]">
+              <span class="text-[10px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? 'Thứ 7' : 'Chủ Nhật'}</span>
+              <span class="text-base font-bold text-slate-400 font-mono mt-0.5">${dateNum}</span>
+              <span class="text-[10px] text-slate-400 mt-1">Cuối tuần</span>
+            </div>
+          `;
+          continue;
+        }
+
+        const s = currentMonthSched[dateNum];
+        if (!s) {
+          cells += `
+            <div class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-3 items-center justify-center text-center flex flex-col min-h-[148px]">
+              <span class="text-base font-bold text-slate-400 font-mono">${dateNum}</span>
+              <span class="text-[10px] text-slate-400">Không có ca</span>
+              <button onclick="openDutyEditModal(${dateNum})" class="mt-2 text-[10px] text-indigo-600 font-bold hover:underline">+ Tạo ca</button>
+            </div>
+          `;
+          continue;
+        }
+
+        const badgeSpan = (k) => k ? `<span class="px-1.5 py-0.5 rounded font-mono font-bold text-[10px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[10px]">—</span>`;
+        const badgesSpan = (arr) => arr ? arr.map(k => `<span class="px-1.5 py-0.5 rounded font-mono font-bold text-[10px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
+
+        cells += `
+          <div onclick="syncDayStatus(${dateNum})" 
+               class="bg-white border-2 ${isViewing ? 'border-indigo-600 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-indigo-300'} rounded-xl p-2.5 shadow-sm justify-between flex flex-col min-h-[148px] cursor-pointer transition">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="font-extrabold text-base text-slate-800 font-mono leading-none">${dateNum}</span>
+                <span class="text-[9px] font-mono text-slate-400 uppercase block mt-0.5">T${dow+2}</span>
+              </div>
+              <div class="flex items-center gap-1">
+                ${s.tc ? `<span class="text-[8.5px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full">⚡ Backup</span>` : ''}
+                <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-indigo-600 p-1" title="Chỉnh sửa ca">
+                  <i class="fa-solid fa-pen text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-1 mt-2 text-[10.5px]">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400 text-[9px]">1A:</span>
+                <div>${badgeSpan(s.ws1)}</div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400 text-[9px]">2A:</span>
+                <div>${badgeSpan(s.ws2)}</div>
+              </div>
+              <div class="flex items-center justify-between border-t border-slate-100 pt-1">
+                <span class="text-amber-600 font-semibold text-[9px]">Backup:</span>
+                <div>${badgeSpan(s.backup)}</div>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-400 text-[9px]">WFH:</span>
+                <div class="flex gap-1">${badgesSpan(s.online)}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+      grid.innerHTML = cells;
+
+      renderDutyStats(currentMonthSched);
+    }
+
+    function renderDutyStats(sched) {
+      const statsObj = {
+        XA: { on: 0, basic: 0, backup: 0, off: 0 },
+        DD: { on: 0, basic: 0, backup: 0, off: 0 },
+        VK: { on: 0, basic: 0, backup: 0, off: 0 },
+        MT: { on: 0, basic: 0, backup: 0, off: 0 },
+      };
+
+      const days = Object.keys(sched);
+      days.forEach(d => {
+        const item = sched[d];
+        if (item.ws1 && statsObj[item.ws1]) { statsObj[item.ws1].basic++; statsObj[item.ws1].on++; }
+        if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
+        if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
+        if (item.online) {
+          item.online.forEach(k => { if(statsObj[k]) statsObj[k].off++; });
+        }
+      });
+
+      const totalDays = days.length;
+      document.getElementById('duty-total-workdays-badge').innerText = `${totalDays} Ngày làm việc`;
+
+      const statsRowsEl = document.getElementById("duty-stats-rows");
+      statsRowsEl.innerHTML = Object.entries(statsObj).map(([k, stat]) => {
+        const s = STAFF_DUTY[k];
+        const sitePct = totalDays ? ((stat.on / totalDays) * 100).toFixed(0) : 0;
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full dot-${s.cls}"></span>
+                <span class="font-bold text-slate-800 font-mono text-xs">${s.name} (${s.fullName})</span>
+              </div>
+              <span class="text-xs font-mono font-bold text-slate-700">${stat.on} Ngày On-site / ${totalDays} Ngày</span>
+            </div>
+            
+            <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden flex">
+              <div class="bg-slate-700 h-2.5" style="width:${sitePct}%"></div>
+              <div class="bg-slate-300 h-2.5" style="width:${100-sitePct}%"></div>
+            </div>
+
+            <div class="flex justify-between text-[11px] font-mono text-slate-500 pt-0.5">
+              <span>Trực cố định: <strong>${stat.basic}d</strong></span>
+              <span class="${stat.backup >= 3 ? 'text-emerald-700 font-bold' : ''}">Ca backup: <strong>+${stat.backup}d</strong></span>
+              <span>Online/WFH: <strong>${stat.off}d</strong></span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // 6. RENDER DANH SÁCH NHÂN SỰ
+    function renderDashboard() {
+      const filtered = getFilteredData();
+      const sorted = sortEmployees(filtered);
+
+      const activeHeadcount = employees.filter(e => !e.isHidden);
+      document.getElementById('stat-total-headcount').innerText = activeHeadcount.length;
+      document.getElementById('table-count').innerText = `${sorted.length} nhân sự`;
+
+      const tbody = document.getElementById('employee-table-body');
+      tbody.innerHTML = '';
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Không tìm thấy dữ liệu</td></tr>`;
+        return;
+      }
+
+      sorted.forEach((emp, index) => {
+        let roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">User</span>`;
+        if (emp.role === 'Admin') roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200">Admin</span>`;
+        else if (emp.role === 'Manager') roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 text-blue-700 border border-blue-200">Manager</span>`;
+
+        let statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Active</span>`;
+        if (emp.status === 'WFH') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>WFH</span>`;
+        else if (emp.status === 'On Site') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>On Site</span>`;
+        else if (emp.status === 'Day Off') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Day Off</span>`;
+
+        let seatDisplay = '';
+        if (emp.seating === 'Mobile') {
+          seatDisplay = `<span class="font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded"><i class="fa-solid fa-arrows-rotate mr-1"></i>Mobile / Backup</span>`;
+        } else if (!emp.seating) {
+          seatDisplay = `<span class="text-slate-400 italic">Không xếp chỗ</span>`;
+        } else {
+          seatDisplay = `<span class="font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded"><i class="fa-solid fa-chair text-slate-400 mr-1"></i>Ghế ${emp.seating}</span>`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = `hover:bg-slate-50 transition ${emp.isHidden ? 'bg-slate-100/60 opacity-60' : ''}`;
+        tr.innerHTML = `
+          <td class="py-3 px-4 text-center font-medium text-slate-400">${index + 1}</td>
+          <td class="py-3 px-4 font-bold text-slate-800">${emp.fullName} ${emp.isHidden ? '<span class="text-[10px] text-rose-500 font-normal">(Hidden)</span>' : ''}</td>
+          <td class="py-3 px-4">${roleBadge}</td>
+          <td class="py-3 px-4 text-slate-600">${emp.emailCompany}</td>
+          <td class="py-3 px-4 text-slate-500">${emp.emailPersonal || '-'}</td>
+          <td class="py-3 px-4">${seatDisplay}</td>
+          <td class="py-3 px-4 text-center">${statusBadge}</td>
+          <td class="py-3 px-4 text-center">
+            <button onclick="openModal('${emp.id}')" class="text-indigo-600 hover:text-indigo-800 p-1.5 rounded hover:bg-indigo-50 mr-1" title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button onclick="toggleHide('${emp.id}')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded hover:bg-slate-100" title="${emp.isHidden ? 'Hiện' : 'Ẩn'}">
+              <i class="fa-solid ${emp.isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderAll() {
+      renderFloorplan();
+      renderDutyBoard();
+      renderDashboard();
+    }
+
+    // 7. VISUAL SEAT PICKER
+    function renderMiniSeatPicker(currentSelectedSeat, editingUserId) {
+      const grid = document.getElementById('mini-seat-picker-grid');
+      grid.innerHTML = '';
+
+      SEAT_LAYOUT.forEach(s => {
+        if (s.type === 'unused') {
+          grid.innerHTML += `
+            <div class="p-1.5 rounded border border-dashed border-slate-200 bg-slate-100 text-center opacity-40 cursor-not-allowed">
+              <div class="font-mono text-[9px] font-bold text-slate-400">${s.code}</div>
+              <div class="text-[8px] text-slate-400">Lock</div>
+            </div>
+          `;
+        } else {
+          const occupied = employees.find(e => !e.isHidden && e.seating === s.code && e.id !== editingUserId);
+          const isSelected = currentSelectedSeat === s.code;
+
+          let btnClass = isSelected ? "border-2 border-indigo-600 bg-indigo-100 text-indigo-950 font-bold" : (occupied ? "bg-rose-50 border border-rose-200 text-rose-800" : "bg-white border border-slate-200 text-slate-700 hover:border-indigo-400");
+
+          grid.innerHTML += `
+            <button type="button" onclick="selectSeatPicker('${s.code}')" 
+                    class="p-1.5 rounded text-center transition flex flex-col items-center justify-center ${btnClass}">
+              <span class="font-mono text-[10px] font-bold">${s.code}</span>
+              <span class="text-[8px] truncate max-w-[54px]">${occupied ? occupied.fullName.split(' ').pop() : (s.type==='mobile' ? 'Mobile' : 'Trống')}</span>
+            </button>
+          `;
+        }
+      });
+    }
+
+    function selectSeatPicker(seatCode) {
+      document.getElementById('form-seating').value = seatCode;
+      document.getElementById('form-seating-display').value = seatCode ? (seatCode === 'Mobile' ? 'Mobile Pool' : `Ghế ${seatCode}`) : 'Không xếp chỗ';
+      const editingId = document.getElementById('form-id').value;
+      renderMiniSeatPicker(seatCode, editingId);
+    }
+
+    // 8. BÁO CÁO TRẠNG THÁI (OUT OF OFFICE)
+    function openStatusModal(defaultUserId = null) {
+      const select = document.getElementById('status-user-select');
+      select.innerHTML = employees.filter(e => !e.isHidden).map(e => `
+        <option value="${e.id}" ${defaultUserId === e.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Không xếp chỗ'})</option>
+      `).join('');
+
+      if (defaultUserId) {
+        const emp = employees.find(e => e.id === defaultUserId);
+        if (emp) document.getElementById('status-action-select').value = emp.status;
+      }
+
+      document.getElementById('status-modal').classList.remove('hidden');
+    }
+
+    function submitStatusUpdate() {
+      const userId = document.getElementById('status-user-select').value;
+      const newStatus = document.getElementById('status-action-select').value;
+
+      const emp = employees.find(e => e.id === userId);
+      if (emp) {
+        emp.status = newStatus;
+        saveData();
+        renderAll();
+        closeModal('status-modal');
+      }
+    }
+
+    // 9. ĐIỀU CHỈNH LỊCH THEO NGÀY (ADMIN)
+    function openDutyEditModal(dayNum) {
+      document.getElementById('duty-edit-day-num').value = dayNum;
+      document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "XA", ws2: "DD", backup: "VK" };
+
+      const optionsHtml = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
+      
+      const ws1Sel = document.getElementById('duty-edit-ws1');
+      const ws2Sel = document.getElementById('duty-edit-ws2');
+      const backupSel = document.getElementById('duty-edit-backup');
+
+      ws1Sel.innerHTML = optionsHtml;
+      ws2Sel.innerHTML = optionsHtml;
+      backupSel.innerHTML = `<option value="">-- Không xếp Backup --</option>` + optionsHtml;
+
+      ws1Sel.value = sched.ws1 || "XA";
+      ws2Sel.value = sched.ws2 || "DD";
+      backupSel.value = sched.backup || "";
+
+      updateOnlineChipsPreview();
+
+      ws1Sel.onchange = updateOnlineChipsPreview;
+      ws2Sel.onchange = updateOnlineChipsPreview;
+      backupSel.onchange = updateOnlineChipsPreview;
+
+      document.getElementById('duty-edit-modal').classList.remove('hidden');
+    }
+
+    function updateOnlineChipsPreview() {
+      const ws1 = document.getElementById('duty-edit-ws1').value;
+      const ws2 = document.getElementById('duty-edit-ws2').value;
+      const backup = document.getElementById('duty-edit-backup').value;
+
+      const allKeys = Object.keys(STAFF_DUTY);
+      const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
+
+      const chipsEl = document.getElementById('duty-edit-online-chips');
+      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-1 rounded badge-${STAFF_DUTY[k].cls} text-[11px] font-bold">${STAFF_DUTY[k].name}</span>`).join(' ');
+    }
+
+    function saveDutyEdit() {
+      const dayNum = parseInt(document.getElementById('duty-edit-day-num').value);
+      const ws1 = document.getElementById('duty-edit-ws1').value;
+      const ws2 = document.getElementById('duty-edit-ws2').value;
+      const backup = document.getElementById('duty-edit-backup').value || null;
+
+      if (ws1 === ws2) {
+        alert("Ghế 1A và Ghế 2A không thể giao cho cùng 1 nhân sự!");
+        return;
+      }
+
+      const allKeys = Object.keys(STAFF_DUTY);
+      const online = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      if (!SCHEDULE_STORE[monthKey]) SCHEDULE_STORE[monthKey] = {};
+
+      SCHEDULE_STORE[monthKey][dayNum] = {
+        ws1, ws2, backup, online, tc: backup !== null
+      };
+
+      saveData();
+      closeModal('duty-edit-modal');
+      syncDayStatus(dayNum);
+    }
+
+    function changeMonth(delta) {
+      currentMonth += delta;
+      if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+      if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+      renderDutyBoard();
+    }
+
+    // 10. EXPORT & IMPORT LỊCH JSON
+    function exportScheduleJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SCHEDULE_STORE, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `DLS_Duty_Schedule_AllMonths.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importScheduleJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (typeof importedData === 'object') {
+            SCHEDULE_STORE = importedData;
+            saveData();
+            renderAll();
+            alert("Đã phục hồi dữ liệu lịch thành công từ file!");
+          }
+        } catch(err) {
+          alert("File JSON không hợp lệ!");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // 11. THÊM / SỬA NHÂN SỰ
+    function openModal(empId = null) {
+      const modal = document.getElementById('employee-modal');
+      const form = document.getElementById('employee-form');
+      form.reset();
+
+      if (empId) {
+        const emp = employees.find(e => e.id === empId);
+        if (emp) {
+          document.getElementById('modal-title').innerText = "Chỉnh Sửa Thông Tin Nhân Sự";
+          document.getElementById('form-id').value = emp.id;
+          document.getElementById('form-fullname').value = emp.fullName;
+          document.getElementById('form-role').value = emp.role;
+          document.getElementById('form-email-company').value = emp.emailCompany;
+          document.getElementById('form-email-personal').value = emp.emailPersonal || '';
+          document.getElementById('form-status').value = emp.status;
+          document.getElementById('form-is-hidden').checked = emp.isHidden;
+
+          selectSeatPicker(emp.seating || '');
+        }
+      } else {
+        document.getElementById('modal-title').innerText = "Thêm Nhân Sự Mới";
+        document.getElementById('form-id').value = "";
+        selectSeatPicker('');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function handleSaveEmployee(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-id').value;
+      const fullName = document.getElementById('form-fullname').value.trim().toUpperCase();
+      const role = document.getElementById('form-role').value;
+      const seating = document.getElementById('form-seating').value.trim().toUpperCase();
+      const emailCompany = document.getElementById('form-email-company').value.trim();
+      const emailPersonal = document.getElementById('form-email-personal').value.trim();
+      const status = document.getElementById('form-status').value;
+      const isHidden = document.getElementById('form-is-hidden').checked;
+
+      if (id) {
+        const emp = employees.find(e => e.id === id);
+        if (emp) {
+          emp.fullName = fullName; emp.role = role; emp.seating = seating;
+          emp.emailCompany = emailCompany; emp.emailPersonal = emailPersonal;
+          emp.status = status; emp.isHidden = isHidden;
+        }
+      } else {
+        const newId = "NV" + String(employees.length + 1).padStart(3, '0');
+        employees.push({ id: newId, fullName, role, seating, emailCompany, emailPersonal, status, isHidden });
+      }
+
+      saveData();
+      closeModal('employee-modal');
+      renderAll();
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    function toggleHide(empId) {
+      const emp = employees.find(e => e.id === empId);
+      if (emp) { emp.isHidden = !emp.isHidden; saveData(); renderAll(); }
+    }
+    function applyFilters() { renderDashboard(); }
+
+    function getLastNameForSort(fullName) {
+      const words = fullName.trim().split(/\s+/);
+      return words[words.length - 1].toUpperCase();
+    }
+
+    function sortEmployees(list) {
+      const rolePriority = { "Admin": 1, "Manager": 2, "User": 3 };
+      return [...list].sort((a, b) => {
+        const pA = rolePriority[a.role] || 99;
+        const pB = rolePriority[b.role] || 99;
+        if (pA !== pB) return pA - pB;
+        return getLastNameForSort(a.fullName).localeCompare(getLastNameForSort(b.fullName), 'vi');
+      });
+    }
+
+    function getFilteredData() {
+      const search = document.getElementById('search-input').value.toLowerCase().trim();
+      const role = document.getElementById('filter-role').value;
+      const status = document.getElementById('filter-status').value;
+
+      return employees.filter(e => {
+        if (role !== 'ALL' && e.role !== role) return false;
+        if (status !== 'ALL' && e.status !== status) return false;
+        if (search && !e.fullName.toLowerCase().includes(search) && !e.emailCompany.toLowerCase().includes(search)) return false;
+        return true;
+      });
+    }
+
+    function switchTab(tab) {
+      const viewDuty = document.getElementById('view-duty');
+      const viewFloor = document.getElementById('view-floorplan');
+      const viewDash = document.getElementById('view-dashboard');
+
+      const btnDuty = document.getElementById('tab-duty-btn');
+      const btnFloor = document.getElementById('tab-floorplan-btn');
+      const btnDash = document.getElementById('tab-dashboard-btn');
+
+      const active = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition flex items-center gap-2";
+      const inactive = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2";
+
+      viewDuty.classList.add('hidden'); viewFloor.classList.add('hidden'); viewDash.classList.add('hidden');
+      btnDuty.className = inactive; btnFloor.className = inactive; btnDash.className = inactive;
+
+      if (tab === 'duty') { viewDuty.classList.remove('hidden'); btnDuty.className = active; }
+      else if (tab === 'floorplan') { viewFloor.classList.remove('hidden'); btnFloor.className = active; }
+      else if (tab === 'dashboard') { viewDash.classList.remove('hidden'); btnDash.className = active; }
+    }
+
+    window.onload = function() {
+      loadData();
+      syncDayStatus(21);
+    };
+  </script>
+</body>
+</html>
