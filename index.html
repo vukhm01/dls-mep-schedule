@@ -1,27 +1,53 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DLS Consultant - Quản Lý Chỗ Ngồi & Duty Board Tự Động</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DLS Consultant - Workstation & Duty Roster Management</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Noto+Sans+Mono:wght@400;500;600;700&display=swap');
-    body { font-family: "Be Vietnam Pro", system-ui, -apple-system, sans-serif; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  
+  <!-- BRAND TYPOGRAPHY: MONTSERRAT & MULISH (BRAND GUIDELINES PAGE 5) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Montserrat:wght@600;700;800&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
+  <style>
+    body { 
+      font-family: "Mulish", -apple-system, BlinkMacSystemFont, sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+      color: #1e293b;
+    }
+    h1, h2, h3, h4, .font-heading {
+      font-family: "Montserrat", sans-serif;
+    }
+    .font-mono {
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* OFFICIAL DLS BRAND COLORS (BRAND GUIDELINES PAGE 6) */
     :root {
+      --dls-red: #ee2f26;        /* Bright Red Pantone 2347 C */
+      --dls-red-soft: #fef2f2;
+      --dls-gray: #757678;       /* Neutral Gray Pantone 173-8 C */
+      --dls-gray-soft: #f1f3f4;
+      --dls-dark: #1e293b;
+
+      /* Mobile Staff Color Codes */
       --xa: #b5560c; --xa-soft: #fbe9d9;
       --dd: #0a8f7f; --dd-soft: #dcf1ee;
-      --vk: #4338ca; --vk-soft: #e6e4fb;
+      --vk: #3b32b8; --vk-soft: #e7e5fa;
       --mt: #a3195b; --mt-soft: #f8dfea;
     }
+
     .badge-xa { background: var(--xa-soft); color: var(--xa); }
     .badge-dd { background: var(--dd-soft); color: var(--dd); }
     .badge-vk { background: var(--vk-soft); color: var(--vk); }
@@ -31,565 +57,657 @@
     .dot-vk { background: var(--vk); }
     .dot-mt { background: var(--mt); }
 
-    /* Hiệu ứng nhấp nháy phát sáng khi Backup được kích hoạt */
+    /* Backup Activated Pulsing Glow */
     @keyframes backup-glow {
-      0% { box-shadow: 0 0 0 0px rgba(234, 88, 12, 0.7); border-color: #ea580c; }
-      50% { box-shadow: 0 0 0 8px rgba(234, 88, 12, 0); border-color: #f97316; }
-      100% { box-shadow: 0 0 0 0px rgba(234, 88, 12, 0.7); border-color: #ea580c; }
+      0% { box-shadow: 0 0 0 0px rgba(238, 47, 38, 0.7); border-color: #ee2f26; }
+      50% { box-shadow: 0 0 0 6px rgba(238, 47, 38, 0); border-color: #f87171; }
+      100% { box-shadow: 0 0 0 0px rgba(238, 47, 38, 0.7); border-color: #ee2f26; }
     }
     .seat-backup-active {
-      animation: backup-glow 1.6s infinite;
+      animation: backup-glow 1.5s infinite;
       border-width: 2px !important;
     }
 
+    /* DEVICE MODE ADAPTATIONS */
+    .mobile-only { display: none !important; }
+    .desktop-only { display: block !important; }
+    .desktop-inline { display: inline !important; }
+
+    body.is-mobile-view .mobile-only { display: block !important; }
+    body.is-mobile-view .mobile-inline { display: inline !important; }
+    body.is-mobile-view .mobile-flex { display: flex !important; }
+    body.is-mobile-view .desktop-only { display: none !important; }
+    body.is-mobile-view .desktop-inline { display: none !important; }
+
+    /* Phone preview frame on wide desktop screens */
+    body.device-mobile-sim {
+      background-color: #0b0f19 !important;
+    }
+    body.device-mobile-sim #app-wrapper {
+      max-width: 412px !important;
+      margin: 16px auto !important;
+      background: #f8fafc !important;
+      border-radius: 36px !important;
+      border: 8px solid #1e293b !important;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+      overflow-x: hidden !important;
+      min-height: 88vh;
+    }
+
+    /* Responsive Seat Card Box */
+    .seat-card-box { min-height: 94px; }
+    body.is-mobile-view .seat-card-box {
+      min-height: 56px !important;
+      padding: 3px 3px !important;
+    }
+    body.is-mobile-view .seat-card-title {
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      line-height: 1.15 !important;
+    }
+
     @media print {
-      header, .no-print { display: none !important; }
+      header, .no-print, #login-modal-overlay, #top-device-switcher { display: none !important; }
       #view-duty { display: block !important; }
       body { background: #ffffff !important; }
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 antialiased min-h-screen flex flex-col transition-all duration-200">
 
-  <!-- TOP HEADER -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="bg-indigo-600 text-white p-2.5 rounded-xl font-extrabold text-xl tracking-wider shadow-sm">DLS</div>
+  <!-- ========================================================================= -->
+  <!-- TOP STICKY BAR: MODE SWITCHER & LANGUAGE TOGGLE (PINNED AT VERY TOP)      -->
+  <!-- ========================================================================= -->
+  <div id="top-device-switcher" class="bg-slate-900 text-white px-3 py-1 flex items-center justify-between text-xs z-50 sticky top-0 border-b border-slate-800 no-print">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-slate-300 text-[11px] font-semibold hidden xs:inline" id="txt-view-mode">View Mode:</span>
+    </div>
+    
+    <div class="flex items-center gap-1.5">
+      <!-- LANGUAGE TOGGLE BUTTON (DEFAULT: EN) -->
+      <button onclick="toggleLanguage()" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-[11px] font-bold font-mono transition flex items-center gap-1" title="Switch Language VN/EN">
+        <i class="fa-solid fa-globe text-slate-400"></i>
+        <span id="lang-toggle-text">VI</span>
+      </button>
+
+      <!-- DEVICE SWITCHER -->
+      <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+        <button id="top-btn-desktop" onclick="setDeviceMode('desktop')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300">
+          <i class="fa-solid fa-desktop text-xs"></i><span class="desktop-inline">Desktop</span>
+        </button>
+        <button id="top-btn-mobile" onclick="setDeviceMode('mobile')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300">
+          <i class="fa-solid fa-mobile-screen-button text-xs"></i><span class="desktop-inline">Mobile</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTHENTICATION / LOGIN MODAL (CHỈ HIỆN KHI KHÔNG TỰ DETECT HOẶC SIGN OUT) -->
+  <div id="login-modal-overlay" class="fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-6 space-y-4">
+      <div class="text-center space-y-2">
+        <div class="flex justify-center">
+          <svg class="h-10 w-auto" viewBox="0 0 160 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <text x="5" y="46" fill="#757678" font-family="'Montserrat', sans-serif" font-weight="800" font-size="44" letter-spacing="-1">DLS</text>
+            <path d="M 124 16 L 129 23 L 148 18 L 138 31 L 146 45 L 133 38 L 122 47 L 125 33 L 115 27 L 126 27 Z" fill="#ee2f26"/>
+            <path d="M 124 18 L 128 24 L 144 20 L 135 30 L 142 42 L 132 36 L 123 43 L 125 32 L 117 28 L 126 28 Z" fill="#ffffff"/>
+            <rect x="5" y="52" width="112" height="15" fill="#ee2f26" rx="1"/>
+            <text x="61" y="63" fill="#ffffff" font-family="'Montserrat', sans-serif" font-weight="700" font-size="9" letter-spacing="2.8" text-anchor="middle">CONSULTANT</text>
+            <text x="61" y="78" fill="#757678" font-family="'Mulish', sans-serif" font-weight="500" font-size="7.5" letter-spacing="0.4" text-anchor="middle">Dedicated Leading Services</text>
+          </svg>
+        </div>
+        <h2 class="text-sm font-heading font-bold text-slate-800 pt-1" id="login-modal-title">Workstation & Duty Portal</h2>
+        <p class="text-[11px] text-slate-500" id="login-modal-sub">Sign in with Work Email or Personal Email</p>
+      </div>
+
+      <form onsubmit="handleLoginSubmit(event)" class="space-y-3 text-xs pt-1">
         <div>
-          <h1 class="font-bold text-slate-900 text-base leading-tight">DLS Consultant - Quản Lý Chỗ Ngồi & Duty Board</h1>
-          <p class="text-xs text-slate-500">Hệ thống lưu trữ lịch theo tháng • Quy tắc xoay vòng 3-2 & 3 Backup</p>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-login-email">Email / Username:</label>
+          <input type="text" id="login-input-email" required placeholder="name@dlsconsultant.com or username" 
+                 class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none font-medium">
         </div>
-      </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-login-pass">Password:</label>
+          <input type="password" id="login-input-pass" required placeholder="••••••••" 
+                 class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none">
+        </div>
 
-      <!-- User Quick Controls -->
-      <div class="flex items-center gap-3">
-        <button onclick="openStatusModal()" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
-          <i class="fa-solid fa-bell text-amber-600"></i> Báo Nghỉ / Đi Site / WFH
+        <div id="login-error-msg" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200">
+          Invalid email or password! Please try again.
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-[#ee2f26] hover:bg-red-700 text-white font-heading font-bold rounded-xl shadow-xs transition" id="btn-login-submit">
+          Sign In
         </button>
-
-        <div class="flex items-center gap-2 border-l border-slate-200 pl-3">
-          <div class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs border border-indigo-200">
-            VK
-          </div>
-          <div class="hidden sm:block text-left">
-            <div class="text-xs font-bold text-slate-800">Vũ Khiêm</div>
-            <span class="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">Admin</span>
-          </div>
-        </div>
-      </div>
+      </form>
+      <!-- REMOVED DEFAULT PASSWORD HINT LINE AS REQUESTED -->
     </div>
-  </header>
+  </div>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+  <!-- MAIN APP CONTAINER -->
+  <div id="app-wrapper" class="w-full flex-1 flex flex-col">
 
-    <!-- NAVIGATION TABS -->
-    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-slate-200 pb-4 no-print">
-      <div class="flex flex-wrap gap-2">
-        <button id="tab-floorplan-btn" onclick="switchTab('floorplan')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition flex items-center gap-2">
-          <i class="fa-solid fa-map-location-dot"></i>Sơ Đồ Chỗ Ngồi (Floor Map)
-        </button>
-        <button id="tab-duty-btn" onclick="switchTab('duty')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
-          <i class="fa-solid fa-calendar-check"></i>Lịch Trực Mobile Theo Tháng (Admin)
-        </button>
-        <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2">
-          <i class="fa-solid fa-users"></i>Danh Sách Nhân Sự
-        </button>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="flex items-center gap-2 w-full lg:w-auto justify-end">
-        <div class="flex items-center gap-2 bg-slate-100 border border-slate-300 px-3 py-1.5 rounded-lg text-xs">
-          <i class="fa-regular fa-calendar-days text-indigo-600"></i>
-          <span class="text-slate-600">Ngày đang xem:</span>
-          <strong id="current-viewing-date-label" class="text-indigo-950 font-bold font-mono">21/09/2026</strong>
-        </div>
-        <button onclick="openModal()" class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition flex items-center gap-1.5">
-          <i class="fa-solid fa-user-plus"></i>Thêm Nhân Sự
-        </button>
-      </div>
-    </div>
-
-    <!-- TAB 1: VISUAL FLOOR PLAN (SƠ ĐỒ 16 CHỖ NGỒI) -->
-    <div id="view-floorplan" class="space-y-6">
-      
-      <!-- Real-time sync bar -->
-      <div class="bg-slate-900 text-white rounded-2xl p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
-        <div class="flex items-center gap-3">
-          <div class="p-2.5 bg-indigo-500 rounded-xl text-white">
-            <i class="fa-solid fa-desktop text-lg"></i>
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-7 sm:top-0 z-30 shadow-xs">
+      <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-13 sm:h-16 flex items-center justify-between gap-1 sm:gap-2">
+        
+        <!-- OFFICIAL DLS LOGO -->
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex items-center py-0.5">
+            <svg class="h-7 sm:h-9 w-auto" viewBox="0 0 160 85" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width: 98px;">
+              <text x="5" y="46" fill="#757678" font-family="'Montserrat', sans-serif" font-weight="800" font-size="44" letter-spacing="-1">DLS</text>
+              <path d="M 124 16 L 129 23 L 148 18 L 138 31 L 146 45 L 133 38 L 122 47 L 125 33 L 115 27 L 126 27 Z" fill="#ee2f26"/>
+              <path d="M 124 18 L 128 24 L 144 20 L 135 30 L 142 42 L 132 36 L 123 43 L 125 32 L 117 28 L 126 28 Z" fill="#ffffff"/>
+              <rect x="5" y="52" width="112" height="15" fill="#ee2f26" rx="1"/>
+              <text x="61" y="63" fill="#ffffff" font-family="'Montserrat', sans-serif" font-weight="700" font-size="9" letter-spacing="2.8" text-anchor="middle">CONSULTANT</text>
+              <text x="61" y="78" fill="#757678" font-family="'Mulish', sans-serif" font-weight="500" font-size="7.5" letter-spacing="0.4" text-anchor="middle">Dedicated Leading Services</text>
+            </svg>
           </div>
-          <div>
-            <div class="text-xs text-slate-400">Trạng thái sơ đồ ghế thực tế ngày: <b id="fp-current-date" class="text-emerald-400">21/09/2026</b></div>
-            <h3 class="text-sm font-bold text-white mt-0.5">Bàn 1A & 2A đồng bộ tự động theo Lịch Trực của ngày đang chọn</h3>
+
+          <div class="desktop-only border-l border-slate-200 pl-3 leading-tight">
+            <h1 class="font-heading font-bold text-slate-900 text-xs sm:text-sm whitespace-nowrap" id="txt-app-title">
+              Workstation & Duty Roster Management
+            </h1>
+            <p class="text-[10px] text-slate-500 font-medium" id="txt-app-sub">16-Seat Pod • Mobile & Backup Rotation</p>
           </div>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="switchTab('duty')" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5">
-            <i class="fa-solid fa-calendar-days"></i>Xem / Đổi Lịch Trực
+
+        <!-- RIGHT HEADER CONTROLS -->
+        <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+          
+          <!-- Refresh Button -->
+          <button onclick="refreshDataUI()" id="btn-refresh" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-red-600 flex items-center justify-center text-xs transition shadow-xs" title="Refresh data">
+            <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i>
           </button>
-        </div>
-      </div>
 
-      <!-- Backup Alert Banner -->
-      <div id="backup-active-banner" class="hidden p-4 rounded-xl bg-amber-50 border-2 border-amber-400 text-amber-950 flex justify-between items-center animate-pulse">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-triangle-exclamation text-amber-600 text-xl"></i>
-          <div>
-            <h4 class="font-bold text-xs sm:text-sm text-amber-900">⚡ CẢNH BÁO: ĐÃ KÍCH HOẠT NHÂN SỰ BACKUP VÀO VĂN PHÒNG!</h4>
-            <p id="backup-active-msg" class="text-xs text-amber-800 mt-0.5"></p>
-          </div>
-        </div>
-        <span class="text-xs font-bold uppercase bg-amber-200 text-amber-900 px-2.5 py-1 rounded">Backup Active</span>
-      </div>
+          <!-- Out of Office / Attendance Status Button -->
+          <button onclick="openStatusModal()" class="px-2.5 py-1.5 sm:px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-xs">
+            <i class="fa-solid fa-bell text-amber-600 text-xs"></i>
+            <span class="desktop-inline" id="btn-ooo-text">Status / Leave</span>
+          </button>
 
-      <!-- Floor Plan Pod Container -->
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-3 gap-2">
-          <div>
-            <h2 class="text-base font-bold text-slate-800">Sơ Đồ Bố Trí Bàn Làm Việc (Floor Plan 16 Chỗ)</h2>
-            <p class="text-xs text-slate-500">Mỗi hàng gồm 4 vị trí: Cột A, B, C, D • Ngăn cách bởi Lối Đi</p>
-          </div>
-          <div class="flex flex-wrap gap-3 text-xs">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span> Có mặt</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span> Mobile Seat (Trực)</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span> WFH / Vắng / Đi Site</span>
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-slate-300 inline-block"></span> Not Used</span>
-          </div>
-        </div>
-
-        <!-- Cụm Dãy Trước: Hàng 1 & Hàng 2 -->
-        <div class="space-y-3">
-          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-indigo-500"></i> Cụm Dãy Trước (Hàng 1 & Hàng 2)
-          </div>
-
-          <!-- Hàng 1 -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
-              <span>HÀNG 1</span>
-              <span>1A (Mobile) • 1B • 1C • 1D</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-1-grid"></div>
-          </div>
-
-          <!-- Hàng 2 -->
-          <div class="pt-2">
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
-              <span>HÀNG 2</span>
-              <span>2A (Mobile) • 2B • 2C • 2D</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-2-grid"></div>
-          </div>
-        </div>
-
-        <!-- LỐI ĐI CHÍNH (AISLE) -->
-        <div class="py-2.5 my-2 border-y-2 border-dashed border-slate-200 bg-slate-100/70 rounded-lg flex items-center justify-center gap-3 text-slate-400 font-bold text-xs uppercase tracking-widest">
-          <i class="fa-solid fa-arrows-left-right"></i> LỐI ĐI TRUNG TÂM (AISLE) <i class="fa-solid fa-arrows-left-right"></i>
-        </div>
-
-        <!-- Cụm Dãy Sau: Hàng 3 & Hàng 4 -->
-        <div class="space-y-3">
-          <div class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-2">
-            <i class="fa-solid fa-layer-group text-slate-500"></i> Cụm Dãy Sau (Hàng 3 & Hàng 4)
-          </div>
-
-          <!-- Hàng 3 -->
-          <div>
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
-              <span>HÀNG 3</span>
-              <span>3A (Not used) • 3B • 3C • 3D</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-3-grid"></div>
-          </div>
-
-          <!-- Hàng 4 -->
-          <div class="pt-2">
-            <div class="text-[11px] font-semibold text-slate-400 mb-1.5 flex justify-between">
-              <span>HÀNG 4 (Toàn bộ Not Used)</span>
-              <span>4A • 4B • 4C • 4D</span>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="row-4-grid"></div>
-          </div>
-        </div>
-
-        <!-- Lãnh đạo cấp cao không xếp chỗ -->
-        <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
-          <span class="flex items-center gap-2">
-            <i class="fa-solid fa-crown text-amber-500 text-sm"></i>
-            <span><strong>Lãnh đạo cấp cao:</strong> Trần Hoàng Duy (Không sắp xếp vị trí cố định tại khu vực nhân viên).</span>
-          </span>
-          <span class="font-mono text-[11px] bg-slate-100 px-2.5 py-1 rounded font-semibold text-slate-600">Executive Level</span>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- TAB 2: LỊCH TRỰC MOBILE & THIẾT LẬP THEO THÁNG (ADMIN) -->
-    <div id="view-duty" class="hidden space-y-6">
-      
-      <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-        <!-- Month Controller Bar -->
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200 pb-4">
-          <div>
-            <div class="text-xs font-bold uppercase tracking-wider text-indigo-600 flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-              Duty Board Storage & Planner
-            </div>
-            <h2 class="text-2xl font-extrabold text-slate-900 mt-1">Lịch Phân Bổ Chỗ Ngồi Mobile & Backup</h2>
-            <p class="text-xs text-slate-500 mt-0.5">Lịch được ghi nhớ theo từng tháng riêng biệt. Chỉ hiển thị các tháng đã được Admin thiết lập.</p>
-          </div>
-
-          <!-- Month Selector & Storage Tools -->
-          <div class="flex flex-wrap items-center gap-2">
-            <div class="flex items-center gap-1 bg-slate-50 p-1.5 rounded-xl border border-slate-200">
-              <button onclick="changeMonth(-1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
-                <i class="fa-solid fa-chevron-left text-xs"></i>
-              </button>
-              <div class="text-center px-3 min-w-[130px]">
-                <div class="text-xs font-bold text-slate-800" id="duty-month-display">Tháng 09 / 2026</div>
-                <div class="text-[10px] text-slate-400" id="duty-status-badge">Đã thiết lập</div>
+          <!-- User Menu Dropdown -->
+          <div class="relative border-l border-slate-200 pl-1">
+            <button onclick="toggleUserDropdown()" class="flex items-center gap-0.5 p-0.5 rounded-lg hover:bg-slate-100 transition">
+              <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300">
+                VK
               </div>
-              <button onclick="changeMonth(1)" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 flex items-center justify-center text-slate-600 transition">
-                <i class="fa-solid fa-chevron-right text-xs"></i>
+              <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs">
+              <div class="px-3 py-2 border-b border-slate-100">
+                <div id="dropdown-user-name" class="font-bold text-slate-800 truncate font-heading">Vu Khiem</div>
+                <div id="dropdown-user-role" class="text-[10px] text-[#ee2f26] font-bold uppercase">Admin</div>
+              </div>
+              <button onclick="openChangePasswordModal()" class="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-slate-700 font-medium" id="btn-change-pass-text">
+                <i class="fa-solid fa-key text-slate-400"></i> Change Password
+              </button>
+              <button onclick="handleLogout()" class="w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 border-t border-slate-100 font-semibold" id="btn-logout-text">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
               </button>
             </div>
-
-            <!-- Backup File Buttons -->
-            <button onclick="exportScheduleJSON()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition" title="Lưu trữ toàn bộ dữ liệu lịch ra file">
-              <i class="fa-solid fa-download mr-1"></i>Lưu File JSON
-            </button>
-            <label class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer transition" title="Nhập dữ liệu lịch từ file">
-              <i class="fa-solid fa-upload mr-1"></i>Đọc File
-              <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
-            </label>
-            <button onclick="window.print()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold transition">
-              <i class="fa-solid fa-print mr-1"></i>In Lịch
-            </button>
           </div>
+
         </div>
+      </div>
+    </header>
 
-        <!-- MÀN HÌNH NẾU THÁNG CHƯA THIẾT LẬP -->
-        <div id="duty-unconfigured-container" class="hidden py-12 px-6 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50 space-y-4">
-          <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-xl shadow-inner">
-            <i class="fa-solid fa-calendar-plus"></i>
-          </div>
-          <div>
-            <h3 class="text-base font-bold text-slate-800" id="unconfigured-month-title">Tháng này chưa được thiết lập lịch trực</h3>
-            <p class="text-xs text-slate-500 mt-1 max-w-md mx-auto">
-              Bạn có thể sử dụng bộ tạo tự động theo nguyên tắc: <strong>Mỗi tuần đảo nhau (tuần làm 3 ngày, tuần làm 2 ngày)</strong> và phân bổ đều <strong>mỗi người 3 ngày Backup</strong>.
-            </p>
-          </div>
-          <button onclick="generateScheduleByRule()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md transition inline-flex items-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Tự Động Khởi Tạo Lịch Cho Tháng Này
+    <!-- MAIN BODY -->
+    <main class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2 sm:py-5 flex-1 w-full space-y-2.5 sm:space-y-4">
+
+      <!-- NAVIGATION BAR -->
+      <div class="flex items-center justify-between gap-1.5 border-b border-slate-200 pb-2 no-print">
+        
+        <!-- 3 Tabs: USER WILL NOT HAVE STAFF LIST TAB -->
+        <div class="flex items-center gap-1 shrink-0" id="main-nav-tabs">
+          <button id="tab-floorplan-btn" onclick="switchTab('floorplan')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-bold rounded-lg bg-[#ee2f26] text-white shadow-xs transition flex items-center justify-center gap-1.5" title="Floor Plan">
+            <i class="fa-solid fa-chair text-xs"></i>
+            <span class="desktop-inline" id="tab-title-floorplan">Floor Plan</span>
+          </button>
+          <button id="tab-duty-btn" onclick="switchTab('duty')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5" title="Duty Roster">
+            <i class="fa-solid fa-calendar-check text-xs"></i>
+            <span class="desktop-inline" id="tab-title-duty">Duty Roster</span>
+          </button>
+          <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5" title="Staff List">
+            <i class="fa-solid fa-users text-xs"></i>
+            <span class="desktop-inline" id="tab-title-staff">Staff List</span>
           </button>
         </div>
 
-        <!-- MÀN HÌNH LỊCH ĐÃ THIẾT LẬP -->
-        <div id="duty-configured-container" class="space-y-4">
-          <!-- Staff Legend & Quick Note -->
-          <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-mono bg-slate-50 p-3 rounded-xl border border-slate-100">
-            <div class="flex flex-wrap gap-2">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
-                <span class="w-2.5 h-2.5 rounded-full dot-xa"></span>X. ANH (Xuân Anh)
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
-                <span class="w-2.5 h-2.5 rounded-full dot-dd"></span>D. DUY (Đặng Duy)
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
-                <span class="w-2.5 h-2.5 rounded-full dot-vk"></span>V. KHIEM (Vũ Khiêm)
-              </span>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-slate-200 bg-white text-slate-700">
-                <span class="w-2.5 h-2.5 rounded-full dot-mt"></span>M. TRUNG (Minh Trung)
-              </span>
+        <!-- Date Indicator & Add Button (Add button only for Admin) -->
+        <div class="flex items-center gap-1 sm:gap-2 shrink-0">
+          <div onclick="openDateSelectorPrompt()" class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1 rounded-lg text-xs cursor-pointer transition" title="Change viewing day (Admin only)">
+            <i class="fa-regular fa-calendar-days text-[#ee2f26] text-xs"></i>
+            <span class="desktop-inline text-slate-600 text-[11px]" id="txt-viewing-date-lbl">Date:</span>
+            <strong id="current-viewing-date-label" class="text-slate-900 font-bold font-mono text-[11px] sm:text-xs">22/09/2026</strong>
+            <span id="date-admin-lock-icon" class="text-[9px] text-slate-400"></span>
+          </div>
+
+          <button id="btn-add-staff" onclick="openModal()" class="px-2 py-1 sm:px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs font-semibold transition flex items-center gap-1 font-heading shrink-0" title="Add new employee">
+            <i class="fa-solid fa-user-plus text-xs"></i>
+            <span class="desktop-inline" id="btn-add-staff-text">Add Staff</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TAB 1: FLOOR MAP (16-SEAT WORKSTATION POD) -->
+      <div id="view-floorplan" class="space-y-2 sm:space-y-3">
+        
+        <!-- Live Shift Status Bar -->
+        <div class="bg-slate-900 text-white rounded-xl p-2 sm:p-3 flex justify-between items-center gap-2 shadow-xs">
+          <div class="flex items-center gap-1.5 truncate text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+            <span class="truncate" id="txt-live-sync-banner">
+              Date <b id="fp-current-date" class="text-emerald-400 font-mono">22/09/2026</b>: 1A (D.Duy/M.Trung) & 2A (X.Anh/Khiem)
+            </span>
+          </div>
+          <button onclick="switchTab('duty')" class="text-[11px] bg-[#ee2f26] hover:bg-red-700 text-white px-2.5 py-1 rounded-lg font-heading font-semibold whitespace-nowrap transition shrink-0" id="btn-change-roster-text">
+            View Roster
+          </button>
+        </div>
+
+        <!-- Backup Alert Banner -->
+        <div id="backup-active-banner" class="hidden p-2 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex justify-between items-center animate-pulse">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
+            <div>
+              <h4 class="font-heading font-bold text-xs text-red-900 leading-tight" id="txt-backup-activated-title">⚡ BACKUP ACTIVATED FOR OFFICE!</h4>
+              <p id="backup-active-msg" class="text-[10.5px] text-red-800"></p>
             </div>
-            <div class="flex items-center gap-2">
-              <button onclick="generateScheduleByRule(true)" class="text-[11px] text-indigo-600 hover:underline font-sans font-semibold">
-                <i class="fa-solid fa-arrows-rotate mr-1"></i>Tạo lại theo quy tắc 3-2
+          </div>
+          <span class="text-[9px] font-bold uppercase bg-red-200 text-red-900 px-1.5 py-0.5 rounded font-heading shrink-0">Backup</span>
+        </div>
+
+        <!-- Floor Plan Matrix Pod Container -->
+        <div class="bg-white p-2.5 sm:p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
+          
+          <div class="flex flex-wrap items-center justify-between gap-1 border-b border-slate-100 pb-1.5">
+            <div class="text-[11px] sm:text-xs font-heading font-bold text-slate-700 uppercase tracking-wider" id="txt-floor-plan-title">Workstation Pod (4 Rows x 4 Desks)</div>
+            <div class="flex flex-wrap gap-2 text-[9px] sm:text-[10px] text-slate-500 font-medium">
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> <span id="lbl-present">Present</span></span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-indigo-600 inline-block"></span> Mobile</span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-amber-500 inline-block"></span> <span id="lbl-absent">Absent/WFH</span></span>
+              <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-slate-300 inline-block"></span> <span id="lbl-locked">Locked</span></span>
+            </div>
+          </div>
+
+          <!-- Front Pod: Rows 1 & 2 -->
+          <div class="space-y-1 sm:space-y-2">
+            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1" id="txt-front-pod-title">
+              <i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> Front Pod (Rows 1 & 2)
+            </div>
+
+            <div>
+              <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
+                <span id="txt-row-1-title">ROW 1</span>
+                <span>1A (D.Duy / M.Trung) • 1B • 1C • 1D</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-1-grid"></div>
+            </div>
+
+            <div class="pt-0.5">
+              <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
+                <span id="txt-row-2-title">ROW 2</span>
+                <span>2A (X.Anh / Khiem) • 2B • 2C • 2D</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-2-grid"></div>
+            </div>
+          </div>
+
+          <!-- CENTRAL AISLE -->
+          <div class="py-1 my-0.5 border-y border-dashed border-slate-200 bg-slate-100/60 rounded flex items-center justify-center gap-2 text-slate-400 font-bold text-[8.5px] sm:text-[10px] uppercase tracking-widest font-heading">
+            <i class="fa-solid fa-arrows-left-right text-[8px]"></i> <span id="txt-central-aisle">CENTRAL AISLE</span> <i class="fa-solid fa-arrows-left-right text-[8px]"></i>
+          </div>
+
+          <!-- Back Pod: Rows 3 & 4 -->
+          <div class="space-y-1 sm:space-y-2">
+            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1" id="txt-back-pod-title">
+              <i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> Back Pod (Rows 3 & 4)
+            </div>
+
+            <div>
+              <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
+                <span id="txt-row-3-title">ROW 3</span>
+                <span>3A • 3B • 3C • 3D</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-3-grid"></div>
+            </div>
+
+            <div class="pt-0.5">
+              <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
+                <span id="txt-row-4-title">ROW 4</span>
+                <span>4A • 4B • 4C • 4D</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-4-grid"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB 2: DUTY ROSTER (DESKTOP: TO RÕ RÀNG, ĐÃ BỎ DÒNG GẠCH ĐỎ) -->
+      <div id="view-duty" class="hidden space-y-2.5 sm:space-y-4">
+        
+        <div class="bg-white p-2.5 sm:p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+          
+          <!-- Month Control Bar -->
+          <div class="flex justify-between items-center gap-2 border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
+              <button onclick="changeMonth(-1)" class="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition">
+                <i class="fa-solid fa-chevron-left text-[9px]"></i>
+              </button>
+              <div class="text-center px-2 min-w-[90px] sm:min-w-[120px]">
+                <div class="text-xs sm:text-sm font-bold text-slate-800 font-heading" id="duty-month-display">September 2026</div>
+                <div class="text-[8px] sm:text-[10px] font-semibold text-emerald-600" id="duty-status-badge">Configured</div>
+              </div>
+              <button onclick="changeMonth(1)" class="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition">
+                <i class="fa-solid fa-chevron-right text-[9px]"></i>
+              </button>
+            </div>
+
+            <!-- Export / Import Tools & Regenerate Option -->
+            <div class="flex items-center gap-1">
+              <button onclick="exportScheduleJSON()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition" title="Export JSON">
+                <i class="fa-solid fa-download"></i>
+                <span class="desktop-inline text-[11px] font-medium ml-1">Export</span>
+              </button>
+              <label class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs cursor-pointer transition" title="Import JSON">
+                <i class="fa-solid fa-upload"></i>
+                <span class="desktop-inline text-[11px] font-medium ml-1">Import</span>
+                <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
+              </label>
+              <button onclick="window.print()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-800 hover:bg-slate-900 text-white text-xs transition">
+                <i class="fa-solid fa-print"></i>
+                <span class="desktop-inline text-[11px] font-medium ml-1">Print</span>
               </button>
             </div>
           </div>
 
-          <!-- Calendar Grid -->
+          <!-- Unconfigured Month Message -->
+          <div id="duty-unconfigured-container" class="hidden py-8 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 space-y-2">
+            <h3 class="text-xs sm:text-sm font-heading font-bold text-slate-800" id="unconfigured-month-title">No roster configured for this month</h3>
+            <p class="text-[11px] text-slate-500" id="txt-roster-rule-hint">Rule: 1A = D.Duy/M.Trung, 2A = X.Anh/Khiem. 3 backup days per person.</p>
+            <button onclick="generateScheduleByRule()" class="px-3.5 py-1.5 rounded-xl bg-[#ee2f26] hover:bg-red-700 text-white font-heading font-bold text-xs shadow-xs transition inline-flex items-center gap-1" id="btn-generate-roster">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Generate Roster
+            </button>
+          </div>
+
+          <!-- Active Month Roster Grid (ĐÃ BỎ DÒNG CHIP TRÊN HÌNH THEO YÊU CẦU) -->
+          <div id="duty-configured-container" class="space-y-3">
+            
+            <!-- Calendar Roster Grid: Máy tính chữ to rõ, điện thoại gọn gàng -->
+            <div class="overflow-x-auto custom-scrollbar">
+              <div class="min-w-[580px] sm:min-w-[820px]">
+                <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-1.5 font-mono text-[9px] sm:text-xs font-bold text-slate-400 uppercase text-center" id="cal-weekdays-header">
+                  <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
+                  <span class="text-slate-300">Sat</span><span class="text-slate-300">Sun</span>
+                </div>
+                <div class="grid grid-cols-7 gap-1 sm:gap-2" id="duty-calendar-grid"></div>
+              </div>
+            </div>
+
+            <!-- Working Day Breakdown Stats -->
+            <div class="pt-2 border-t border-slate-100 space-y-2">
+              <div class="flex justify-between items-center text-xs sm:text-sm">
+                <h3 class="font-heading font-bold text-slate-800" id="txt-breakdown-title">Monthly Working-Day Breakdown</h3>
+                <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2 py-0.5 rounded text-[10px] sm:text-xs">20 Working Days</span>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-3" id="duty-stats-rows"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TAB 3: STAFF DIRECTORY (USER BỊ ẨN, MANAGER KHÔNG CÓ CỘT THAO TÁC) -->
+      <div id="view-dashboard" class="hidden space-y-3 sm:space-y-4">
+        
+        <!-- KPI Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-total-headcount">Total Staff</p>
+            <h3 id="stat-total-headcount" class="text-base sm:text-xl font-heading font-extrabold text-slate-900 mt-0.5">0</h3>
+          </div>
+          <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-fixed-seats">Fixed Seats</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">7 <span class="text-[10px] text-slate-400 font-normal">/ 16</span></h3>
+          </div>
+          <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase">Mobile Pool</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal">staff</span></h3>
+          </div>
+          <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-locked-seats">Locked Desks</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-slate-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal">desks</span></h3>
+          </div>
+        </div>
+
+        <!-- EMPLOYEE DATA TABLE -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+          <div class="px-3 py-2 border-b border-slate-100 bg-slate-50 flex justify-between items-center text-xs">
+            <span><span id="txt-synced-with-date">Synced for</span> <strong id="table-date-sync" class="font-mono">22/09/2026</strong></span>
+            <span id="table-count" class="font-bold text-slate-900 font-heading">0 members</span>
+          </div>
           <div class="overflow-x-auto custom-scrollbar">
-            <div class="min-w-[980px]">
-              <div class="grid grid-cols-7 gap-2 mb-2 font-mono text-xs font-bold text-slate-400 uppercase tracking-wider">
-                <span class="pl-2">Thứ 2 (Mon)</span>
-                <span class="pl-2">Thứ 3 (Tue)</span>
-                <span class="pl-2">Thứ 4 (Wed)</span>
-                <span class="pl-2">Thứ 5 (Thu)</span>
-                <span class="pl-2">Thứ 6 (Fri)</span>
-                <span class="pl-2 text-slate-300">Thứ 7 (Sat)</span>
-                <span class="pl-2 text-slate-300">Chủ Nhật (Sun)</span>
-              </div>
-
-              <div class="grid grid-cols-7 gap-2" id="duty-calendar-grid"></div>
-            </div>
-          </div>
-
-          <!-- Monthly Working-Day Breakdown -->
-          <div class="mt-8 pt-6 border-t border-slate-200 space-y-4">
-            <div class="flex justify-between items-center">
-              <div>
-                <h3 class="text-base font-bold text-slate-900">Thống Kê Ngày Làm Việc Tại Văn Phòng (On-site vs Online)</h3>
-                <p class="text-xs text-slate-500">Tự động tổng hợp số ngày làm cố định và ngày nhận nhiệm vụ Backup</p>
-              </div>
-              <span id="duty-total-workdays-badge" class="text-xs font-mono font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full">20 Ngày làm việc</span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="duty-stats-rows"></div>
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px]" id="table-head-row">
+                  <th class="py-2.5 px-3 w-8 text-center">No</th>
+                  <th class="py-2.5 px-3">Full Name</th>
+                  <th class="py-2.5 px-3 desktop-only">Role</th>
+                  <th class="py-2.5 px-3 desktop-only">Work Email</th>
+                  <th class="py-2.5 px-3 desktop-only">Personal Email</th>
+                  <th class="py-2.5 px-3">Seat</th>
+                  <th class="py-2.5 px-3 text-center">Status</th>
+                  <th class="py-2.5 px-3 text-center" id="th-action-col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="employee-table-body" class="divide-y divide-slate-200"></tbody>
+            </table>
           </div>
         </div>
 
       </div>
 
-    </div>
+    </main>
 
-    <!-- TAB 3: DANH SÁCH NHÂN SỰ -->
-    <div id="view-dashboard" class="hidden space-y-6">
-      
-      <!-- KPI Stats -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tổng Nhân Sự Quản Lý</p>
-          <h3 id="stat-total-headcount" class="text-3xl font-extrabold text-slate-900 mt-2">0</h3>
-          <p class="text-[11px] text-slate-500 mt-1">Đã loại trừ tài khoản ẩn</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ghế Cố Định (Dãy)</p>
-          <h3 class="text-3xl font-extrabold text-emerald-600 mt-2">7 <span class="text-xs text-slate-400 font-normal">/ 16 Ghế</span></h3>
-          <p class="text-[11px] text-slate-500 mt-1">1B-1D, 2B-2D, 3B-3D</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Mobile & Backup</p>
-          <h3 class="text-3xl font-extrabold text-indigo-600 mt-2">4 <span class="text-xs text-slate-400 font-normal">Nhân sự</span></h3>
-          <p class="text-[11px] text-slate-500 mt-1">Sử dụng ghế 1A & 2A theo ca</p>
-        </div>
-        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-          <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Ghế Khóa (Not Used)</p>
-          <h3 class="text-3xl font-extrabold text-slate-600 mt-2">5 <span class="text-xs text-slate-400 font-normal">Ghế</span></h3>
-          <p class="text-[11px] text-slate-500 mt-1">3A và Hàng 4 (4A-4D)</p>
-        </div>
+  </div>
+
+  <!-- MODAL: CHANGE OWN PASSWORD -->
+  <div id="change-pass-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-5 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5" id="txt-modal-change-pwd">
+          <i class="fa-solid fa-key text-[#ee2f26]"></i> Change Password
+        </h3>
+        <button onclick="closeModal('change-pass-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <!-- Filters -->
-      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col sm:flex-row gap-3">
-        <div class="flex-1 relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-          <input type="text" id="search-input" oninput="applyFilters()" placeholder="Tìm kiếm theo họ tên, email, chỗ ngồi..." 
-                 class="w-full pl-9 pr-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-        </div>
-        <select id="filter-role" onchange="applyFilters()" class="py-2 px-3 text-xs border border-slate-300 rounded-lg focus:outline-none bg-white">
-          <option value="ALL">Tất cả Vai trò</option>
-          <option value="Admin">Admin</option>
-          <option value="Manager">Manager</option>
-          <option value="User">User</option>
-        </select>
-        <select id="filter-status" onchange="applyFilters()" class="py-2 px-3 text-xs border border-slate-300 rounded-lg focus:outline-none bg-white">
-          <option value="ALL">Tất cả Trạng thái</option>
-          <option value="Active">Đang có mặt (Active)</option>
-          <option value="WFH">WFH</option>
-          <option value="On Site">On Site (Công tác)</option>
-          <option value="Day Off">Day Off (Nghỉ phép)</option>
-        </select>
-      </div>
-
-      <!-- Employee Table -->
-      <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
-        <div class="px-5 py-3 border-b border-slate-200 bg-slate-50 flex justify-between items-center text-xs">
-          <span>Danh sách nhân sự (Trạng thái theo ngày <strong id="table-date-sync">21/09/2026</strong>)</span>
-          <span id="table-count" class="font-bold text-indigo-600">0 nhân sự</span>
-        </div>
-        <div class="overflow-x-auto custom-scrollbar">
-          <table class="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-semibold uppercase">
-                <th class="py-3.5 px-4 w-12 text-center">STT</th>
-                <th class="py-3.5 px-4">Họ Và Tên</th>
-                <th class="py-3.5 px-4">Vai Trò</th>
-                <th class="py-3.5 px-4">Email Công Ty</th>
-                <th class="py-3.5 px-4">Email Cá Nhân</th>
-                <th class="py-3.5 px-4">Vị Trí Chỗ Ngồi</th>
-                <th class="py-3.5 px-4 text-center">Trạng Thái</th>
-                <th class="py-3.5 px-4 text-center">Thao Tác</th>
-              </tr>
-            </thead>
-            <tbody id="employee-table-body" class="divide-y divide-slate-200"></tbody>
-          </table>
-        </div>
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- MODAL 1: BÁO NGHỈ / RA NGOÀI (KÍCH HOẠT BACKUP TỨC THÌ) -->
-  <div id="status-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
-      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-clipboard-user text-indigo-600"></i>
-          <h3 class="font-bold text-slate-800 text-sm">Báo Cáo Trạng Thái Đi Làm / Ra Ngoài</h3>
-        </div>
-        <button onclick="closeModal('status-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-
-      <div class="p-5 space-y-4 text-xs">
+      <form onsubmit="handleSaveOwnPassword(event)" class="space-y-3 text-xs">
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Chọn Nhân Sự Báo Trạng Thái</label>
-          <select id="status-user-select" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white font-medium"></select>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-new-pwd">New Password:</label>
+          <input type="password" id="new-own-pass" required placeholder="Enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-confirm-pwd">Confirm New Password:</label>
+          <input type="password" id="confirm-own-pass" required placeholder="Re-enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500">
+        </div>
+
+        <div id="change-pass-error" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200">
+          Passwords do not match!
+        </div>
+
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('change-pass-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold shadow-xs">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ATTENDANCE & LEAVE STATUS REPORT -->
+  <div id="status-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5" id="txt-modal-status-title">
+          <i class="fa-solid fa-clipboard-user text-[#ee2f26]"></i> Attendance & Status Report
+        </h3>
+        <button onclick="closeModal('status-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-user">Select Staff Member:</label>
+          <select id="status-user-select" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium"></select>
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Tình Trạng Làm Việc</label>
-          <select id="status-action-select" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white font-medium">
-            <option value="Active">🟢 Có mặt tại văn phòng (Active)</option>
-            <option value="WFH">🏠 Làm việc từ xa (Work From Home - WFH)</option>
-            <option value="On Site">🚗 Đi công trường / Công tác (On Site)</option>
-            <option value="In Meeting">🤝 Họp bên ngoài cả ngày (In Meeting)</option>
-            <option value="Day Off">🔴 Nghỉ phép / Báo ốm (Day Off / Leave)</option>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-type">Current Working Status:</label>
+          <select id="status-action-select" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium">
+            <option value="Active">🟢 In Office (Active)</option>
+            <option value="WFH">🏠 Working From Home (WFH)</option>
+            <option value="On Site">🚗 On Site Visit (Client/Field)</option>
+            <option value="In Meeting">🤝 External Meeting (Full-day)</option>
+            <option value="Day Off">🔴 Leave / Day Off / Sick</option>
           </select>
         </div>
 
-        <div class="p-3 bg-amber-50 rounded-xl border border-amber-200 text-amber-900 text-[11px] space-y-1">
-          <div class="font-bold flex items-center gap-1.5">
-            <i class="fa-solid fa-bolt text-amber-600"></i> Tự Động Kích Hoạt Vị Trí Backup:
-          </div>
-          <p>Khi nhân sự cố định vắng mặt, vị trí bàn đó trên sơ đồ sẽ <strong>lập tức phát sáng nhấp nháy</strong> báo hiệu cho người làm Backup của ngày hôm đó vào trám chỗ!</p>
+        <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[10.5px] leading-relaxed" id="txt-status-backup-notice">
+          <strong>⚡ Automatic Backup Trigger:</strong> If a fixed desk owner reports WFH, On Site, or Day Off, their desk will <strong>flash pulsing red</strong> to summon today's Backup staff!
         </div>
 
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('status-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
-          <button type="button" onclick="submitStatusUpdate()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Cập Nhật Trạng Thái</button>
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('status-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs" id="btn-status-cancel">Cancel</button>
+          <button type="button" onclick="submitStatusUpdate()" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs" id="btn-status-submit">Update</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 2: ADMIN ĐIỀU CHỈNH LỊCH NGÀY CỤ THỂ -->
-  <div id="duty-edit-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
-      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-        <div>
-          <h3 class="font-bold text-slate-800 text-sm">Điều Chỉnh Lịch Ngày <span id="duty-edit-date-title" class="text-indigo-600 font-mono">--</span></h3>
-          <p class="text-[11px] text-slate-500">Phân công 2 ghế trực (1A & 2A) và vị trí Backup</p>
-        </div>
-        <button onclick="closeModal('duty-edit-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+  <!-- MODAL: ADMIN EDIT DAILY ROSTER -->
+  <div id="duty-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm">Edit Roster for <span id="duty-edit-date-title" class="text-[#ee2f26] font-mono">--</span></h3>
+        <button onclick="closeModal('duty-edit-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <div class="p-5 space-y-4 text-xs">
+      <div class="p-4 space-y-3 text-xs">
         <input type="hidden" id="duty-edit-day-num">
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Ghế 1A (Mobile 1)</label>
-          <select id="duty-edit-ws1" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono"></select>
+          <label class="block font-semibold text-slate-700 mb-1">Desk 1A (D.Duy / M.Trung):</label>
+          <select id="duty-edit-ws1" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Ghế 2A (Mobile 2)</label>
-          <select id="duty-edit-ws2" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono"></select>
+          <label class="block font-semibold text-slate-700 mb-1">Desk 2A (X.Anh / Khiem):</label>
+          <select id="duty-edit-ws2" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Vị Trí Dự Phòng (Backup)</label>
-          <select id="duty-edit-backup" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium font-mono">
-            <option value="">-- Không xếp Backup --</option>
+          <label class="block font-semibold text-slate-700 mb-1">Backup Staff:</label>
+          <select id="duty-edit-backup" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono">
+            <option value="">-- No Backup Assigned --</option>
           </select>
         </div>
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Tự Động Phân Làm Online / WFH</label>
-          <div id="duty-edit-online-chips" class="flex flex-wrap gap-2 pt-1 font-mono"></div>
+          <label class="block font-semibold text-slate-700 mb-1">Remote (WFH):</label>
+          <div id="duty-edit-online-chips" class="flex flex-wrap gap-1 pt-0.5 font-mono"></div>
         </div>
 
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('duty-edit-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
-          <button type="button" onclick="saveDutyEdit()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Lưu Thay Đổi</button>
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('duty-edit-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs">Cancel</button>
+          <button type="button" onclick="saveDutyEdit()" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs">Save</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODAL 3: THÊM / SỬA NHÂN SỰ + CHỌN GHẾ THEO SƠ ĐỒ HÌNH ẢNH (VISUAL SEAT PICKER) -->
-  <div id="employee-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden max-h-[92vh] flex flex-col">
-      <div class="px-5 py-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
-        <h3 id="modal-title" class="font-bold text-slate-800 text-sm">Thêm Nhân Sự Mới</h3>
-        <button onclick="closeModal('employee-modal')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+  <!-- MODAL: ADD / EDIT EMPLOYEE -->
+  <div id="employee-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+        <h3 id="modal-title" class="font-heading font-bold text-slate-800 text-xs sm:text-sm">Employee Details</h3>
+        <button onclick="closeModal('employee-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <form id="employee-form" onsubmit="handleSaveEmployee(event)" class="p-5 space-y-4 text-xs overflow-y-auto custom-scrollbar flex-1">
+      <form id="employee-form" onsubmit="handleSaveEmployee(event)" class="p-4 space-y-3 text-xs overflow-y-auto custom-scrollbar flex-1">
         <input type="hidden" id="form-id">
 
         <div>
-          <label class="block font-medium text-slate-700 mb-1">Họ Và Tên Đầy Đủ <span class="text-rose-500">*</span></label>
-          <input type="text" id="form-fullname" required placeholder="Ví dụ: NGUYEN VAN AN" class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 uppercase font-medium">
+          <label class="block font-semibold text-slate-700 mb-1">Full Name <span class="text-red-500">*</span></label>
+          <input type="text" id="form-fullname" required placeholder="NGUYEN VAN AN" class="w-full p-2 border border-slate-300 rounded-lg uppercase font-semibold">
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-2 gap-2">
           <div>
-            <label class="block font-medium text-slate-700 mb-1">Vai Trò (Role) <span class="text-rose-500">*</span></label>
-            <select id="form-role" required class="w-full p-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white">
+            <label class="block font-semibold text-slate-700 mb-1">Role</label>
+            <select id="form-role" required class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium">
               <option value="User">User</option>
               <option value="Manager">Manager</option>
               <option value="Admin">Admin</option>
             </select>
           </div>
           <div>
-            <label class="block font-medium text-slate-700 mb-1">Vị Trí Ghế Đang Chọn</label>
-            <input type="text" id="form-seating-display" readonly class="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-bold font-mono text-indigo-700">
+            <label class="block font-semibold text-slate-700 mb-1">Assigned Desk</label>
+            <input type="text" id="form-seating-display" readonly class="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-bold font-mono text-slate-800">
             <input type="hidden" id="form-seating">
           </div>
         </div>
 
-        <!-- VISUAL SEAT PICKER -->
-        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+        <!-- VISUAL MINI SEAT PICKER -->
+        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
           <div class="flex justify-between items-center">
-            <label class="font-bold text-slate-700 flex items-center gap-1.5">
-              <i class="fa-solid fa-hand-pointer text-indigo-600"></i> Click Vào Ghế Để Gán Nhanh:
-            </label>
-            <div class="flex gap-1.5">
-              <button type="button" onclick="selectSeatPicker('Mobile')" class="px-2 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-[10px] font-bold font-mono">Mobile Pool</button>
-              <button type="button" onclick="selectSeatPicker('')" class="px-2 py-1 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold">Không xếp chỗ</button>
+            <label class="font-heading font-bold text-slate-700 text-[11px]">Click Desk to Assign:</label>
+            <div class="flex gap-1">
+              <button type="button" onclick="selectSeatPicker('Mobile')" class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold font-mono">Mobile</button>
+              <button type="button" onclick="selectSeatPicker('')" class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-bold">Unassigned</button>
             </div>
           </div>
-          
-          <div class="grid grid-cols-4 gap-1.5 pt-1" id="mini-seat-picker-grid"></div>
+          <div class="grid grid-cols-4 gap-1 pt-0.5" id="mini-seat-picker-grid"></div>
         </div>
 
-        <div>
-          <label class="block font-medium text-slate-700 mb-1">Email Công Ty <span class="text-rose-500">*</span></label>
-          <input type="email" id="form-email-company" required placeholder="name@dlsconsultant.com" class="w-full p-2 border border-slate-300 rounded-lg">
-        </div>
-
-        <div>
-          <label class="block font-medium text-slate-700 mb-1">Email Cá Nhân</label>
-          <input type="email" id="form-email-personal" placeholder="name@gmail.com" class="w-full p-2 border border-slate-300 rounded-lg">
-        </div>
-
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
-            <label class="block font-medium text-slate-700 mb-1">Trạng Thái Ban Đầu</label>
-            <select id="form-status" class="w-full p-2 border border-slate-300 rounded-lg bg-white">
-              <option value="Active">Active (Có mặt)</option>
-              <option value="WFH">WFH (Làm từ xa)</option>
-              <option value="On Site">On Site (Công tác)</option>
-              <option value="In Meeting">In Meeting (Họp)</option>
-              <option value="Day Off">Day Off (Nghỉ phép)</option>
+            <label class="block font-semibold text-slate-700 mb-1">Company Email (Login) <span class="text-red-500">*</span></label>
+            <input type="text" id="form-email-company" required placeholder="name@dlsconsultant.com or username" class="w-full p-2 border border-slate-300 rounded-lg">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Personal Email (Gmail Backup)</label>
+            <input type="email" id="form-email-personal" placeholder="name@gmail.com" class="w-full p-2 border border-slate-300 rounded-lg">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Status</label>
+            <select id="form-status" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium">
+              <option value="Active">Active</option>
+              <option value="WFH">WFH</option>
+              <option value="On Site">On Site</option>
+              <option value="In Meeting">In Meeting</option>
+              <option value="Day Off">Day Off</option>
             </select>
           </div>
-          <div class="flex items-end pb-2">
-            <label class="flex items-center gap-2 cursor-pointer select-none">
-              <input type="checkbox" id="form-is-hidden" class="rounded border-slate-300 text-indigo-600">
-              <span class="text-slate-700 font-medium">Ẩn nhân sự này</span>
+          <div class="flex items-end pb-1.5">
+            <label class="flex items-center gap-1.5 cursor-pointer select-none">
+              <input type="checkbox" id="form-is-hidden" class="rounded border-slate-300 text-red-600">
+              <span class="text-slate-700 text-[11px] font-medium">Hide employee</span>
             </label>
           </div>
         </div>
 
-        <div class="pt-3 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('employee-modal')" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg hover:bg-slate-50 font-medium">Hủy</button>
-          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-bold shadow-sm">Lưu Thông Tin</button>
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('employee-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold">Save</button>
         </div>
       </form>
     </div>
@@ -597,7 +715,201 @@
 
   <!-- JAVASCRIPT SYSTEM CORE -->
   <script>
-    // 1. DATASET NHÂN SỰ GỐC
+    // -------------------------------------------------------------
+    // I18N DICTIONARY & MULTI-LANGUAGE SYSTEM (DEFAULT: EN)
+    // -------------------------------------------------------------
+    let currentLang = localStorage.getItem('dls_lang') || 'en';
+
+    const DICT = {
+      en: {
+        toggleLabel: "VI",
+        viewMode: "View Mode:",
+        appTitle: "Workstation & Duty Roster Management",
+        appSub: "16-Seat Pod • Mobile & Backup Rotation",
+        statusBtn: "Status / Leave",
+        changePass: "Change Password",
+        signOut: "Sign Out",
+        tabFloorplan: "Floor Plan",
+        tabDuty: "Duty Roster",
+        tabStaff: "Staff List",
+        dateLbl: "Date:",
+        addStaff: "Add Staff",
+        liveSyncBanner: "Date {date}: 1A (D.Duy/M.Trung) & 2A (X.Anh/Khiem)",
+        viewRoster: "View Roster",
+        backupAlertTitle: "⚡ BACKUP ACTIVATED FOR OFFICE!",
+        floorTitle: "Workstation Pod (4 Rows x 4 Desks)",
+        present: "Present",
+        absent: "Absent/WFH",
+        locked: "Locked",
+        frontPod: "Front Pod (Rows 1 & 2)",
+        backPod: "Back Pod (Rows 3 & 4)",
+        centralAisle: "CENTRAL AISLE",
+        row1: "ROW 1",
+        row2: "ROW 2",
+        row3: "ROW 3",
+        row4: "ROW 4",
+        breakdownTitle: "Monthly Working-Day Breakdown",
+        workingDays: "Working Days",
+        totalStaff: "Total Staff",
+        fixedSeats: "Fixed Seats",
+        syncedFor: "Synced for",
+        members: "members",
+        thNo: "No",
+        thName: "Full Name",
+        thRole: "Role",
+        thWorkEmail: "Work Email",
+        thPersonalEmail: "Personal Email",
+        thSeat: "Seat",
+        thStatus: "Status",
+        thActions: "Actions",
+        resetPassConfirm: "Reset password for {name}?\n\nNew default password: {pass}",
+        resetPassSuccess: "Password reset successfully for {name}!\nNew password: {pass}",
+        deleteConfirm: "WARNING: Permanently delete {name} ({email}) from system?",
+        deleteSuccess: "Deleted {name} successfully!"
+      },
+      vi: {
+        toggleLabel: "EN",
+        viewMode: "Chế độ xem:",
+        appTitle: "Quản Lý Chỗ Ngồi & Duty Board",
+        appSub: "Sơ Đồ 16 Ghế • Phân Bổ Mobile & Backup",
+        statusBtn: "Báo Nghỉ / WFH",
+        changePass: "Đổi Mật Khẩu Riêng",
+        signOut: "Đăng Xuất (Sign Out)",
+        tabFloorplan: "Sơ Đồ Ghế",
+        tabDuty: "Lịch Trực",
+        tabStaff: "Nhân Sự",
+        dateLbl: "Ngày xem:",
+        addStaff: "Thêm Người",
+        liveSyncBanner: "Ngày {date}: 1A (D.Duy/M.Trung) & 2A (X.Anh/Khiêm)",
+        viewRoster: "Đổi Ca",
+        backupAlertTitle: "⚡ ĐÃ KÍCH HOẠT BACKUP VÀO VĂN PHÒNG!",
+        floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)",
+        present: "Có mặt",
+        absent: "Vắng/WFH",
+        locked: "Khóa",
+        frontPod: "Cụm Trước (Hàng 1 & 2)",
+        backPod: "Cụm Sau (Hàng 3 & 4)",
+        centralAisle: "LỐI ĐI TRUNG TÂM (AISLE)",
+        row1: "HÀNG 1",
+        row2: "HÀNG 2",
+        row3: "HÀNG 3",
+        row4: "HÀNG 4",
+        breakdownTitle: "Thống Kê Ca Trực Tháng",
+        workingDays: "Ngày làm",
+        totalStaff: "Tổng Số",
+        fixedSeats: "Cố Định",
+        syncedFor: "Đồng bộ ngày",
+        members: "người",
+        thNo: "STT",
+        thName: "Họ Và Tên",
+        thRole: "Vai Trò",
+        thWorkEmail: "Email Công Ty",
+        thPersonalEmail: "Email Cá Nhân",
+        thSeat: "Ghế",
+        thStatus: "Trạng Thái",
+        thActions: "Thao Tác",
+        resetPassConfirm: "Đặt lại mật khẩu cho nhân sự {name}?\n\nMật khẩu mặc định mới: {pass}",
+        resetPassSuccess: "Đã đặt lại mật khẩu thành công cho {name}!\nMật khẩu mới: {pass}",
+        deleteConfirm: "CẢNH BÁO: Xóa vĩnh viễn nhân sự {name} ({email}) khỏi hệ thống?",
+        deleteSuccess: "Đã xóa thành công nhân sự {name}!"
+      }
+    };
+
+    function t(key, params = {}) {
+      let str = (DICT[currentLang] && DICT[currentLang][key]) ? DICT[currentLang][key] : (DICT['en'][key] || key);
+      Object.keys(params).forEach(k => {
+        str = str.replace(`{${k}}`, params[k]);
+      });
+      return str;
+    }
+
+    function toggleLanguage() {
+      currentLang = (currentLang === 'en') ? 'vi' : 'en';
+      localStorage.setItem('dls_lang', currentLang);
+      applyLanguageUI();
+      renderAll();
+    }
+
+    function applyLanguageUI() {
+      document.getElementById('lang-toggle-text').innerText = t('toggleLabel');
+      document.getElementById('txt-view-mode').innerText = t('viewMode');
+      document.getElementById('txt-app-title').innerText = t('appTitle');
+      document.getElementById('txt-app-sub').innerText = t('appSub');
+      document.getElementById('btn-ooo-text').innerText = t('statusBtn');
+      document.getElementById('btn-change-pass-text').innerHTML = `<i class="fa-solid fa-key text-slate-400"></i> ${t('changePass')}`;
+      document.getElementById('btn-logout-text').innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i> ${t('signOut')}`;
+      document.getElementById('tab-title-floorplan').innerText = t('tabFloorplan');
+      document.getElementById('tab-title-duty').innerText = t('tabDuty');
+      document.getElementById('tab-title-staff').innerText = t('tabStaff');
+      document.getElementById('txt-viewing-date-lbl').innerText = t('dateLbl');
+      document.getElementById('btn-add-staff-text').innerText = t('addStaff');
+      document.getElementById('btn-change-roster-text').innerText = t('viewRoster');
+      document.getElementById('txt-backup-activated-title').innerText = t('backupAlertTitle');
+      document.getElementById('txt-floor-plan-title').innerText = t('floorTitle');
+      document.getElementById('lbl-present').innerText = t('present');
+      document.getElementById('lbl-absent').innerText = t('absent');
+      document.getElementById('lbl-locked').innerText = t('locked');
+      document.getElementById('txt-front-pod-title').innerHTML = `<i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> ${t('frontPod')}`;
+      document.getElementById('txt-back-pod-title').innerHTML = `<i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> ${t('backPod')}`;
+      document.getElementById('txt-central-aisle').innerText = t('centralAisle');
+      document.getElementById('txt-row-1-title').innerText = t('row1');
+      document.getElementById('txt-row-2-title').innerText = t('row2');
+      document.getElementById('txt-row-3-title').innerText = t('row3');
+      document.getElementById('txt-row-4-title').innerText = t('row4');
+      document.getElementById('txt-breakdown-title').innerText = t('breakdownTitle');
+      document.getElementById('kpi-total-headcount').innerText = t('totalStaff');
+      document.getElementById('kpi-fixed-seats').innerText = t('fixedSeats');
+      document.getElementById('txt-synced-with-date').innerText = t('syncedFor');
+
+      const ths = document.querySelectorAll('#table-head-row th');
+      if (ths.length >= 8) {
+        ths[0].innerText = t('thNo');
+        ths[1].innerText = t('thName');
+        ths[2].innerText = t('thRole');
+        ths[3].innerText = t('thWorkEmail');
+        ths[4].innerText = t('thPersonalEmail');
+        ths[5].innerText = t('thSeat');
+        ths[6].innerText = t('thStatus');
+        ths[7].innerText = t('thActions');
+      }
+
+      const calHdr = document.getElementById('cal-weekdays-header');
+      if (calHdr) {
+        if (currentLang === 'vi') {
+          calHdr.innerHTML = `<span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span class="text-slate-300">T7</span><span class="text-slate-300">CN</span>`;
+        } else {
+          calHdr.innerHTML = `<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="text-slate-300">Sat</span><span class="text-slate-300">Sun</span>`;
+        }
+      }
+    }
+
+    // Default password generator: fullname@123
+    function removeVietnameseTones(str) {
+      if (!str) return "";
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+      str = str.replace(/đ/g, "d");
+      str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+      str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+      str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+      str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+      str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+      str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+      str = str.replace(/Đ/g, "D");
+      return str;
+    }
+
+    function generateDefaultPassword(fullName) {
+      if (!fullName) return "dls@123";
+      const clean = removeVietnameseTones(fullName).toLowerCase().replace(/[^a-z0-9]/g, '');
+      return `${clean}@123`;
+    }
+
+    // BASE DATASET
     const INITIAL_EMPLOYEES = [
       { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "", seating: "", status: "Active", isHidden: false },
       { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
@@ -605,23 +917,19 @@
       { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV005", fullName: "NGUYEN XUAN ANH", role: "Manager", emailCompany: "anh.nguyenxuan@dlsconsultant.com", emailPersonal: "", seating: "Mobile", status: "Active", isHidden: false },
 
-      // Cố định Hàng 1
       { id: "NV010", fullName: "VU VAN HIEU", role: "User", emailCompany: "hieu.vu@dlsconsultant.com", emailPersonal: "", seating: "1B", status: "Active", isHidden: false },
       { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "", seating: "1C", status: "Active", isHidden: false },
       { id: "NV006", fullName: "NGUYEN THANH DAO", role: "User", emailCompany: "dao.nguyen@dlsconsultant.com", emailPersonal: "", seating: "1D", status: "Active", isHidden: false },
 
-      // Cố định Hàng 2
       { id: "NV012", fullName: "NGUYEN HUU LONG", role: "User", emailCompany: "long.nguyen@dlsconsultant.com", emailPersonal: "", seating: "2B", status: "Active", isHidden: false },
       { id: "NV008", fullName: "HUYNH NHAN TRI", role: "User", emailCompany: "tri.huynh@dlsconsultant.com", emailPersonal: "", seating: "2C", status: "Active", isHidden: false },
       { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "", seating: "2D", status: "Active", isHidden: false },
 
-      // Cố định Hàng 3 (Sau lối đi)
       { id: "NV014", fullName: "NGUYEN HOANG MANH", role: "User", emailCompany: "manh.nguyen@dlsconsultant.com", emailPersonal: "", seating: "3B", status: "Active", isHidden: false },
       { id: "NV011", fullName: "NGUYEN THI LIEN", role: "User", emailCompany: "lien.nguyenthi@dlsconsultant.com", emailPersonal: "", seating: "3C", status: "Active", isHidden: false },
       { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "", seating: "3D", status: "Active", isHidden: false }
     ];
 
-    // CẤU TRÚC 16 VỊ TRÍ GHẾ
     const SEAT_LAYOUT = [
       { code: "1A", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
       { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "fixed" },
@@ -629,185 +937,470 @@
       { code: "4A", type: "unused" }, { code: "4B", type: "unused" }, { code: "4C", type: "unused" }, { code: "4D", type: "unused" }
     ];
 
+    // STAFF DUTY ROSTER KEYS:
+    // 1A (ws1): ONLY D.DUY (DD) or M.TRUNG (MT)
+    // 2A (ws2): ONLY X.ANH (XA) or V.KHIEM (VK)
     const STAFF_DUTY = {
-      XA: { name: "X. ANH", fullName: "NGUYEN XUAN ANH", cls: "xa" },
-      DD: { name: "D. DUY", fullName: "DANG DUY", cls: "dd" },
-      VK: { name: "V. KHIEM", fullName: "VU KHIEM", cls: "vk" },
-      MT: { name: "M. TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt" },
+      DD: { name: "D.DUY", fullName: "DANG DUY", cls: "dd", defaultDesk: "1A" },
+      MT: { name: "M.TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt", defaultDesk: "1A" },
+      XA: { name: "X.ANH", fullName: "NGUYEN XUAN ANH", cls: "xa", defaultDesk: "2A" },
+      VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "2A" },
     };
 
-    // KHO LƯU TRỮ LỊCH THEO TỪNG THÁNG (Format key: YYYY-MM)
+    // SCHEDULE STORE: STRICT 1A (DD/MT) AND 2A (XA/VK) MAPPING
     let SCHEDULE_STORE = {
       "2026-09": {
-        3:  { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
-        4:  { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
-        7:  { ws1:"XA", ws2:"DD", backup:"MT", online:["VK"], tc:true },
-        8:  { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
-        9:  { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
-        10: { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
-        11: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
-        14: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
-        15: { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
-        16: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
-        17: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
-        18: { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
-        21: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
-        22: { ws1:"VK", ws2:"MT", backup:"XA", online:["DD"], tc:true },
-        23: { ws1:"XA", ws2:"DD", backup:null, online:["VK","MT"], tc:false },
-        24: { ws1:"VK", ws2:"MT", backup:"DD", online:["XA"], tc:true },
-        25: { ws1:"XA", ws2:"DD", backup:"MT", online:["VK"], tc:true },
-        28: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
-        29: { ws1:"XA", ws2:"DD", backup:"VK", online:["MT"], tc:true },
-        30: { ws1:"VK", ws2:"MT", backup:null, online:["XA","DD"], tc:false },
+        3:  { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
+        4:  { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true },
+        7:  { ws1:"DD", ws2:"XA", backup:"MT", online:["VK"], tc:true },
+        8:  { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
+        9:  { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
+        10: { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true },
+        11: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
+        14: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
+        15: { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
+        16: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
+        17: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
+        18: { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
+        21: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
+        22: { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true }, // Day 22: 1A=MT, 2A=VK
+        23: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
+        24: { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
+        25: { ws1:"DD", ws2:"XA", backup:"MT", online:["VK"], tc:true },
+        28: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
+        29: { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
+        30: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
       }
     };
 
     let employees = [];
-    let currentViewingDay = 21;
-    let currentMonth = 8; // Tháng 9 (0-index)
-    let currentYear = 2026;
+    
+    // Auto-detect current calendar date
+    const todayNow = new Date();
+    let currentViewingDay = todayNow.getDate();
+    let currentMonth = todayNow.getMonth();
+    let currentYear = todayNow.getFullYear();
+
+    let activeDeviceMode = "auto";
+    let currentLoggedInUser = null;
 
     function getMonthKey(year, month) {
       return `${year}-${String(month + 1).padStart(2, '0')}`;
     }
 
-// DÁN LINK /exec CỦA BẠN VÀO GIỮA HAI DẤU NGOẶC KÉP DƯỚI ĐÂY:
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
+    // GOOGLE SCRIPT URL SYNC (PRESERVED)
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
 
-// Hàm hiển thị trạng thái đang đồng bộ trên giao diện
-function setSyncStatus(text, isSaving = false) {
-  const badge = document.getElementById('duty-status-badge');
-  if (badge) {
-    badge.innerText = text;
-    badge.className = isSaving ? "text-[10px] text-amber-500 animate-pulse font-bold" : "text-[10px] text-emerald-600 font-bold";
-  }
-}
+    // -------------------------------------------------------------
+    // AUTHENTICATION & LOGIN (ENHANCED AUTO-DOMAIN & ROLE GATES)
+    // -------------------------------------------------------------
+    function checkAutoAuthentication() {
+      let activeUserId = localStorage.getItem('dls_current_user_id');
 
-// 1. Tải dữ liệu từ Google Sheets về Web
-async function loadData() {
-  const storedEmp = localStorage.getItem('dls_v8_emp');
-  const storedStore = localStorage.getItem('dls_v8_sched_store');
-
-  if (storedEmp) {
-    try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
-  } else {
-    employees = [...INITIAL_EMPLOYEES];
-  }
-
-  if (storedStore) {
-    try { SCHEDULE_STORE = JSON.parse(storedStore); } catch(e) {}
-  }
-
-  // Nếu đã gắn link Google Script thì tải dữ liệu mới nhất từ Sheet
-  if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
-    setSyncStatus("Đang đồng bộ Sheets...", true);
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL);
-      const onlineData = await response.json();
-
-      if (onlineData && onlineData.employees && onlineData.schedule) {
-        employees = onlineData.employees;
-        SCHEDULE_STORE = onlineData.schedule;
-        localStorage.setItem('dls_v8_emp', JSON.stringify(employees));
-        localStorage.setItem('dls_v8_sched_store', JSON.stringify(SCHEDULE_STORE));
-        renderAll();
-        setSyncStatus("Đã đồng bộ Sheets");
-      } else {
-        // Lần đầu chạy chưa có dữ liệu trên Sheet -> Tự đẩy dữ liệu ban đầu lên
-        saveData();
+      if (!activeUserId) {
+        const defaultUser = employees.find(e => e.role === 'Admin');
+        if (defaultUser) {
+          activeUserId = defaultUser.id;
+          localStorage.setItem('dls_current_user_id', activeUserId);
+        }
       }
-    } catch (err) {
-      console.warn("Dùng dữ liệu offline tạm thời:", err);
-      setSyncStatus("Offline / Local");
+
+      if (activeUserId) {
+        const found = employees.find(e => e.id === activeUserId && !e.isHidden);
+        if (found) {
+          currentLoggedInUser = found;
+          document.getElementById('login-modal-overlay').classList.add('hidden');
+          applyUserIdentityUI();
+          return;
+        }
+      }
+
+      document.getElementById('login-modal-overlay').classList.remove('hidden');
     }
-  }
-}
 
-// 2. Tự động lưu lên Google Sheets mỗi khi có ai chỉnh sửa
-async function saveData() {
-  localStorage.setItem('dls_v8_emp', JSON.stringify(employees));
-  localStorage.setItem('dls_v8_sched_store', JSON.stringify(SCHEDULE_STORE));
+    function applyUserIdentityUI() {
+      if (!currentLoggedInUser) return;
+      const avatar = document.getElementById('header-avatar');
+      const dropdownName = document.getElementById('dropdown-user-name');
+      const dropdownRole = document.getElementById('dropdown-user-role');
+      const adminLockIcon = document.getElementById('date-admin-lock-icon');
 
-  if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
-    setSyncStatus("Đang lưu lên Sheets...", true);
-    try {
-      const payload = JSON.stringify({
-        employees: employees,
-        schedule: SCHEDULE_STORE,
-        lastUpdated: new Date().toISOString()
+      const words = currentLoggedInUser.fullName.split(' ');
+      const initials = words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2);
+      avatar.innerText = initials.toUpperCase();
+      dropdownName.innerText = currentLoggedInUser.fullName;
+      dropdownRole.innerText = currentLoggedInUser.role;
+
+      if (adminLockIcon) {
+        adminLockIcon.innerHTML = (currentLoggedInUser.role === 'Admin') ? '<i class="fa-solid fa-pen text-[8px] text-red-500"></i>' : '<i class="fa-solid fa-lock text-[8px] text-slate-400"></i>';
+      }
+
+      // ROLE GATE 1: USER DOES NOT HAVE STAFF LIST TAB
+      const staffTabBtn = document.getElementById('tab-dashboard-btn');
+      if (staffTabBtn) {
+        if (currentLoggedInUser.role === 'User') {
+          staffTabBtn.style.display = 'none';
+          const dashView = document.getElementById('view-dashboard');
+          if (dashView && !dashView.classList.contains('hidden')) {
+            switchTab('floorplan');
+          }
+        } else {
+          staffTabBtn.style.display = '';
+        }
+      }
+
+      // ROLE GATE 2: ONLY ADMIN CAN SEE ADD BUTTON
+      const addStaffBtn = document.getElementById('btn-add-staff');
+      if (addStaffBtn) {
+        addStaffBtn.style.display = (currentLoggedInUser.role === 'Admin') ? '' : 'none';
+      }
+    }
+
+    function toggleUserDropdown() {
+      const menu = document.getElementById('user-dropdown-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    window.addEventListener('click', (e) => {
+      const menu = document.getElementById('user-dropdown-menu');
+      if (!e.target.closest('#header-avatar') && !e.target.closest('#user-dropdown-menu')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function handleLogout() {
+      if (confirm("Sign out from current session?")) {
+        localStorage.removeItem('dls_current_user_id');
+        currentLoggedInUser = null;
+        document.getElementById('user-dropdown-menu').classList.add('hidden');
+        document.getElementById('login-input-email').value = "";
+        document.getElementById('login-input-pass').value = "";
+        document.getElementById('login-error-msg').classList.add('hidden');
+        document.getElementById('login-modal-overlay').classList.remove('hidden');
+      }
+    }
+
+    // ENHANCED LOGIN SUBMIT: AUTO-APPEND @dlsconsultant.com IF NO DOMAIN ENTERED
+    function handleLoginSubmit(e) {
+      e.preventDefault();
+      let inputEmail = document.getElementById('login-input-email').value.trim().toLowerCase();
+      const inputPass = document.getElementById('login-input-pass').value.trim();
+
+      // If typed without domain extension, automatically append @dlsconsultant.com
+      if (inputEmail && !inputEmail.includes('@')) {
+        inputEmail += '@dlsconsultant.com';
+      }
+
+      const user = employees.find(emp => {
+        const matchCompany = emp.emailCompany && emp.emailCompany.toLowerCase() === inputEmail;
+        const matchPersonal = emp.emailPersonal && emp.emailPersonal.toLowerCase() === inputEmail;
+        const activePass = emp.password || generateDefaultPassword(emp.fullName);
+        return (matchCompany || matchPersonal) && activePass === inputPass;
       });
 
-      await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: payload
+      if (user) {
+        currentLoggedInUser = user;
+        localStorage.setItem('dls_current_user_id', user.id);
+        document.getElementById('login-modal-overlay').classList.add('hidden');
+        document.getElementById('login-error-msg').classList.add('hidden');
+        applyUserIdentityUI();
+        renderAll();
+      } else {
+        document.getElementById('login-error-msg').classList.remove('hidden');
+      }
+    }
+
+    function openChangePasswordModal() {
+      document.getElementById('user-dropdown-menu').classList.add('hidden');
+      document.getElementById('new-own-pass').value = "";
+      document.getElementById('confirm-own-pass').value = "";
+      document.getElementById('change-pass-error').classList.add('hidden');
+      document.getElementById('change-pass-modal').classList.remove('hidden');
+    }
+
+    function handleSaveOwnPassword(e) {
+      e.preventDefault();
+      const newPass = document.getElementById('new-own-pass').value.trim();
+      const confirmPass = document.getElementById('confirm-own-pass').value.trim();
+
+      if (newPass !== confirmPass) {
+        document.getElementById('change-pass-error').classList.remove('hidden');
+        return;
+      }
+
+      if (currentLoggedInUser) {
+        currentLoggedInUser.password = newPass;
+        const emp = employees.find(x => x.id === currentLoggedInUser.id);
+        if (emp) emp.password = newPass;
+
+        saveData();
+        closeModal('change-pass-modal');
+        alert("Password updated successfully!");
+      }
+    }
+
+    function resetEmployeePassword(empId) {
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      const defaultPass = generateDefaultPassword(emp.fullName);
+      if (confirm(t('resetPassConfirm', { name: emp.fullName, pass: defaultPass }))) {
+        emp.password = defaultPass;
+        saveData();
+        renderDashboard();
+        alert(t('resetPassSuccess', { name: emp.fullName, pass: defaultPass }));
+      }
+    }
+
+    function deleteEmployee(empId) {
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin accounts can delete employees!");
+        return;
+      }
+
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      if (confirm(t('deleteConfirm', { name: emp.fullName, email: emp.emailCompany }))) {
+        employees = employees.filter(e => e.id !== empId);
+        saveData();
+        renderAll();
+        alert(t('deleteSuccess', { name: emp.fullName }));
+      }
+    }
+
+    // -------------------------------------------------------------
+    // DEVICE MODES & AUTO DETECTION
+    // -------------------------------------------------------------
+    function detectDevice() {
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const isSmallScreen = window.innerWidth < 768;
+      return (isMobileUA || isSmallScreen) ? "mobile" : "desktop";
+    }
+
+    function initDeviceMode() {
+      const savedMode = localStorage.getItem('dls_device_mode_preference');
+      if (savedMode && (savedMode === 'desktop' || savedMode === 'mobile')) {
+        setDeviceMode(savedMode, false);
+      } else {
+        setDeviceMode(detectDevice(), false);
+      }
+    }
+
+    function setDeviceMode(mode, savePref = true) {
+      activeDeviceMode = mode;
+      if (savePref) {
+        localStorage.setItem('dls_device_mode_preference', mode);
+      }
+
+      const body = document.body;
+      const topDesk = document.getElementById('top-btn-desktop');
+      const topMob = document.getElementById('top-btn-mobile');
+
+      if (mode === 'mobile') {
+        body.classList.add('is-mobile-view');
+        if (window.innerWidth >= 768) {
+          body.classList.add('device-mobile-sim');
+        } else {
+          body.classList.remove('device-mobile-sim');
+        }
+        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-[#ee2f26] text-white shadow-xs";
+        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white";
+      } else {
+        body.classList.remove('is-mobile-view');
+        body.classList.remove('device-mobile-sim');
+        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-white text-slate-900 shadow-xs";
+        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white";
+      }
+
+      renderAll();
+    }
+
+    window.addEventListener('resize', () => {
+      const savedMode = localStorage.getItem('dls_device_mode_preference');
+      if (!savedMode) {
+        setDeviceMode(detectDevice(), false);
+      } else if (savedMode === 'mobile' && window.innerWidth >= 768) {
+        document.body.classList.add('device-mobile-sim');
+      } else {
+        document.body.classList.remove('device-mobile-sim');
+      }
+    });
+
+    // -------------------------------------------------------------
+    // REFRESH & GOOGLE SHEETS SYNC
+    // -------------------------------------------------------------
+    async function refreshDataUI() {
+      const icon = document.getElementById('refresh-icon');
+      if (icon) icon.classList.add('fa-spin');
+      
+      await loadData();
+      syncDayStatus(currentViewingDay);
+
+      setTimeout(() => {
+        if (icon) icon.classList.remove('fa-spin');
+      }, 600);
+    }
+
+    function setSyncStatus(text, isSaving = false) {
+      const badge = document.getElementById('duty-status-badge');
+      if (badge) {
+        badge.innerText = text;
+        badge.className = isSaving ? "text-[8px] text-amber-500 animate-pulse font-bold" : "text-[8px] text-emerald-600 font-bold";
+      }
+    }
+
+    async function loadData() {
+      const storedEmp = localStorage.getItem('dls_v11_emp');
+      const storedStore = localStorage.getItem('dls_v11_sched_store');
+
+      if (storedEmp) {
+        try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
+      } else {
+        employees = [...INITIAL_EMPLOYEES];
+      }
+
+      employees.forEach(emp => {
+        if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
       });
 
-      setTimeout(() => setSyncStatus("Đã lưu Sheets"), 800);
-    } catch (err) {
-      console.error("Lỗi lưu Sheets:", err);
-      setSyncStatus("Lưu thất bại");
-    }
-  }
-}
+      if (storedStore) {
+        try { 
+          SCHEDULE_STORE = JSON.parse(storedStore);
+        } catch(e) {}
+      }
 
-    // 2. THUẬT TOÁN TỰ ĐỘNG TẠO LỊCH THEO NGUYÊN TẮC:
-    // - Tuần 1: Nhóm A làm 3 ngày (T2, T4, T6), Nhóm B làm 2 ngày (T3, T5)
-    // - Tuần 2: Nhóm B làm 3 ngày (T2, T4, T6), Nhóm A làm 2 ngày (T3, T5) -> Đảo nhau
-    // - Vị trí Backup được phân bổ để mỗi nhân sự có đúng 3 ngày Backup trong tháng
+      // Enforce strict 1A (DD/MT) and 2A (XA/VK) consistency for September 2026
+      if (SCHEDULE_STORE["2026-09"]) {
+        Object.keys(SCHEDULE_STORE["2026-09"]).forEach(d => {
+          let item = SCHEDULE_STORE["2026-09"][d];
+          if (item.ws1 === "VK" && item.ws2 === "MT") {
+            item.ws1 = "MT"; item.ws2 = "VK";
+          } else if (item.ws1 === "XA" && item.ws2 === "DD") {
+            item.ws1 = "DD"; item.ws2 = "XA";
+          }
+        });
+      }
+
+      if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
+        setSyncStatus("Sync...", true);
+        try {
+          const response = await fetch(GOOGLE_SCRIPT_URL);
+          const onlineData = await response.json();
+
+          if (onlineData && onlineData.employees && onlineData.schedule) {
+            employees = onlineData.employees;
+            employees.forEach(emp => {
+              if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
+            });
+            SCHEDULE_STORE = onlineData.schedule;
+            
+            if (SCHEDULE_STORE["2026-09"]) {
+              Object.keys(SCHEDULE_STORE["2026-09"]).forEach(d => {
+                let item = SCHEDULE_STORE["2026-09"][d];
+                if (item.ws1 === "VK" && item.ws2 === "MT") {
+                  item.ws1 = "MT"; item.ws2 = "VK";
+                } else if (item.ws1 === "XA" && item.ws2 === "DD") {
+                  item.ws1 = "DD"; item.ws2 = "XA";
+                }
+              });
+            }
+
+            localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
+            localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
+            renderAll();
+            setSyncStatus("Synced");
+          } else {
+            saveData();
+          }
+        } catch (err) {
+          console.warn("Offline fallback mode:", err);
+          setSyncStatus("Offline");
+        }
+      }
+
+      checkAutoAuthentication();
+    }
+
+    async function saveData() {
+      localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
+      localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
+
+      if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
+        setSyncStatus("Saving...", true);
+        try {
+          const payload = JSON.stringify({
+            employees: employees,
+            schedule: SCHEDULE_STORE,
+            lastUpdated: new Date().toISOString()
+          });
+
+          await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "application/json" },
+            body: payload
+          });
+
+          setTimeout(() => setSyncStatus("Saved"), 800);
+        } catch (err) {
+          console.error("Error saving to Sheets:", err);
+          setSyncStatus("Save Error");
+        }
+      }
+    }
+
+    // Auto-generate 3-2 alternating schedule with strict 1A (DD/MT) and 2A (XA/VK)
     function generateScheduleByRule(force = false) {
       const monthKey = getMonthKey(currentYear, currentMonth);
       if (SCHEDULE_STORE[monthKey] && !force) {
-        if (!confirm(`Tháng ${monthKey} đã có lịch. Bạn có chắc muốn tạo lại mới?`)) return;
+        if (!confirm(`Roster already exists for ${monthKey}. Regenerate?`)) return;
       }
 
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
       const newMonthSched = {};
 
-      const groupA = ["XA", "DD"];
-      const groupB = ["VK", "MT"];
-      const backupCandidates = ["XA", "DD", "VK", "MT"];
-      let backupIndex = 0;
-      let backupCount = { XA: 0, DD: 0, VK: 0, MT: 0 };
+      let backupCount = { DD: 0, MT: 0, XA: 0, VK: 0 };
+      let backupPool = ["VK", "XA", "MT", "DD"];
+      let bIdx = 0;
 
       for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(currentYear, currentMonth, day);
-        const dow = (d.getDay() + 6) % 7; // 0=Mon .. 6=Sun
-        if (dow >= 5) continue; // Bỏ qua Thứ 7, Chủ Nhật
+        const dow = (d.getDay() + 6) % 7;
+        if (dow >= 5) continue;
 
-        // Tính tuần thứ mấy trong tháng
         const weekNum = Math.floor((day + (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7 - 1) / 7);
-        const isGroupATriple = (weekNum % 2 === 0);
+        const isPairA = (weekNum % 2 === 0);
 
-        let activePair;
-        // Ngày T2 (0), T4 (2), T6 (4)
+        let ws1, ws2;
+        // Mon, Wed, Fri
         if (dow === 0 || dow === 2 || dow === 4) {
-          activePair = isGroupATriple ? groupA : groupB;
+          ws1 = isPairA ? "DD" : "MT"; // 1A: DD or MT
+          ws2 = isPairA ? "XA" : "VK"; // 2A: XA or VK
         } else {
-          // Ngày T3 (1), T5 (3)
-          activePair = isGroupATriple ? groupB : groupA;
+          // Tue, Thu
+          ws1 = isPairA ? "MT" : "DD"; // 1A: MT or DD
+          ws2 = isPairA ? "VK" : "XA"; // 2A: VK or XA
         }
 
-        const idlePair = (activePair === groupA) ? groupB : groupA;
-
-        // Phân bổ Backup: Chọn người trong nhóm idle chưa vượt quá 3 ngày backup
+        const idle = ["DD", "MT", "XA", "VK"].filter(k => k !== ws1 && k !== ws2);
         let backupPerson = null;
-        for (let i = 0; i < idlePair.length; i++) {
-          let candidate = idlePair[(backupIndex + i) % idlePair.length];
-          if (backupCount[candidate] < 3) {
-            backupPerson = candidate;
-            backupCount[candidate]++;
-            backupIndex++;
+
+        for (let i = 0; i < idle.length; i++) {
+          let cand = idle[(bIdx + i) % idle.length];
+          if (backupCount[cand] < 3) {
+            backupPerson = cand;
+            backupCount[cand]++;
+            bIdx++;
             break;
           }
         }
 
-        const onlineList = idlePair.filter(k => k !== backupPerson);
+        const onlineList = idle.filter(k => k !== backupPerson);
 
         newMonthSched[day] = {
-          ws1: activePair[0],
-          ws2: activePair[1],
+          ws1, // ALWAYS DD or MT
+          ws2, // ALWAYS XA or VK
           backup: backupPerson,
           online: onlineList,
           tc: backupPerson !== null
@@ -817,10 +1410,24 @@ async function saveData() {
       SCHEDULE_STORE[monthKey] = newMonthSched;
       saveData();
       renderAll();
-      alert(`Đã khởi tạo thành công lịch trực chuẩn 3-2 & 3 Backup cho Tháng ${monthKey}!`);
+      alert(`Successfully generated 3-2 roster for ${monthKey}!`);
     }
 
-    // 3. ĐỒNG BỘ THEO NGÀY TRÊN SƠ ĐỒ THỰC TẾ
+    // Change viewing day (Admin only)
+    function openDateSelectorPrompt() {
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin accounts can switch viewing dates!");
+        return;
+      }
+      const newDay = prompt("Admin: Enter day of month to view (1 - 31):", currentViewingDay);
+      if (newDay && !isNaN(newDay)) {
+        const dayNum = parseInt(newDay);
+        if (dayNum >= 1 && dayNum <= 31) {
+          syncDayStatus(dayNum);
+        }
+      }
+    }
+
     function syncDayStatus(dayNum) {
       currentViewingDay = dayNum;
       const formattedDate = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
@@ -833,19 +1440,16 @@ async function saveData() {
 
       if (currentMonthSched && currentMonthSched[dayNum]) {
         const sched = currentMonthSched[dayNum];
-        // 2 người trực 1A & 2A -> Active
         const empWs1 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
         const empWs2 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
         if (empWs1) empWs1.status = "Active";
         if (empWs2) empWs2.status = "Active";
 
-        // Backup -> Sẵn sàng
         if (sched.backup) {
           const empBackup = employees.find(e => e.fullName === STAFF_DUTY[sched.backup]?.fullName);
           if (empBackup && empBackup.status !== "Active") empBackup.status = "Active";
         }
 
-        // Online -> WFH
         if (sched.online) {
           sched.online.forEach(k => {
             const empOnline = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
@@ -857,7 +1461,38 @@ async function saveData() {
       renderAll();
     }
 
-    // 4. RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN) & KIỂM TRA PHÁT SÁNG BACKUP
+    // Smart concise name on mobile
+    function formatNameForDisplay(fullName) {
+      if (!fullName) return "";
+      if (activeDeviceMode !== 'mobile') return fullName;
+
+      const shortMap = {
+        "TRAN HOANG DUY": "T.H.Duy",
+        "VU KHIEM": "Khiem",
+        "DANG DUY": "Dang Duy",
+        "NGUYEN MINH TRUNG": "M.Trung",
+        "NGUYEN XUAN ANH": "Xuan Anh",
+        "VU VAN HIEU": "V.Hieu",
+        "NGUYEN CONG SON": "C.Son",
+        "NGUYEN THANH DAO": "T.Dao",
+        "NGUYEN HUU LONG": "Huu Long",
+        "HUYNH NHAN TRI": "N.Tri",
+        "NGUYEN TIEN SANG": "T.Sang",
+        "NGUYEN HOANG MANH": "H.Manh",
+        "NGUYEN THI LIEN": "T.Lien",
+        "THAI BAO LONG": "Bao Long"
+      };
+
+      if (shortMap[fullName]) return shortMap[fullName];
+
+      const words = fullName.trim().split(/\s+/);
+      if (words.length <= 1) return fullName;
+      const firstName = words[words.length - 1];
+      const initial = words[0][0];
+      return `${initial}.${firstName}`;
+    }
+
+    // Render Floor Plan Pod
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
       const row2El = document.getElementById('row-2-grid');
@@ -870,7 +1505,6 @@ async function saveData() {
       const currentMonthSched = SCHEDULE_STORE[monthKey];
       const daySched = (currentMonthSched && currentMonthSched[currentViewingDay]) ? currentMonthSched[currentViewingDay] : { ws1: null, ws2: null, backup: null };
 
-      // Kiểm tra xem có người ngồi cố định nào báo vắng không
       const absentFixedUsers = employees.filter(e => !e.isHidden && e.seating && e.seating !== "Mobile" && e.status !== "Active");
       const isBackupTriggered = absentFixedUsers.length > 0;
 
@@ -878,27 +1512,26 @@ async function saveData() {
       const msg = document.getElementById('backup-active-msg');
       if (isBackupTriggered) {
         banner.classList.remove('hidden');
-        const absentNames = absentFixedUsers.map(u => `${u.fullName} (${u.seating}: ${u.status})`).join(', ');
-        const backupPersonName = daySched.backup ? STAFF_DUTY[daySched.backup].fullName : "Nhân sự Backup";
-        msg.innerHTML = `Vị trí vắng: <strong>${absentNames}</strong>. Lập tức điều động <strong>${backupPersonName}</strong> vào trám chỗ ngồi!`;
+        const absentNames = absentFixedUsers.map(u => `${formatNameForDisplay(u.fullName)} (${u.seating})`).join(', ');
+        const backupPersonName = daySched.backup ? STAFF_DUTY[daySched.backup].name : "Backup";
+        msg.innerHTML = `${absentNames} absent → Summoned <strong>${backupPersonName}</strong> into office!`;
       } else {
         banner.classList.add('hidden');
       }
+
+      const isMobile = (activeDeviceMode === 'mobile');
 
       SEAT_LAYOUT.forEach(seat => {
         let cardHTML = '';
 
         if (seat.type === "unused") {
           cardHTML = `
-            <div class="p-3 rounded-xl border border-dashed border-slate-300 bg-slate-100/60 flex flex-col justify-between h-24 text-slate-400">
-              <div class="flex justify-between items-center text-[10px] font-mono font-bold">
+            <div class="p-1 sm:p-2.5 rounded-lg border border-dashed border-slate-300 bg-slate-100/50 flex flex-col justify-between seat-card-box text-slate-400">
+              <div class="flex justify-between items-center text-[8px] sm:text-[9.5px] font-mono font-bold">
                 <span>${seat.code}</span>
-                <span class="bg-slate-200 text-slate-600 px-1.5 py-0.5 rounded">NOT USED</span>
+                <span class="text-[7px] bg-slate-200 px-1 rounded ${isMobile ? 'hidden' : 'inline'}">LOCK</span>
               </div>
-              <div class="text-center my-auto">
-                <i class="fa-solid fa-ban text-slate-300 text-sm"></i>
-                <div class="text-[11px] font-medium text-slate-400 mt-0.5">Khóa / Trống</div>
-              </div>
+              <div class="text-center my-auto text-[9px] sm:text-[10px] font-medium">${t('locked')}</div>
             </div>
           `;
         } else if (seat.type === "mobile") {
@@ -906,57 +1539,49 @@ async function saveData() {
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
 
           cardHTML = `
-            <div class="p-3 rounded-xl border-2 border-indigo-500 bg-indigo-50/70 flex flex-col justify-between h-24 shadow-sm transition relative">
-              <div class="flex justify-between items-center text-[10px] font-mono font-bold">
-                <span class="text-indigo-800">${seat.code}</span>
-                <span class="bg-indigo-600 text-white px-1.5 py-0.5 rounded text-[9px] uppercase tracking-wider">Mobile</span>
+            <div class="p-1 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs transition relative">
+              <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                <span class="text-indigo-800 font-extrabold">${seat.code}</span>
+                <span class="bg-indigo-600 text-white px-1 rounded text-[7px] sm:text-[8.5px]">Mobile</span>
               </div>
-              <div class="my-auto">
-                <div class="font-extrabold text-xs text-indigo-950 truncate">${staffObj ? staffObj.fullName : "Chưa xếp ca"}</div>
-                <div class="text-[10px] text-indigo-600 font-medium">Ca trực ngày ${currentViewingDay}</div>
-              </div>
-              <div class="text-[9.5px] font-mono text-emerald-700 flex items-center gap-1 font-bold">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Đang trực tại bàn
+              <div class="my-auto truncate text-center sm:text-left">
+                <div class="font-extrabold text-[12px] sm:text-sm text-indigo-950 truncate seat-card-title font-heading">${staffObj ? formatNameForDisplay(staffObj.fullName) : "Empty"}</div>
               </div>
             </div>
           `;
         } else {
-          // Fixed Seat
           const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
           if (occupant) {
             let isAbsent = occupant.status !== "Active";
             let colorClass = 'border-emerald-300 bg-emerald-50/80 text-emerald-950';
-            let statusPill = `<span class="inline-flex items-center gap-1 text-[9px] text-emerald-700 font-bold"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Có mặt</span>`;
             let extraGlowClass = "";
             let backupNotice = "";
 
             if (isAbsent) {
               colorClass = 'border-amber-400 bg-amber-50 text-amber-950';
-              extraGlowClass = 'seat-backup-active'; // VIỀN NHẤP NHÁY SÁNG LÊN
-              statusPill = `<span class="inline-flex items-center gap-1 text-[9px] text-rose-700 font-bold"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> ${occupant.status}</span>`;
+              extraGlowClass = 'seat-backup-active';
               const backupName = daySched.backup ? STAFF_DUTY[daySched.backup].name : "Backup";
-              backupNotice = `<div class="text-[9px] font-bold text-amber-800 bg-amber-200/90 px-1 py-0.5 rounded truncate mt-1 animate-pulse">⚡ ${backupName} VÀO TRÁM</div>`;
+              backupNotice = `<div class="text-[7px] sm:text-[8.5px] font-bold text-red-800 bg-red-100 px-0.5 rounded truncate mt-0.5">⚡ ${backupName}</div>`;
             }
 
             cardHTML = `
-              <div onclick="openStatusModal('${occupant.id}')" title="Nhấp để thay đổi trạng thái" 
-                   class="p-3 rounded-xl border ${colorClass} ${extraGlowClass} flex flex-col justify-between h-24 shadow-sm cursor-pointer hover:shadow-md transition relative">
-                <div class="flex justify-between items-center text-[10px] font-bold font-mono">
-                  <span class="bg-white/80 px-1.5 py-0.5 rounded border border-slate-200">${seat.code}</span>
-                  ${statusPill}
+              <div onclick="openStatusModal('${occupant.id}')" title="Report status" 
+                   class="p-1 sm:p-2.5 rounded-lg border ${colorClass} ${extraGlowClass} flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:shadow-xs transition relative">
+                <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                  <span class="bg-white/90 px-1 rounded border border-slate-200">${seat.code}</span>
+                  <span class="text-[7px] sm:text-[8px] font-semibold truncate ${isAbsent ? 'text-red-600 font-bold' : 'text-emerald-600'}">${isAbsent ? occupant.status : 'Active'}</span>
                 </div>
-                <div class="my-auto">
-                  <div class="font-bold text-xs truncate">${occupant.fullName}</div>
-                  <div class="text-[10px] text-slate-500 truncate">${occupant.role}</div>
+                <div class="my-auto truncate text-center sm:text-left">
+                  <div class="font-extrabold text-[12px] sm:text-sm truncate seat-card-title font-heading text-slate-900">${formatNameForDisplay(occupant.fullName)}</div>
                   ${backupNotice}
                 </div>
               </div>
             `;
           } else {
             cardHTML = `
-              <div class="p-3 rounded-xl border border-dashed border-slate-300 bg-white flex flex-col justify-between h-24 text-slate-400">
-                <div class="font-mono text-[10px] font-bold">${seat.code}</div>
-                <div class="text-center text-[11px] my-auto">Ghế trống</div>
+              <div class="p-1 sm:p-2 rounded-lg border border-dashed border-slate-300 bg-white flex flex-col justify-between seat-card-box text-slate-400">
+                <div class="font-mono text-[8px] sm:text-[9.5px] font-bold">${seat.code}</div>
+                <div class="text-center text-[8.5px] sm:text-[10px] my-auto">Empty</div>
               </div>
             `;
           }
@@ -969,14 +1594,14 @@ async function saveData() {
       });
     }
 
-    // 5. RENDER LỊCH THEO THÁNG
+    // Render Calendar Roster (MÁY TÍNH CHỮ TO RÕ RÀNG, ĐÃ BỎ DÒNG GẠCH ĐỎ)
     function renderDutyBoard() {
       const monthKey = getMonthKey(currentYear, currentMonth);
       const isConfigured = !!SCHEDULE_STORE[monthKey];
 
-      document.getElementById('duty-month-display').innerText = `Tháng ${String(currentMonth + 1).padStart(2, '0')} / ${currentYear}`;
-      document.getElementById('duty-status-badge').innerText = isConfigured ? "Đã thiết lập" : "Chưa tạo lịch";
-      document.getElementById('duty-status-badge').className = isConfigured ? "text-[10px] text-emerald-600 font-bold" : "text-[10px] text-amber-600 font-bold";
+      document.getElementById('duty-month-display').innerText = `${new Date(currentYear, currentMonth).toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}`;
+      document.getElementById('duty-status-badge').innerText = isConfigured ? (currentLang === 'vi' ? "Đã có lịch" : "Configured") : (currentLang === 'vi' ? "Chưa tạo" : "Unset");
+      document.getElementById('duty-status-badge').className = isConfigured ? "text-[8px] sm:text-[10px] text-emerald-600 font-bold" : "text-[8px] sm:text-[10px] text-amber-600 font-bold";
 
       const unconfigContainer = document.getElementById('duty-unconfigured-container');
       const configContainer = document.getElementById('duty-configured-container');
@@ -984,7 +1609,7 @@ async function saveData() {
       if (!isConfigured) {
         unconfigContainer.classList.remove('hidden');
         configContainer.classList.add('hidden');
-        document.getElementById('unconfigured-month-title').innerText = `Tháng ${String(currentMonth + 1).padStart(2, '0')}/${currentYear} chưa được thiết lập lịch`;
+        document.getElementById('unconfigured-month-title').innerText = `No roster for ${monthKey}`;
         return;
       }
 
@@ -998,6 +1623,8 @@ async function saveData() {
       const gridStart = new Date(firstOfMonth);
       gridStart.setDate(1 - isoDow);
 
+      const isMobile = (activeDeviceMode === 'mobile');
+
       let cells = "";
       for (let i = 0; i < 35; i++) {
         const d = new Date(gridStart);
@@ -1009,15 +1636,15 @@ async function saveData() {
         const isViewing = inMonth && dateNum === currentViewingDay;
 
         if (!inMonth) {
-          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-xl min-h-[148px]"></div>`;
+          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'h-[64px]' : 'min-h-[140px]'}"></div>`;
           continue;
         }
         if (isWeekend) {
           cells += `
-            <div class="bg-slate-100/70 border border-slate-200 rounded-xl p-3 items-center justify-center text-center flex flex-col min-h-[148px]">
-              <span class="text-[10px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? 'Thứ 7' : 'Chủ Nhật'}</span>
-              <span class="text-base font-bold text-slate-400 font-mono mt-0.5">${dateNum}</span>
-              <span class="text-[10px] text-slate-400 mt-1">Cuối tuần</span>
+            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'h-[64px]' : 'min-h-[140px]'}">
+              <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
+              <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
+              <span class="text-[10px] text-slate-400 mt-1 ${isMobile ? 'hidden' : 'block'}">Weekend</span>
             </div>
           `;
           continue;
@@ -1026,66 +1653,105 @@ async function saveData() {
         const s = currentMonthSched[dateNum];
         if (!s) {
           cells += `
-            <div class="bg-slate-50 border border-dashed border-slate-200 rounded-xl p-3 items-center justify-center text-center flex flex-col min-h-[148px]">
-              <span class="text-base font-bold text-slate-400 font-mono">${dateNum}</span>
-              <span class="text-[10px] text-slate-400">Không có ca</span>
-              <button onclick="openDutyEditModal(${dateNum})" class="mt-2 text-[10px] text-indigo-600 font-bold hover:underline">+ Tạo ca</button>
+            <div class="bg-slate-50 border border-dashed border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'h-[64px]' : 'min-h-[140px]'}">
+              <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
+              <button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1">+ Setup</button>
             </div>
           `;
           continue;
         }
 
-        const badgeSpan = (k) => k ? `<span class="px-1.5 py-0.5 rounded font-mono font-bold text-[10px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[10px]">—</span>`;
-        const badgesSpan = (arr) => arr ? arr.map(k => `<span class="px-1.5 py-0.5 rounded font-mono font-bold text-[10px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
+        if (isMobile) {
+          // MOBILE: COMPACT & CLEAN
+          const badgeSpanMob = (k) => k ? `<span class="px-1 py-0.2 rounded font-mono font-bold text-[8px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[8px]">—</span>`;
 
-        cells += `
-          <div onclick="syncDayStatus(${dateNum})" 
-               class="bg-white border-2 ${isViewing ? 'border-indigo-600 ring-2 ring-indigo-200' : 'border-slate-200 hover:border-indigo-300'} rounded-xl p-2.5 shadow-sm justify-between flex flex-col min-h-[148px] cursor-pointer transition">
-            <div class="flex justify-between items-start">
-              <div>
-                <span class="font-extrabold text-base text-slate-800 font-mono leading-none">${dateNum}</span>
-                <span class="text-[9px] font-mono text-slate-400 uppercase block mt-0.5">T${dow+2}</span>
+          cells += `
+            <div onclick="handleDayClick(${dateNum})" 
+                 class="bg-white border ${isViewing ? 'border-[#ee2f26] ring-1 ring-red-200' : 'border-slate-200'} rounded-lg p-1 shadow-xs justify-between flex flex-col h-[64px] cursor-pointer transition">
+              <div class="flex justify-between items-center border-b border-slate-100 pb-0.5">
+                <span class="font-extrabold text-xs text-slate-800 font-mono">${dateNum}</span>
+                <div class="flex items-center gap-0.5">
+                  ${s.tc ? `<span class="text-[7px] font-bold bg-amber-100 text-amber-800 px-1 rounded-full">⚡</span>` : ''}
+                  <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-700 p-0.5">
+                    <i class="fa-solid fa-pen text-[7px]"></i>
+                  </button>
+                </div>
               </div>
-              <div class="flex items-center gap-1">
-                ${s.tc ? `<span class="text-[8.5px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded-full">⚡ Backup</span>` : ''}
-                <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-indigo-600 p-1" title="Chỉnh sửa ca">
-                  <i class="fa-solid fa-pen text-[10px]"></i>
-                </button>
+              <div class="space-y-0.5 text-[8px]">
+                <div class="flex justify-between">
+                  <span class="text-slate-400 font-mono">1A/2A:</span>
+                  <div>${badgeSpanMob(s.ws1)} ${badgeSpanMob(s.ws2)}</div>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-red-600 font-bold">BK:</span>
+                  <div>${badgeSpanMob(s.backup)}</div>
+                </div>
               </div>
             </div>
+          `;
+        } else {
+          // DESKTOP: PROMINENT LARGE TEXT (MATCHING FONT SIZE OF REMOVED BAR)
+          const badgeSpanDesk = (k) => k ? `<span class="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[13px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
+          const badgesSpanDesk = (arr) => arr ? arr.map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[12px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
 
-            <div class="space-y-1 mt-2 text-[10.5px]">
-              <div class="flex items-center justify-between">
-                <span class="text-slate-400 text-[9px]">1A:</span>
-                <div>${badgeSpan(s.ws1)}</div>
+          cells += `
+            <div onclick="handleDayClick(${dateNum})" 
+                 class="bg-white border-2 ${isViewing ? 'border-[#ee2f26] ring-2 ring-red-100' : 'border-slate-200 hover:border-slate-400'} rounded-xl p-3 shadow-xs justify-between flex flex-col min-h-[142px] cursor-pointer transition">
+              
+              <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-extrabold text-base sm:text-lg text-slate-800 font-mono leading-none">${dateNum}</span>
+                  <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">T${dow+2}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  ${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5">⚡ Backup</span>` : ''}
+                  <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-800 p-0.5" title="Edit Roster">
+                    <i class="fa-solid fa-pen text-xs"></i>
+                  </button>
+                </div>
               </div>
-              <div class="flex items-center justify-between">
-                <span class="text-slate-400 text-[9px]">2A:</span>
-                <div>${badgeSpan(s.ws2)}</div>
+
+              <div class="space-y-1.5 my-auto text-xs sm:text-[13px] font-mono pt-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500 font-bold text-xs">1A/2A:</span>
+                  <div class="flex gap-1.5">
+                    ${badgeSpanDesk(s.ws1)}
+                    ${badgeSpanDesk(s.ws2)}
+                  </div>
+                </div>
+                <div class="flex items-center justify-between border-t border-slate-100 pt-1">
+                  <span class="text-red-600 font-bold text-xs">⚡ BK:</span>
+                  <div>${badgeSpanDesk(s.backup)}</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-400 font-medium text-[11px]">WFH:</span>
+                  <div class="flex gap-1">${badgesSpanDesk(s.online)}</div>
+                </div>
               </div>
-              <div class="flex items-center justify-between border-t border-slate-100 pt-1">
-                <span class="text-amber-600 font-semibold text-[9px]">Backup:</span>
-                <div>${badgeSpan(s.backup)}</div>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="text-slate-400 text-[9px]">WFH:</span>
-                <div class="flex gap-1">${badgesSpan(s.online)}</div>
-              </div>
+
             </div>
-          </div>
-        `;
+          `;
+        }
       }
       grid.innerHTML = cells;
 
       renderDutyStats(currentMonthSched);
     }
 
+    function handleDayClick(dayNum) {
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin accounts can switch viewing dates!");
+        return;
+      }
+      syncDayStatus(dayNum);
+    }
+
     function renderDutyStats(sched) {
       const statsObj = {
-        XA: { on: 0, basic: 0, backup: 0, off: 0 },
         DD: { on: 0, basic: 0, backup: 0, off: 0 },
-        VK: { on: 0, basic: 0, backup: 0, off: 0 },
         MT: { on: 0, basic: 0, backup: 0, off: 0 },
+        XA: { on: 0, basic: 0, backup: 0, off: 0 },
+        VK: { on: 0, basic: 0, backup: 0, off: 0 },
       };
 
       const days = Object.keys(sched);
@@ -1100,101 +1766,143 @@ async function saveData() {
       });
 
       const totalDays = days.length;
-      document.getElementById('duty-total-workdays-badge').innerText = `${totalDays} Ngày làm việc`;
+      document.getElementById('duty-total-workdays-badge').innerText = `${totalDays} ${t('workingDays')}`;
 
       const statsRowsEl = document.getElementById("duty-stats-rows");
       statsRowsEl.innerHTML = Object.entries(statsObj).map(([k, stat]) => {
         const s = STAFF_DUTY[k];
-        const sitePct = totalDays ? ((stat.on / totalDays) * 100).toFixed(0) : 0;
         return `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
-            <div class="flex justify-between items-center">
-              <div class="flex items-center gap-2">
-                <span class="w-3 h-3 rounded-full dot-${s.cls}"></span>
-                <span class="font-bold text-slate-800 font-mono text-xs">${s.name} (${s.fullName})</span>
-              </div>
-              <span class="text-xs font-mono font-bold text-slate-700">${stat.on} Ngày On-site / ${totalDays} Ngày</span>
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 sm:p-3 text-center">
+            <div class="flex justify-center items-center gap-1.5 font-bold text-slate-800 text-xs sm:text-sm font-heading">
+              <span class="w-2 h-2 rounded-full dot-${s.cls}"></span>${s.name} (${s.defaultDesk})
             </div>
-            
-            <div class="w-full bg-slate-200 rounded-full h-2.5 overflow-hidden flex">
-              <div class="bg-slate-700 h-2.5" style="width:${sitePct}%"></div>
-              <div class="bg-slate-300 h-2.5" style="width:${100-sitePct}%"></div>
-            </div>
-
-            <div class="flex justify-between text-[11px] font-mono text-slate-500 pt-0.5">
-              <span>Trực cố định: <strong>${stat.basic}d</strong></span>
-              <span class="${stat.backup >= 3 ? 'text-emerald-700 font-bold' : ''}">Ca backup: <strong>+${stat.backup}d</strong></span>
-              <span>Online/WFH: <strong>${stat.off}d</strong></span>
-            </div>
+            <div class="font-mono font-extrabold text-sm sm:text-lg text-slate-900 mt-1">${stat.on} Days</div>
+            <div class="text-[10px] sm:text-xs text-slate-500 font-mono mt-0.5">Desk: ${stat.basic}d • BK: +${stat.backup}d • WFH: ${stat.off}d</div>
           </div>
         `;
       }).join("");
     }
 
-    // 6. RENDER DANH SÁCH NHÂN SỰ
+    // -------------------------------------------------------------
+    // RENDER STAFF LIST: MANAGER HIDES ACTIONS, USER CANNOT ACCESS
+    // -------------------------------------------------------------
     function renderDashboard() {
+      // If User, completely blocked
+      if (currentLoggedInUser && currentLoggedInUser.role === 'User') {
+        return;
+      }
+
       const filtered = getFilteredData();
       const sorted = sortEmployees(filtered);
 
       const activeHeadcount = employees.filter(e => !e.isHidden);
       document.getElementById('stat-total-headcount').innerText = activeHeadcount.length;
-      document.getElementById('table-count').innerText = `${sorted.length} nhân sự`;
+      document.getElementById('table-count').innerText = `${sorted.length} ${t('members')}`;
+
+      // Check permissions: Manager does NOT have Actions column
+      const isManager = currentLoggedInUser && currentLoggedInUser.role === 'Manager';
+      const isAdmin = currentLoggedInUser && currentLoggedInUser.role === 'Admin';
+      const showActions = isAdmin; // Only Admin gets actions
+
+      const thAction = document.getElementById('th-action-col');
+      if (thAction) {
+        thAction.style.display = showActions ? '' : 'none';
+      }
 
       const tbody = document.getElementById('employee-table-body');
       tbody.innerHTML = '';
 
       if (sorted.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400">Không tìm thấy dữ liệu</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${showActions ? 8 : 7}" class="py-4 text-center text-slate-400">No records found</td></tr>`;
         return;
       }
 
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const currentMonthSched = SCHEDULE_STORE[monthKey];
+      const daySched = (currentMonthSched && currentMonthSched[currentViewingDay]) ? currentMonthSched[currentViewingDay] : null;
+
       sorted.forEach((emp, index) => {
-        let roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-700 border border-slate-200">User</span>`;
-        if (emp.role === 'Admin') roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-indigo-100 text-indigo-700 border border-indigo-200">Admin</span>`;
-        else if (emp.role === 'Manager') roleBadge = `<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-blue-100 text-blue-700 border border-blue-200">Manager</span>`;
-
-        let statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Active</span>`;
-        if (emp.status === 'WFH') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>WFH</span>`;
-        else if (emp.status === 'On Site') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200"><span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>On Site</span>`;
-        else if (emp.status === 'Day Off') statusBadge = `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-rose-50 text-rose-700 border border-rose-200"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Day Off</span>`;
-
         let seatDisplay = '';
+        let liveStatus = emp.status;
+
         if (emp.seating === 'Mobile') {
-          seatDisplay = `<span class="font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded"><i class="fa-solid fa-arrows-rotate mr-1"></i>Mobile / Backup</span>`;
+          let assignedCode = "";
+          let staffKey = null;
+
+          if (emp.fullName.includes("DANG DUY")) staffKey = "DD";
+          else if (emp.fullName.includes("MINH TRUNG")) staffKey = "MT";
+          else if (emp.fullName.includes("XUAN ANH")) staffKey = "XA";
+          else if (emp.fullName.includes("KHIEM")) staffKey = "VK";
+
+          if (daySched && staffKey) {
+            if (daySched.ws1 === staffKey) {
+              assignedCode = "1A";
+              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "In Office";
+            } else if (daySched.ws2 === staffKey) {
+              assignedCode = "2A";
+              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "In Office";
+            } else if (daySched.backup === staffKey) {
+              assignedCode = "Backup";
+              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "Backup (Office)";
+            } else if (daySched.online && daySched.online.includes(staffKey)) {
+              assignedCode = "WFH";
+              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "WFH";
+            }
+          }
+
+          const badgeText = assignedCode ? `Mobile (${assignedCode})` : 'Mobile';
+          seatDisplay = `<span class="font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded text-[9px] sm:text-xs">${badgeText}</span>`;
         } else if (!emp.seating) {
-          seatDisplay = `<span class="text-slate-400 italic">Không xếp chỗ</span>`;
+          seatDisplay = `<span class="text-slate-400 italic text-[9px] sm:text-xs">Unassigned</span>`;
         } else {
-          seatDisplay = `<span class="font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded"><i class="fa-solid fa-chair text-slate-400 mr-1"></i>Ghế ${emp.seating}</span>`;
+          seatDisplay = `<span class="font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-1.5 py-0.5 rounded text-[9px] sm:text-xs">${emp.seating}</span>`;
         }
+
+        // Status Badge
+        let statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>`;
+        if (liveStatus === 'WFH') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-amber-50 text-amber-700 border border-amber-200">WFH</span>`;
+        else if (liveStatus === 'On Site') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-blue-50 text-blue-700 border border-blue-200">Site</span>`;
+        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-rose-50 text-rose-700 border border-rose-200">Off</span>`;
+        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-purple-50 text-purple-700 border border-purple-200">Backup</span>`;
 
         const tr = document.createElement('tr');
         tr.className = `hover:bg-slate-50 transition ${emp.isHidden ? 'bg-slate-100/60 opacity-60' : ''}`;
+        
+        let actionsTd = '';
+        if (showActions) {
+          actionsTd = `
+            <td class="py-1.5 px-2 text-center whitespace-nowrap">
+              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1 py-0.5 mr-0.5 text-[8.5px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition" title="Reset default password">
+                <i class="fa-solid fa-key text-[7.5px]"></i> Reset
+              </button>
+              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-0.5" title="Edit"><i class="fa-solid fa-pen-to-square text-[9px]"></i></button>
+              <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete"><i class="fa-solid fa-trash-can text-[9px]"></i></button>
+            </td>
+          `;
+        }
+
         tr.innerHTML = `
-          <td class="py-3 px-4 text-center font-medium text-slate-400">${index + 1}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${emp.fullName} ${emp.isHidden ? '<span class="text-[10px] text-rose-500 font-normal">(Hidden)</span>' : ''}</td>
-          <td class="py-3 px-4">${roleBadge}</td>
-          <td class="py-3 px-4 text-slate-600">${emp.emailCompany}</td>
-          <td class="py-3 px-4 text-slate-500">${emp.emailPersonal || '-'}</td>
-          <td class="py-3 px-4">${seatDisplay}</td>
-          <td class="py-3 px-4 text-center">${statusBadge}</td>
-          <td class="py-3 px-4 text-center">
-            <button onclick="openModal('${emp.id}')" class="text-indigo-600 hover:text-indigo-800 p-1.5 rounded hover:bg-indigo-50 mr-1" title="Chỉnh sửa"><i class="fa-solid fa-pen-to-square"></i></button>
-            <button onclick="toggleHide('${emp.id}')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded hover:bg-slate-100" title="${emp.isHidden ? 'Hiện' : 'Ẩn'}">
-              <i class="fa-solid ${emp.isHidden ? 'fa-eye' : 'fa-eye-slash'}"></i>
-            </button>
-          </td>
+          <td class="py-1.5 px-2 text-center font-medium text-slate-400 text-[9.5px]">${index + 1}</td>
+          <td class="py-1.5 px-2 font-bold text-slate-800 text-[11px]">${formatNameForDisplay(emp.fullName)}</td>
+          <td class="py-1.5 px-2 desktop-only text-slate-600">${emp.role}</td>
+          <td class="py-1.5 px-2 desktop-only font-mono text-[10px] text-slate-600">${emp.emailCompany}</td>
+          <td class="py-1.5 px-2 desktop-only font-mono text-[10px] text-slate-400">${emp.emailPersonal || '-'}</td>
+          <td class="py-1.5 px-2">${seatDisplay}</td>
+          <td class="py-1.5 px-2 text-center">${statusBadge}</td>
+          ${actionsTd}
         `;
         tbody.appendChild(tr);
       });
     }
 
     function renderAll() {
+      applyLanguageUI();
       renderFloorplan();
       renderDutyBoard();
       renderDashboard();
     }
 
-    // 7. VISUAL SEAT PICKER
+    // Mini Seat Picker
     function renderMiniSeatPicker(currentSelectedSeat, editingUserId) {
       const grid = document.getElementById('mini-seat-picker-grid');
       grid.innerHTML = '';
@@ -1202,22 +1910,20 @@ async function saveData() {
       SEAT_LAYOUT.forEach(s => {
         if (s.type === 'unused') {
           grid.innerHTML += `
-            <div class="p-1.5 rounded border border-dashed border-slate-200 bg-slate-100 text-center opacity-40 cursor-not-allowed">
-              <div class="font-mono text-[9px] font-bold text-slate-400">${s.code}</div>
-              <div class="text-[8px] text-slate-400">Lock</div>
+            <div class="p-1 rounded border border-dashed border-slate-200 bg-slate-100 text-center opacity-40">
+              <div class="font-mono text-[8px] font-bold text-slate-400">${s.code}</div>
             </div>
           `;
         } else {
           const occupied = employees.find(e => !e.isHidden && e.seating === s.code && e.id !== editingUserId);
           const isSelected = currentSelectedSeat === s.code;
 
-          let btnClass = isSelected ? "border-2 border-indigo-600 bg-indigo-100 text-indigo-950 font-bold" : (occupied ? "bg-rose-50 border border-rose-200 text-rose-800" : "bg-white border border-slate-200 text-slate-700 hover:border-indigo-400");
+          let btnClass = isSelected ? "border-2 border-[#ee2f26] bg-red-50 text-red-950 font-bold" : (occupied ? "bg-rose-50 border border-rose-200 text-rose-800" : "bg-white border border-slate-200 text-slate-700");
 
           grid.innerHTML += `
             <button type="button" onclick="selectSeatPicker('${s.code}')" 
-                    class="p-1.5 rounded text-center transition flex flex-col items-center justify-center ${btnClass}">
-              <span class="font-mono text-[10px] font-bold">${s.code}</span>
-              <span class="text-[8px] truncate max-w-[54px]">${occupied ? occupied.fullName.split(' ').pop() : (s.type==='mobile' ? 'Mobile' : 'Trống')}</span>
+                    class="p-1 rounded text-center transition flex flex-col items-center justify-center ${btnClass}">
+              <span class="font-mono text-[9px] font-bold">${s.code}</span>
             </button>
           `;
         }
@@ -1226,16 +1932,18 @@ async function saveData() {
 
     function selectSeatPicker(seatCode) {
       document.getElementById('form-seating').value = seatCode;
-      document.getElementById('form-seating-display').value = seatCode ? (seatCode === 'Mobile' ? 'Mobile Pool' : `Ghế ${seatCode}`) : 'Không xếp chỗ';
+      document.getElementById('form-seating-display').value = seatCode ? (seatCode === 'Mobile' ? 'Mobile' : `Desk ${seatCode}`) : 'Unassigned';
       const editingId = document.getElementById('form-id').value;
       renderMiniSeatPicker(seatCode, editingId);
     }
 
-    // 8. BÁO CÁO TRẠNG THÁI (OUT OF OFFICE)
     function openStatusModal(defaultUserId = null) {
       const select = document.getElementById('status-user-select');
-      select.innerHTML = employees.filter(e => !e.isHidden).map(e => `
-        <option value="${e.id}" ${defaultUserId === e.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Không xếp chỗ'})</option>
+      const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+      const listToShow = isPrivileged ? employees.filter(e => !e.isHidden) : [currentLoggedInUser].filter(Boolean);
+
+      select.innerHTML = listToShow.map(e => `
+        <option value="${e.id}" ${defaultUserId === e.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'None'})</option>
       `).join('');
 
       if (defaultUserId) {
@@ -1259,26 +1967,39 @@ async function saveData() {
       }
     }
 
-    // 9. ĐIỀU CHỈNH LỊCH THEO NGÀY (ADMIN)
     function openDutyEditModal(dayNum) {
+      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin can edit roster assignments!");
+        return;
+      }
+
       document.getElementById('duty-edit-day-num').value = dayNum;
-      document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
+      document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}`;
 
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "XA", ws2: "DD", backup: "VK" };
+      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "DD", ws2: "XA", backup: "VK" };
 
-      const optionsHtml = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
-      
+      // 1A: STRICTLY DD or MT
       const ws1Sel = document.getElementById('duty-edit-ws1');
+      ws1Sel.innerHTML = `
+        <option value="DD">D.DUY (Dang Duy)</option>
+        <option value="MT">M.TRUNG (Nguyen Minh Trung)</option>
+      `;
+
+      // 2A: STRICTLY XA or VK
       const ws2Sel = document.getElementById('duty-edit-ws2');
+      ws2Sel.innerHTML = `
+        <option value="XA">X.ANH (Nguyen Xuan Anh)</option>
+        <option value="VK">V.KHIEM (Vu Khiem)</option>
+      `;
+
+      // Backup selects from all 4
       const backupSel = document.getElementById('duty-edit-backup');
+      const allOptions = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name}</option>`).join('');
+      backupSel.innerHTML = `<option value="">-- No Backup Assigned --</option>` + allOptions;
 
-      ws1Sel.innerHTML = optionsHtml;
-      ws2Sel.innerHTML = optionsHtml;
-      backupSel.innerHTML = `<option value="">-- Không xếp Backup --</option>` + optionsHtml;
-
-      ws1Sel.value = sched.ws1 || "XA";
-      ws2Sel.value = sched.ws2 || "DD";
+      ws1Sel.value = (sched.ws1 === "DD" || sched.ws1 === "MT") ? sched.ws1 : "DD";
+      ws2Sel.value = (sched.ws2 === "XA" || sched.ws2 === "VK") ? sched.ws2 : "XA";
       backupSel.value = sched.backup || "";
 
       updateOnlineChipsPreview();
@@ -1299,7 +2020,7 @@ async function saveData() {
       const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
 
       const chipsEl = document.getElementById('duty-edit-online-chips');
-      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-1 rounded badge-${STAFF_DUTY[k].cls} text-[11px] font-bold">${STAFF_DUTY[k].name}</span>`).join(' ');
+      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold">${STAFF_DUTY[k].name}</span>`).join(' ');
     }
 
     function saveDutyEdit() {
@@ -1308,11 +2029,6 @@ async function saveData() {
       const ws2 = document.getElementById('duty-edit-ws2').value;
       const backup = document.getElementById('duty-edit-backup').value || null;
 
-      if (ws1 === ws2) {
-        alert("Ghế 1A và Ghế 2A không thể giao cho cùng 1 nhân sự!");
-        return;
-      }
-
       const allKeys = Object.keys(STAFF_DUTY);
       const online = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
 
@@ -1320,7 +2036,11 @@ async function saveData() {
       if (!SCHEDULE_STORE[monthKey]) SCHEDULE_STORE[monthKey] = {};
 
       SCHEDULE_STORE[monthKey][dayNum] = {
-        ws1, ws2, backup, online, tc: backup !== null
+        ws1,
+        ws2,
+        backup,
+        online,
+        tc: backup !== null
       };
 
       saveData();
@@ -1335,7 +2055,6 @@ async function saveData() {
       renderDutyBoard();
     }
 
-    // 10. EXPORT & IMPORT LỊCH JSON
     function exportScheduleJSON() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SCHEDULE_STORE, null, 2));
       const downloadAnchor = document.createElement('a');
@@ -1357,17 +2076,21 @@ async function saveData() {
             SCHEDULE_STORE = importedData;
             saveData();
             renderAll();
-            alert("Đã phục hồi dữ liệu lịch thành công từ file!");
+            alert("Roster data imported successfully!");
           }
         } catch(err) {
-          alert("File JSON không hợp lệ!");
+          alert("Invalid JSON file!");
         }
       };
       reader.readAsText(file);
     }
 
-    // 11. THÊM / SỬA NHÂN SỰ
     function openModal(empId = null) {
+      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin can add or edit staff members!");
+        return;
+      }
+
       const modal = document.getElementById('employee-modal');
       const form = document.getElementById('employee-form');
       form.reset();
@@ -1375,7 +2098,7 @@ async function saveData() {
       if (empId) {
         const emp = employees.find(e => e.id === empId);
         if (emp) {
-          document.getElementById('modal-title').innerText = "Chỉnh Sửa Thông Tin Nhân Sự";
+          document.getElementById('modal-title').innerText = "Edit Employee";
           document.getElementById('form-id').value = emp.id;
           document.getElementById('form-fullname').value = emp.fullName;
           document.getElementById('form-role').value = emp.role;
@@ -1387,7 +2110,7 @@ async function saveData() {
           selectSeatPicker(emp.seating || '');
         }
       } else {
-        document.getElementById('modal-title').innerText = "Thêm Nhân Sự Mới";
+        document.getElementById('modal-title').innerText = "Add New Employee";
         document.getElementById('form-id').value = "";
         selectSeatPicker('');
       }
@@ -1401,10 +2124,14 @@ async function saveData() {
       const fullName = document.getElementById('form-fullname').value.trim().toUpperCase();
       const role = document.getElementById('form-role').value;
       const seating = document.getElementById('form-seating').value.trim().toUpperCase();
-      const emailCompany = document.getElementById('form-email-company').value.trim();
+      let emailCompany = document.getElementById('form-email-company').value.trim();
       const emailPersonal = document.getElementById('form-email-personal').value.trim();
       const status = document.getElementById('form-status').value;
       const isHidden = document.getElementById('form-is-hidden').checked;
+
+      if (emailCompany && !emailCompany.includes('@')) {
+        emailCompany += '@dlsconsultant.com';
+      }
 
       if (id) {
         const emp = employees.find(e => e.id === id);
@@ -1415,7 +2142,8 @@ async function saveData() {
         }
       } else {
         const newId = "NV" + String(employees.length + 1).padStart(3, '0');
-        employees.push({ id: newId, fullName, role, seating, emailCompany, emailPersonal, status, isHidden });
+        const defaultPassword = generateDefaultPassword(fullName);
+        employees.push({ id: newId, fullName, role, seating, emailCompany, emailPersonal, password: defaultPassword, status, isHidden });
       }
 
       saveData();
@@ -1424,11 +2152,6 @@ async function saveData() {
     }
 
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
-    function toggleHide(empId) {
-      const emp = employees.find(e => e.id === empId);
-      if (emp) { emp.isHidden = !emp.isHidden; saveData(); renderAll(); }
-    }
-    function applyFilters() { renderDashboard(); }
 
     function getLastNameForSort(fullName) {
       const words = fullName.trim().split(/\s+/);
@@ -1446,19 +2169,17 @@ async function saveData() {
     }
 
     function getFilteredData() {
-      const search = document.getElementById('search-input').value.toLowerCase().trim();
-      const role = document.getElementById('filter-role').value;
-      const status = document.getElementById('filter-status').value;
-
-      return employees.filter(e => {
-        if (role !== 'ALL' && e.role !== role) return false;
-        if (status !== 'ALL' && e.status !== status) return false;
-        if (search && !e.fullName.toLowerCase().includes(search) && !e.emailCompany.toLowerCase().includes(search)) return false;
-        return true;
-      });
+      return employees.filter(e => !e.isHidden);
     }
 
+    function applyFilters() { renderDashboard(); }
+
     function switchTab(tab) {
+      // User is forbidden from accessing the dashboard tab
+      if (tab === 'dashboard' && currentLoggedInUser && currentLoggedInUser.role === 'User') {
+        tab = 'floorplan';
+      }
+
       const viewDuty = document.getElementById('view-duty');
       const viewFloor = document.getElementById('view-floorplan');
       const viewDash = document.getElementById('view-dashboard');
@@ -1467,8 +2188,8 @@ async function saveData() {
       const btnFloor = document.getElementById('tab-floorplan-btn');
       const btnDash = document.getElementById('tab-dashboard-btn');
 
-      const active = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-indigo-600 text-white shadow-sm transition flex items-center gap-2";
-      const inactive = "px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center gap-2";
+      const active = "px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-bold rounded-lg bg-[#ee2f26] text-white shadow-xs transition flex items-center justify-center gap-1.5";
+      const inactive = "px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5";
 
       viewDuty.classList.add('hidden'); viewFloor.classList.add('hidden'); viewDash.classList.add('hidden');
       btnDuty.className = inactive; btnFloor.className = inactive; btnDash.className = inactive;
@@ -1479,8 +2200,10 @@ async function saveData() {
     }
 
     window.onload = function() {
+      initDeviceMode();
       loadData();
-      syncDayStatus(21);
+      applyLanguageUI();
+      syncDayStatus(currentViewingDay);
     };
   </script>
 </body>
