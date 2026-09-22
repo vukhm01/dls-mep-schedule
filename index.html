@@ -35,9 +35,9 @@
 
     /* OFFICIAL DLS BRAND COLORS (BRAND GUIDELINES PAGE 6) */
     :root {
-      --dls-red: #ee2f26;        /* Bright Red Pantone 2347 C */
+      --dls-red: #ee2f26;
       --dls-red-soft: #fef2f2;
-      --dls-gray: #757678;       /* Neutral Gray Pantone 173-8 C */
+      --dls-gray: #757678;
       --dls-gray-soft: #f1f3f4;
       --dls-dark: #1e293b;
 
@@ -72,12 +72,16 @@
     .mobile-only { display: none !important; }
     .desktop-only { display: block !important; }
     .desktop-inline { display: inline !important; }
+    
+    /* FIX: Giữ nguyên thuộc tính table-cell cho thẻ TH và TD trên giao diện Desktop */
+    th.desktop-only, td.desktop-only, .desktop-table-cell { display: table-cell !important; }
 
     body.is-mobile-view .mobile-only { display: block !important; }
     body.is-mobile-view .mobile-inline { display: inline !important; }
     body.is-mobile-view .mobile-flex { display: flex !important; }
     body.is-mobile-view .desktop-only { display: none !important; }
     body.is-mobile-view .desktop-inline { display: none !important; }
+    body.is-mobile-view th.desktop-only, body.is-mobile-view td.desktop-only, body.is-mobile-view .desktop-table-cell { display: none !important; }
 
     /* Phone preview frame on wide desktop screens */
     body.device-mobile-sim {
@@ -125,13 +129,11 @@
     </div>
     
     <div class="flex items-center gap-1.5">
-      <!-- LANGUAGE TOGGLE BUTTON (DEFAULT: EN) -->
       <button onclick="toggleLanguage()" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 text-[11px] font-bold font-mono transition flex items-center gap-1" title="Switch Language VN/EN">
         <i class="fa-solid fa-globe text-slate-400"></i>
         <span id="lang-toggle-text">VI</span>
       </button>
 
-      <!-- DEVICE SWITCHER -->
       <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
         <button id="top-btn-desktop" onclick="setDeviceMode('desktop')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300">
           <i class="fa-solid fa-desktop text-xs"></i><span class="desktop-inline">Desktop</span>
@@ -143,12 +145,12 @@
     </div>
   </div>
 
-  <!-- AUTHENTICATION / LOGIN MODAL (MẶC ĐỊNH BẮT BUỘC ĐĂNG NHẬP, KHÔNG TỰ ĐỘNG VÀO ADMIN) -->
+  <!-- AUTHENTICATION / LOGIN MODAL -->
   <div id="login-modal-overlay" class="fixed inset-0 z-[100] bg-slate-900/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-6 space-y-4">
       <div class="text-center space-y-2">
         <div class="flex justify-center">
-          <svg class="h-10 w-auto" viewBox="0 0 160 85" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg class="h-10 w-auto" viewBox="0 0 160 85" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width: 98px;">
             <text x="5" y="46" fill="#757678" font-family="'Montserrat', sans-serif" font-weight="800" font-size="44" letter-spacing="-1">DLS</text>
             <path d="M 124 16 L 129 23 L 148 18 L 138 31 L 146 45 L 133 38 L 122 47 L 125 33 L 115 27 L 126 27 Z" fill="#ee2f26"/>
             <path d="M 124 18 L 128 24 L 144 20 L 135 30 L 142 42 L 132 36 L 123 43 L 125 32 L 117 28 L 126 28 Z" fill="#ffffff"/>
@@ -168,7 +170,6 @@
                  class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none font-medium text-xs">
         </div>
 
-        <!-- HỘP TỰ ĐỘNG PHÁT HIỆN TÀI KHOẢN VÀ CHO CHỌN 1 TRONG 2 CÁCH ĐĂNG NHẬP -->
         <div id="login-detected-box" class="hidden p-2.5 bg-red-50/70 rounded-xl border border-red-200 text-left space-y-1.5">
           <div class="text-[11px] font-heading font-bold text-red-900 flex items-center gap-1">
             <i class="fa-solid fa-circle-check text-[#ee2f26]"></i>
@@ -202,7 +203,6 @@
     <header class="bg-white border-b border-slate-200 sticky top-7 sm:top-0 z-30 shadow-xs">
       <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 h-13 sm:h-16 flex items-center justify-between gap-1 sm:gap-2">
         
-        <!-- OFFICIAL DLS LOGO -->
         <div class="flex items-center gap-2 shrink-0">
           <div class="flex items-center py-0.5">
             <svg class="h-7 sm:h-9 w-auto" viewBox="0 0 160 85" fill="none" xmlns="http://www.w3.org/2000/svg" style="min-width: 98px;">
@@ -223,21 +223,16 @@
           </div>
         </div>
 
-        <!-- RIGHT HEADER CONTROLS -->
         <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-          
-          <!-- Refresh Button -->
           <button onclick="refreshDataUI()" id="btn-refresh" class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 hover:text-red-600 flex items-center justify-center text-xs transition shadow-xs" title="Refresh data">
             <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i>
           </button>
 
-          <!-- Out of Office / Attendance Status Button -->
           <button onclick="openStatusModal()" class="px-2.5 py-1.5 sm:px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-xs">
             <i class="fa-solid fa-bell text-amber-600 text-xs"></i>
             <span class="desktop-inline" id="btn-ooo-text">Status / Leave</span>
           </button>
 
-          <!-- User Menu Dropdown -->
           <div class="relative border-l border-slate-200 pl-1">
             <button onclick="toggleUserDropdown()" class="flex items-center gap-0.5 p-0.5 rounded-lg hover:bg-slate-100 transition">
               <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300">
@@ -246,7 +241,6 @@
               <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
             </button>
 
-            <!-- Dropdown Menu -->
             <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs">
               <div class="px-3 py-2 border-b border-slate-100">
                 <div id="dropdown-user-name" class="font-bold text-slate-800 truncate font-heading">Not Logged In</div>
@@ -269,9 +263,8 @@
     <main class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-2 sm:py-5 flex-1 w-full space-y-2.5 sm:space-y-4">
 
       <!-- NAVIGATION BAR -->
-      <div class="flex items-center justify-between gap-1.5 border-b border-slate-200 pb-2 no-print">
+      <div class="flex items-center justify-between gap-1.5 border-b border-slate-200 pb-2 no-print overflow-x-auto custom-scrollbar">
         
-        <!-- 3 Tabs -->
         <div class="flex items-center gap-1 shrink-0" id="main-nav-tabs">
           <button id="tab-floorplan-btn" onclick="switchTab('floorplan')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-bold rounded-lg bg-[#ee2f26] text-white shadow-xs transition flex items-center justify-center gap-1.5" title="Floor Plan">
             <i class="fa-solid fa-chair text-xs"></i>
@@ -281,33 +274,30 @@
             <i class="fa-solid fa-calendar-check text-xs"></i>
             <span class="desktop-inline" id="tab-title-duty">Duty Roster</span>
           </button>
+          <button id="tab-holiday-btn" onclick="switchTab('holiday')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5" title="Public Holidays">
+            <i class="fa-solid fa-umbrella-beach text-xs"></i>
+            <span class="desktop-inline" id="tab-title-holiday">Public Holidays</span>
+          </button>
           <button id="tab-dashboard-btn" onclick="switchTab('dashboard')" class="px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5" title="Staff List">
             <i class="fa-solid fa-users text-xs"></i>
             <span class="desktop-inline" id="tab-title-staff">Staff List</span>
           </button>
         </div>
 
-        <!-- Date Indicator & Add Button -->
+        <!-- NGÀY HIỆN HÀNH THỰC TẾ KHÓA CỐ ĐỊNH -->
         <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-          <div onclick="openDateSelectorPrompt()" class="flex items-center gap-1 bg-slate-100 hover:bg-slate-200 border border-slate-300 px-2 py-1 rounded-lg text-xs cursor-pointer transition" title="Change viewing day (Admin only)">
+          <div class="flex items-center gap-1.5 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg text-xs" title="Current Active Date">
             <i class="fa-regular fa-calendar-days text-[#ee2f26] text-xs"></i>
-            <span class="desktop-inline text-slate-600 text-[11px]" id="txt-viewing-date-lbl">Date:</span>
-            <strong id="current-viewing-date-label" class="text-slate-900 font-bold font-mono text-[11px] sm:text-xs">22/09/2026</strong>
-            <span id="date-admin-lock-icon" class="text-[9px] text-slate-400"></span>
+            <span class="desktop-inline text-slate-500 text-[11px]" id="txt-viewing-date-lbl">Active Date:</span>
+            <strong id="current-active-date-badge" class="text-slate-800 font-bold font-mono text-[11px] sm:text-xs">--/--/----</strong>
           </div>
-
-          <button id="btn-add-staff" onclick="openModal()" class="px-2 py-1 sm:px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs font-semibold transition flex items-center gap-1 font-heading shrink-0" title="Add new employee">
-            <i class="fa-solid fa-user-plus text-xs"></i>
-            <span class="desktop-inline" id="btn-add-staff-text">Add Staff</span>
-          </button>
         </div>
 
       </div>
 
-      <!-- TAB 1: FLOOR MAP (ĐÃ BỎ DÒNG ĐEN THEO HÌNH 1) -->
+      <!-- TAB 1: FLOOR MAP -->
       <div id="view-floorplan" class="space-y-2 sm:space-y-3">
         
-        <!-- Backup Alert Banner -->
         <div id="backup-active-banner" class="hidden p-2 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex justify-between items-center animate-pulse">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
@@ -319,7 +309,6 @@
           <span class="text-[9px] font-bold uppercase bg-red-200 text-red-900 px-1.5 py-0.5 rounded font-heading shrink-0">Backup</span>
         </div>
 
-        <!-- Floor Plan Matrix Pod Container -->
         <div class="bg-white p-2.5 sm:p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
           
           <div class="flex flex-wrap items-center justify-between gap-1 border-b border-slate-100 pb-1.5">
@@ -387,12 +376,11 @@
 
       </div>
 
-      <!-- TAB 2: DUTY ROSTER (1A & 2A ĐÃ XUỐNG 2 DÒNG KHÔNG BỊ TRÀN LỀ) -->
+      <!-- TAB 2: DUTY ROSTER -->
       <div id="view-duty" class="hidden space-y-2.5 sm:space-y-4">
         
         <div class="bg-white p-2.5 sm:p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
           
-          <!-- Month Control Bar -->
           <div class="flex justify-between items-center gap-2 border-b border-slate-100 pb-2">
             <div class="flex items-center gap-1 bg-slate-100 p-0.5 rounded-lg border border-slate-200">
               <button onclick="changeMonth(-1)" class="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition">
@@ -407,8 +395,12 @@
               </button>
             </div>
 
-            <!-- Export / Import Tools & Regenerate Option -->
             <div class="flex items-center gap-1">
+              <button id="btn-delete-future-roster" onclick="deleteFutureMonthRoster()" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold transition flex items-center gap-1" title="Reset this future month back to unconfigured state">
+                <i class="fa-solid fa-calendar-xmark text-xs"></i>
+                <span class="desktop-inline" id="btn-delete-roster-text">Delete Month Roster</span>
+              </button>
+
               <button onclick="exportScheduleJSON()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition" title="Export JSON">
                 <i class="fa-solid fa-download"></i>
                 <span class="desktop-inline text-[11px] font-medium ml-1">Export</span>
@@ -425,7 +417,6 @@
             </div>
           </div>
 
-          <!-- Unconfigured Month Message -->
           <div id="duty-unconfigured-container" class="hidden py-8 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 space-y-2">
             <h3 class="text-xs sm:text-sm font-heading font-bold text-slate-800" id="unconfigured-month-title">No roster configured for this month</h3>
             <p class="text-[11px] text-slate-500" id="txt-roster-rule-hint">Rule: 1A = D.Duy/M.Trung, 2A = X.Anh/Khiem. 3 backup days per person.</p>
@@ -434,10 +425,7 @@
             </button>
           </div>
 
-          <!-- Active Month Roster Grid -->
           <div id="duty-configured-container" class="space-y-3">
-            
-            <!-- Calendar Roster Grid -->
             <div class="overflow-x-auto custom-scrollbar">
               <div class="min-w-[580px] sm:min-w-[820px]">
                 <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-1.5 font-mono text-[9px] sm:text-xs font-bold text-slate-400 uppercase text-center" id="cal-weekdays-header">
@@ -448,7 +436,6 @@
               </div>
             </div>
 
-            <!-- Working Day Breakdown Stats -->
             <div class="pt-2 border-t border-slate-100 space-y-2">
               <div class="flex justify-between items-center text-xs sm:text-sm">
                 <h3 class="font-heading font-bold text-slate-800" id="txt-breakdown-title">Monthly Working-Day Breakdown</h3>
@@ -462,10 +449,52 @@
 
       </div>
 
-      <!-- TAB 3: STAFF DIRECTORY -->
+      <!-- TAB 3: PUBLIC HOLIDAYS (HỖ TRỢ DẢI NGÀY TỪ NGÀY ĐẾN NGÀY) -->
+      <div id="view-holiday" class="hidden space-y-3 sm:space-y-4">
+        <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden p-4 sm:p-5 space-y-4">
+          
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-100 pb-3">
+            <div>
+              <h2 class="text-sm sm:text-base font-heading font-bold text-slate-900" id="txt-holiday-header">Vietnam Official Public Holidays</h2>
+              <p class="text-[11px] text-slate-500" id="txt-holiday-sub">Official paid holidays synchronized with the annual duty calendar</p>
+            </div>
+
+            <div class="flex items-center gap-1.5" id="holiday-manager-actions">
+              <button onclick="syncHolidayDatesForYear(currentYear)" class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition flex items-center gap-1">
+                <i class="fa-solid fa-arrows-rotate text-xs"></i>
+                <span id="btn-sync-holidays-text">Auto Sync Current Year</span>
+              </button>
+              <button onclick="openHolidayModal()" class="px-3 py-1.5 rounded-lg bg-[#ee2f26] hover:bg-red-700 text-white text-xs font-semibold transition flex items-center gap-1 font-heading shadow-xs">
+                <i class="fa-solid fa-plus text-xs"></i>
+                <span id="btn-add-holiday-text">Add Holiday</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px]">
+                  <th class="py-2.5 px-3 w-10 text-center">No</th>
+                  <th class="py-2.5 px-3">Holiday Name</th>
+                  <th class="py-2.5 px-3">Calendar Type</th>
+                  <th class="py-2.5 px-3">Date Details</th>
+                  <th class="py-2.5 px-3">Solar Date Range</th>
+                  <th class="py-2.5 px-3 text-center">Days Off</th>
+                  <th class="py-2.5 px-3">Description</th>
+                  <th class="py-2.5 px-3 text-center" id="th-holiday-action">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="holiday-table-body" class="divide-y divide-slate-200"></tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 4: STAFF DIRECTORY -->
       <div id="view-dashboard" class="hidden space-y-3 sm:space-y-4">
         
-        <!-- KPI Stats -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-total-headcount">Total Staff</p>
@@ -480,32 +509,48 @@
             <h3 class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal">staff</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
-            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-locked-seats">Locked Desks</p>
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase">Locked Desks</p>
             <h3 class="text-base sm:text-xl font-heading font-extrabold text-slate-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal">desks</span></h3>
           </div>
         </div>
 
-        <!-- EMPLOYEE DATA TABLE -->
         <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
-          <div class="px-3 py-2 border-b border-slate-100 bg-slate-50 flex justify-between items-center text-xs">
-            <span><span id="txt-synced-with-date">Synced for</span> <strong id="table-date-sync" class="font-mono">22/09/2026</strong></span>
-            <span id="table-count" class="font-bold text-slate-900 font-heading">0 members</span>
+          <!-- CÂN BẰNG THANH MENU ĐIỀU HƯỚNG TRÊN STAFF LIST -->
+          <div class="px-3.5 py-2.5 border-b border-slate-200/80 bg-slate-50/80 flex flex-wrap justify-between items-center gap-2 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 shadow-2xs">
+                <i class="fa-regular fa-calendar-check text-[#ee2f26]"></i>
+                <span id="txt-synced-with-date" class="text-slate-500 font-medium">Active Date:</span> 
+                <strong id="table-date-sync" class="font-mono text-slate-800 font-bold">--/--/----</strong>
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 shadow-2xs">
+                <i class="fa-solid fa-users text-slate-400"></i>
+                <span id="table-count" class="font-bold font-heading">0 members</span>
+              </span>
+            </div>
+
+            <button id="btn-add-staff" onclick="openModal()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs font-semibold transition flex items-center gap-1.5 font-heading shrink-0" title="Add new employee">
+              <i class="fa-solid fa-user-plus text-xs"></i>
+              <span id="btn-add-staff-text">Add Staff</span>
+            </button>
           </div>
+
+          <!-- BẢNG NHÂN SỰ VỚI CỘT ROLE VÀ SEAT TÁCH BIỆT CĂN CHỈNH THẲNG HÀNG -->
           <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
-                <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px]" id="table-head-row">
-                  <th class="py-2.5 px-3 w-8 text-center">No</th>
-                  <th class="py-2.5 px-3">Full Name</th>
-                  <th class="py-2.5 px-3 desktop-only">Role</th>
-                  <th class="py-2.5 px-3 desktop-only">Work Email</th>
-                  <th class="py-2.5 px-3 desktop-only">Personal Email</th>
-                  <th class="py-2.5 px-3">Seat</th>
-                  <th class="py-2.5 px-3 text-center">Status</th>
-                  <th class="py-2.5 px-3 text-center" id="th-action-col">Actions</th>
+                <tr class="bg-slate-100/90 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9.5px] sm:text-[10px] tracking-wider whitespace-nowrap" id="table-head-row">
+                  <th class="py-3 px-3 w-12 text-center">No</th>
+                  <th class="py-3 px-3 min-w-[140px]">Full Name</th>
+                  <th class="py-3 px-3 desktop-only text-center w-24" id="th-role-col">Role</th>
+                  <th class="py-3 px-3 desktop-only min-w-[170px]">Work Email</th>
+                  <th class="py-3 px-3 desktop-only min-w-[170px]">Personal Email</th>
+                  <th class="py-3 px-3 desktop-only text-center w-28" id="th-seat-col">Seat</th>
+                  <th class="py-3 px-3 text-center w-24">Status</th>
+                  <th class="py-3 px-3 text-center w-28" id="th-action-col">Actions</th>
                 </tr>
               </thead>
-              <tbody id="employee-table-body" class="divide-y divide-slate-200"></tbody>
+              <tbody id="employee-table-body" class="divide-y divide-slate-200 bg-white"></tbody>
             </table>
           </div>
         </div>
@@ -514,6 +559,74 @@
 
     </main>
 
+  </div>
+
+  <!-- MODAL: ADD / EDIT PUBLIC HOLIDAY (TỪ NGÀY - ĐẾN NGÀY) -->
+  <div id="holiday-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 space-y-3 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <h3 class="font-heading font-bold text-slate-800 text-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-umbrella-beach text-[#ee2f26]"></i>
+          <span id="holiday-modal-title">Holiday Details</span>
+        </h3>
+        <button onclick="closeModal('holiday-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+
+      <form id="holiday-form" onsubmit="handleSaveHoliday(event)" class="space-y-3">
+        <input type="hidden" id="form-holiday-id">
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Holiday Name <span class="text-red-500">*</span></label>
+          <input type="text" id="form-holiday-name" required placeholder="e.g. Quốc Khánh / National Day" class="w-full p-2 border border-slate-300 rounded-lg font-medium text-xs">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Calendar Type</label>
+            <select id="form-holiday-type" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium text-xs">
+              <option value="solar">Solar (Dương Lịch)</option>
+              <option value="lunar">Lunar (Âm Lịch)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Date Detail (Ghi chú ngày)</label>
+            <input type="text" id="form-holiday-datedetail" required placeholder="01/09 - 02/09 hoặc 29/12 - 03/01 ÂL" class="w-full p-2 border border-slate-300 rounded-lg font-mono text-xs">
+          </div>
+        </div>
+
+        <!-- THIẾT LẬP DẢI NGÀY DƯƠNG LỊCH: TỪ NGÀY ĐẾN NGÀY -->
+        <div class="bg-red-50/60 p-3 rounded-xl border border-red-200 space-y-2">
+          <div class="font-heading font-bold text-[#ee2f26] text-[11px] flex items-center gap-1">
+            <i class="fa-regular fa-calendar-check"></i> Dải ngày Dương Lịch áp dụng trên Calendar:
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-700 mb-0.5 text-[10.5px]">Từ ngày (Start Date) <span class="text-red-500">*</span></label>
+              <input type="date" id="form-holiday-startdate" required onchange="autoCalcDaysOff()" class="w-full p-2 border border-slate-300 rounded-lg font-mono text-xs bg-white">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-700 mb-0.5 text-[10.5px]">Đến ngày (End Date) <span class="text-red-500">*</span></label>
+              <input type="date" id="form-holiday-enddate" required onchange="autoCalcDaysOff()" class="w-full p-2 border border-slate-300 rounded-lg font-mono text-xs bg-white">
+            </div>
+          </div>
+          <div class="flex justify-between items-center pt-1 text-[11px] text-slate-600">
+            <span>Tổng số ngày nghỉ tính được:</span>
+            <span class="font-mono font-extrabold text-emerald-700 bg-white px-2 py-0.5 rounded border border-emerald-200" id="calc-daysoff-preview">1 Ngày</span>
+            <input type="hidden" id="form-holiday-daysoff" value="1">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Description / Notes</label>
+          <input type="text" id="form-holiday-desc" placeholder="Nghỉ lễ theo quy định Nhà nước" class="w-full p-2 border border-slate-300 rounded-lg text-xs">
+        </div>
+
+        <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
+          <button type="button" onclick="closeModal('holiday-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs">Save Holiday</button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- MODAL: CHANGE OWN PASSWORD -->
@@ -660,7 +773,6 @@
           </div>
         </div>
 
-        <!-- VISUAL MINI SEAT PICKER -->
         <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
           <div class="flex justify-between items-center">
             <label class="font-heading font-bold text-slate-700 text-[11px]">Click Desk to Assign:</label>
@@ -712,9 +824,6 @@
 
   <!-- JAVASCRIPT SYSTEM CORE -->
   <script>
-    // -------------------------------------------------------------
-    // I18N DICTIONARY & MULTI-LANGUAGE SYSTEM (DEFAULT: EN)
-    // -------------------------------------------------------------
     let currentLang = localStorage.getItem('dls_lang') || 'en';
 
     const DICT = {
@@ -728,9 +837,11 @@
         signOut: "Sign Out",
         tabFloorplan: "Floor Plan",
         tabDuty: "Duty Roster",
+        tabHoliday: "Public Holidays",
         tabStaff: "Staff List",
-        dateLbl: "Date:",
+        dateLbl: "Active Date:",
         addStaff: "Add Staff",
+        deleteMonthRoster: "Delete Month Roster",
         backupAlertTitle: "⚡ BACKUP ACTIVATED FOR OFFICE!",
         floorTitle: "Workstation Pod (4 Rows x 4 Desks)",
         present: "Present",
@@ -747,7 +858,7 @@
         workingDays: "Working Days",
         totalStaff: "Total Staff",
         fixedSeats: "Fixed Seats",
-        syncedFor: "Synced for",
+        syncedFor: "Active Date:",
         members: "members",
         thNo: "No",
         thName: "Full Name",
@@ -772,9 +883,11 @@
         signOut: "Đăng Xuất (Sign Out)",
         tabFloorplan: "Sơ Đồ Ghế",
         tabDuty: "Lịch Trực",
+        tabHoliday: "Ngày Lễ VN",
         tabStaff: "Nhân Sự",
-        dateLbl: "Ngày xem:",
-        addStaff: "Thêm Người",
+        dateLbl: "Ngày hiện hành:",
+        addStaff: "Thêm Nhân Sự",
+        deleteMonthRoster: "Xóa Lịch Tháng Này",
         backupAlertTitle: "⚡ ĐÃ KÍCH HOẠT BACKUP VÀO VĂN PHÒNG!",
         floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)",
         present: "Có mặt",
@@ -791,14 +904,14 @@
         workingDays: "Ngày làm",
         totalStaff: "Tổng Số",
         fixedSeats: "Cố Định",
-        syncedFor: "Đồng bộ ngày",
+        syncedFor: "Ngày hiện hành:",
         members: "người",
         thNo: "STT",
         thName: "Họ Và Tên",
         thRole: "Vai Trò",
         thWorkEmail: "Email Công Ty",
         thPersonalEmail: "Email Cá Nhân",
-        thSeat: "Ghế",
+        thSeat: "Chỗ Ngồi",
         thStatus: "Trạng Thái",
         thActions: "Thao Tác",
         resetPassConfirm: "Đặt lại mật khẩu cho nhân sự {name}?\n\nMật khẩu mặc định mới: {pass}",
@@ -833,9 +946,16 @@
       document.getElementById('btn-logout-text').innerHTML = `<i class="fa-solid fa-arrow-right-from-bracket"></i> ${t('signOut')}`;
       document.getElementById('tab-title-floorplan').innerText = t('tabFloorplan');
       document.getElementById('tab-title-duty').innerText = t('tabDuty');
+      document.getElementById('tab-title-holiday').innerText = t('tabHoliday');
       document.getElementById('tab-title-staff').innerText = t('tabStaff');
       document.getElementById('txt-viewing-date-lbl').innerText = t('dateLbl');
-      document.getElementById('btn-add-staff-text').innerText = t('addStaff');
+      
+      const delRosterBtnText = document.getElementById('btn-delete-roster-text');
+      if (delRosterBtnText) delRosterBtnText.innerText = t('deleteMonthRoster');
+
+      const addStaffBtnText = document.getElementById('btn-add-staff-text');
+      if (addStaffBtnText) addStaffBtnText.innerText = t('addStaff');
+
       document.getElementById('txt-backup-activated-title').innerText = t('backupAlertTitle');
       document.getElementById('txt-floor-plan-title').innerText = t('floorTitle');
       document.getElementById('lbl-present').innerText = t('present');
@@ -900,7 +1020,6 @@
       return `${clean}@123`;
     }
 
-    // BASE DATASET
     const INITIAL_EMPLOYEES = [
       { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "tranhoangduy@gmail.com", seating: "", status: "Active", isHidden: false },
       { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
@@ -935,6 +1054,18 @@
       VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "2A" },
     };
 
+    // DANH SÁCH NGÀY LỄ VIỆT NAM (CHUẨN HÓA DẢI NGÀY: STARTDATE & ENDDATE)
+    const DEFAULT_VN_HOLIDAYS = [
+      { id: "VN_H01", name: "Tết Dương Lịch (New Year's Day)", type: "solar", detail: "01/01", startDate: "2026-01-01", endDate: "2026-01-01", daysOff: 1, desc: "Nghỉ Tết Dương Lịch toàn quốc" },
+      { id: "VN_H02", name: "Tết Nguyên Đán (Lunar New Year)", type: "lunar", detail: "29/12 - 03/01 ÂL", startDate: "2026-02-15", endDate: "2026-02-19", daysOff: 5, desc: "Tết Âm Lịch cổ truyền Bính Ngọ (5 ngày)" },
+      { id: "VN_H03", name: "Giỗ Tổ Hùng Vương (Hung Kings Commemoration)", type: "lunar", detail: "10/03 ÂL", startDate: "2026-04-26", endDate: "2026-04-26", daysOff: 1, desc: "Giỗ Tổ Hùng Vương 10/3 Âm Lịch" },
+      { id: "VN_H04", name: "Ngày Giải Phóng Miền Nam (Reunification Day)", type: "solar", detail: "30/04", startDate: "2026-04-30", endDate: "2026-04-30", daysOff: 1, desc: "Kỷ niệm Ngày Giải phóng miền Nam 30/4" },
+      { id: "VN_H05", name: "Ngày Quốc Tế Lao Động (Labor Day)", type: "solar", detail: "01/05", startDate: "2026-05-01", endDate: "2026-05-01", daysOff: 1, desc: "Kỷ niệm Ngày Quốc tế Lao động 1/5" },
+      { id: "VN_H06", name: "Quốc Khánh (Vietnam National Day)", type: "solar", detail: "01/09 - 02/09", startDate: "2026-09-01", endDate: "2026-09-02", daysOff: 2, desc: "Kỷ niệm Quốc Khánh 2/9 & Ngày nghỉ liền kề (Nghỉ 2 ngày: 01/09 & 02/09)" }
+    ];
+
+    let HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
+
     let SCHEDULE_STORE = {
       "2026-09": {
         3:  { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
@@ -961,10 +1092,15 @@
     };
 
     let employees = [];
+
+    // ACTIVE DATE CỐ ĐỊNH CHÍNH XÁC VỚI NGÀY GIỜ HIỆN THỰC CỦA MÁY
     const todayNow = new Date();
-    let currentViewingDay = todayNow.getDate();
-    let currentMonth = todayNow.getMonth();
-    let currentYear = todayNow.getFullYear();
+    const REAL_TODAY_DAY = todayNow.getDate();
+    const REAL_TODAY_MONTH = todayNow.getMonth();
+    const REAL_TODAY_YEAR = todayNow.getFullYear();
+
+    let currentMonth = REAL_TODAY_MONTH;
+    let currentYear = REAL_TODAY_YEAR;
 
     let activeDeviceMode = "auto";
     let currentLoggedInUser = null;
@@ -976,7 +1112,7 @@
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
 
     // -------------------------------------------------------------
-    // AUTHENTICATION & LOGIN (MẶC ĐỊNH BẮT BUỘC ĐĂNG NHẬP)
+    // AUTHENTICATION & LOGIN
     // -------------------------------------------------------------
     function checkAutoAuthentication() {
       const activeUserId = localStorage.getItem('dls_current_user_id');
@@ -1054,17 +1190,12 @@
       const avatar = document.getElementById('header-avatar');
       const dropdownName = document.getElementById('dropdown-user-name');
       const dropdownRole = document.getElementById('dropdown-user-role');
-      const adminLockIcon = document.getElementById('date-admin-lock-icon');
 
       const words = currentLoggedInUser.fullName.split(' ');
       const initials = words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2);
       avatar.innerText = initials.toUpperCase();
       dropdownName.innerText = currentLoggedInUser.fullName;
       dropdownRole.innerText = currentLoggedInUser.role;
-
-      if (adminLockIcon) {
-        adminLockIcon.innerHTML = (currentLoggedInUser.role === 'Admin') ? '<i class="fa-solid fa-pen text-[8px] text-red-500"></i>' : '<i class="fa-solid fa-lock text-[8px] text-slate-400"></i>';
-      }
 
       const staffTabBtn = document.getElementById('tab-dashboard-btn');
       if (staffTabBtn) {
@@ -1082,6 +1213,16 @@
       const addStaffBtn = document.getElementById('btn-add-staff');
       if (addStaffBtn) {
         addStaffBtn.style.display = (currentLoggedInUser.role === 'Admin') ? '' : 'none';
+      }
+
+      const isPrivileged = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+      const holidayActions = document.getElementById('holiday-manager-actions');
+      if (holidayActions) {
+        holidayActions.style.display = isPrivileged ? 'flex' : 'none';
+      }
+      const thHolidayAction = document.getElementById('th-holiday-action');
+      if (thHolidayAction) {
+        thHolidayAction.style.display = isPrivileged ? '' : 'none';
       }
     }
 
@@ -1266,7 +1407,7 @@
       if (icon) icon.classList.add('fa-spin');
       
       await loadData();
-      syncDayStatus(currentViewingDay);
+      syncRealTodayLiveStatus();
 
       setTimeout(() => {
         if (icon) icon.classList.remove('fa-spin');
@@ -1284,6 +1425,7 @@
     async function loadData() {
       const storedEmp = localStorage.getItem('dls_v11_emp');
       const storedStore = localStorage.getItem('dls_v11_sched_store');
+      const storedHolidays = localStorage.getItem('dls_v11_holidays');
 
       if (storedEmp) {
         try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
@@ -1296,21 +1438,20 @@
       });
 
       if (storedStore) {
-        try { 
-          SCHEDULE_STORE = JSON.parse(storedStore);
-        } catch(e) {}
+        try { SCHEDULE_STORE = JSON.parse(storedStore); } catch(e) {}
       }
 
-      if (SCHEDULE_STORE["2026-09"]) {
-        Object.keys(SCHEDULE_STORE["2026-09"]).forEach(d => {
-          let item = SCHEDULE_STORE["2026-09"][d];
-          if (item.ws1 === "VK" && item.ws2 === "MT") {
-            item.ws1 = "MT"; item.ws2 = "VK";
-          } else if (item.ws1 === "XA" && item.ws2 === "DD") {
-            item.ws1 = "DD"; item.ws2 = "XA";
-          }
-        });
+      if (storedHolidays) {
+        try { HOLIDAYS_STORE = JSON.parse(storedHolidays); } catch(e) { HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS]; }
+      } else {
+        HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
       }
+
+      // Đảm bảo tương thích dữ liệu cũ: nếu chỉ có solarDate thì gán startDate và endDate
+      HOLIDAYS_STORE.forEach(h => {
+        if (!h.startDate && h.solarDate) h.startDate = h.solarDate;
+        if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
+      });
 
       if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
         setSyncStatus("Sync...", true);
@@ -1324,20 +1465,17 @@
               if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
             });
             SCHEDULE_STORE = onlineData.schedule;
-            
-            if (SCHEDULE_STORE["2026-09"]) {
-              Object.keys(SCHEDULE_STORE["2026-09"]).forEach(d => {
-                let item = SCHEDULE_STORE["2026-09"][d];
-                if (item.ws1 === "VK" && item.ws2 === "MT") {
-                  item.ws1 = "MT"; item.ws2 = "VK";
-                } else if (item.ws1 === "XA" && item.ws2 === "DD") {
-                  item.ws1 = "DD"; item.ws2 = "XA";
-                }
+            if (onlineData.holidays) {
+              HOLIDAYS_STORE = onlineData.holidays;
+              HOLIDAYS_STORE.forEach(h => {
+                if (!h.startDate && h.solarDate) h.startDate = h.solarDate;
+                if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
               });
             }
 
             localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
             localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
+            localStorage.setItem('dls_v11_holidays', JSON.stringify(HOLIDAYS_STORE));
             renderAll();
             setSyncStatus("Synced");
           } else {
@@ -1355,6 +1493,7 @@
     async function saveData() {
       localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
       localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
+      localStorage.setItem('dls_v11_holidays', JSON.stringify(HOLIDAYS_STORE));
 
       if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
         setSyncStatus("Saving...", true);
@@ -1362,6 +1501,7 @@
           const payload = JSON.stringify({
             employees: employees,
             schedule: SCHEDULE_STORE,
+            holidays: HOLIDAYS_STORE,
             lastUpdated: new Date().toISOString()
           });
 
@@ -1440,31 +1580,15 @@
       alert(`Successfully generated 3-2 roster for ${monthKey}!`);
     }
 
-    function openDateSelectorPrompt() {
-      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin accounts can switch viewing dates!");
-        return;
-      }
-      const newDay = prompt("Admin: Enter day of month to view (1 - 31):", currentViewingDay);
-      if (newDay && !isNaN(newDay)) {
-        const dayNum = parseInt(newDay);
-        if (dayNum >= 1 && dayNum <= 31) {
-          syncDayStatus(dayNum);
-        }
-      }
-    }
-
-    function syncDayStatus(dayNum) {
-      currentViewingDay = dayNum;
-      const formattedDate = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}/${currentYear}`;
-      document.getElementById('current-viewing-date-label').innerText = formattedDate;
+    function syncRealTodayLiveStatus() {
+      const formattedDate = `${String(REAL_TODAY_DAY).padStart(2, '0')}/${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}/${REAL_TODAY_YEAR}`;
+      document.getElementById('current-active-date-badge').innerText = formattedDate;
       document.getElementById('table-date-sync').innerText = formattedDate;
 
-      const monthKey = getMonthKey(currentYear, currentMonth);
-      const currentMonthSched = SCHEDULE_STORE[monthKey];
+      const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
+      const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
 
-      if (currentMonthSched && currentMonthSched[dayNum]) {
-        const sched = currentMonthSched[dayNum];
+      if (sched) {
         const empWs1 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
         const empWs2 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
         if (empWs1) empWs1.status = "Active";
@@ -1483,7 +1607,8 @@
         }
       }
 
-      renderAll();
+      renderFloorplan();
+      renderDashboard();
     }
 
     function formatNameForDisplay(fullName) {
@@ -1524,9 +1649,9 @@
 
       row1El.innerHTML = ''; row2El.innerHTML = ''; row3El.innerHTML = ''; row4El.innerHTML = '';
 
-      const monthKey = getMonthKey(currentYear, currentMonth);
-      const currentMonthSched = SCHEDULE_STORE[monthKey];
-      const daySched = (currentMonthSched && currentMonthSched[currentViewingDay]) ? currentMonthSched[currentViewingDay] : { ws1: null, ws2: null, backup: null };
+      const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
+      const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
+      const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, backup: null };
 
       const absentFixedUsers = employees.filter(e => !e.isHidden && e.seating && e.seating !== "Mobile" && e.status !== "Active");
       const isBackupTriggered = absentFixedUsers.length > 0;
@@ -1617,7 +1742,21 @@
       });
     }
 
-    // Render Calendar Roster (ĐÃ TÁCH 1A VÀ 2A XUỐNG 2 DÒNG RIÊNG BIỆT KHỎI TRÀN LỀ)
+    // THUẬT TOÁN KIỂM TRA NGÀY LỄ THEO DẢI NGÀY: TỪ STARTDATE ĐẾN ENDDATE
+    function getHolidayForDate(year, monthIndex, dayNum) {
+      const cur = new Date(year, monthIndex, dayNum);
+      cur.setHours(0, 0, 0, 0);
+
+      return HOLIDAYS_STORE.find(h => {
+        const s = new Date(h.startDate || h.solarDate);
+        s.setHours(0, 0, 0, 0);
+        const e = new Date(h.endDate || h.startDate || h.solarDate);
+        e.setHours(23, 59, 59, 999);
+        return cur >= s && cur <= e;
+      });
+    }
+
+    // RENDER LỊCH DUTY ROSTER
     function renderDutyBoard() {
       const monthKey = getMonthKey(currentYear, currentMonth);
       const isConfigured = !!SCHEDULE_STORE[monthKey];
@@ -1628,6 +1767,18 @@
 
       const unconfigContainer = document.getElementById('duty-unconfigured-container');
       const configContainer = document.getElementById('duty-configured-container');
+
+      const isFutureMonth = (currentYear > REAL_TODAY_YEAR) || (currentYear === REAL_TODAY_YEAR && currentMonth > REAL_TODAY_MONTH);
+      const isAdmin = currentLoggedInUser && currentLoggedInUser.role === 'Admin';
+      const btnDelFuture = document.getElementById('btn-delete-future-roster');
+      
+      if (btnDelFuture) {
+        if (isFutureMonth && isConfigured && isAdmin) {
+          btnDelFuture.classList.remove('hidden');
+        } else {
+          btnDelFuture.classList.add('hidden');
+        }
+      }
 
       if (!isConfigured) {
         unconfigContainer.classList.remove('hidden');
@@ -1656,18 +1807,22 @@
         const dateNum = d.getDate();
         const dow = (d.getDay() + 6) % 7;
         const isWeekend = dow >= 5;
-        const isViewing = inMonth && dateNum === currentViewingDay;
+        const isCurrentRealDay = inMonth && (currentMonth === REAL_TODAY_MONTH && currentYear === REAL_TODAY_YEAR && dateNum === REAL_TODAY_DAY);
 
         if (!inMonth) {
-          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[82px]' : 'min-h-[148px]'}"></div>`;
+          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}"></div>`;
           continue;
         }
+
+        // KIỂM TRA XEM NGÀY ĐÓ CÓ TRÙNG VÀO DẢI NGÀY LỄ NÀO KHÔNG
+        const holidayObj = getHolidayForDate(currentYear, currentMonth, dateNum);
+
         if (isWeekend) {
           cells += `
-            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[82px]' : 'min-h-[148px]'}">
+            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
               <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
               <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
-              <span class="text-[10px] text-slate-400 mt-1 ${isMobile ? 'hidden' : 'block'}">Weekend</span>
+              ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
             </div>
           `;
           continue;
@@ -1676,28 +1831,41 @@
         const s = currentMonthSched[dateNum];
         if (!s) {
           cells += `
-            <div class="bg-slate-50 border border-dashed border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[82px]' : 'min-h-[148px]'}">
-              <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
-              <button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1">+ Setup</button>
+            <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
+              <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
+              ${holidayObj ? `<span class="text-[8.5px] sm:text-[10px] font-bold text-rose-700 mt-1">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
+              ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1">+ Setup</button>` : `<span class="text-[8px] text-slate-400">Empty</span>`}
             </div>
           `;
           continue;
         }
 
+        let adminActionButtons = '';
+        if (isAdmin) {
+          adminActionButtons = `
+            <div class="flex items-center gap-0.5 sm:gap-1">
+              <button onclick="openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-800 p-0.5" title="Edit Shift">
+                <i class="fa-solid fa-pen text-[7.5px] sm:text-xs"></i>
+              </button>
+              <button onclick="deleteDutyShift(${dateNum})" class="text-red-400 hover:text-red-700 p-0.5" title="Delete Shift">
+                <i class="fa-solid fa-trash-can text-[7.5px] sm:text-xs"></i>
+              </button>
+            </div>
+          `;
+        }
+
+        const holidayHighlightClass = holidayObj ? "bg-rose-50/70 border-rose-300" : "bg-white border-slate-200";
+
         if (isMobile) {
-          // MOBILE: TÁCH 1A VÀ 2A RA 2 DÒNG GỌN GÀNG
           const badgeSpanMob = (k) => k ? `<span class="px-1.5 py-0.2 rounded font-mono font-bold text-[8px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[8px]">—</span>`;
 
           cells += `
-            <div onclick="handleDayClick(${dateNum})" 
-                 class="bg-white border ${isViewing ? 'border-[#ee2f26] ring-1 ring-red-200' : 'border-slate-200'} rounded-lg p-1.5 shadow-xs justify-between flex flex-col min-h-[82px] cursor-pointer transition">
+            <div class="${holidayHighlightClass} border ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : ''} rounded-lg p-1.5 shadow-xs justify-between flex flex-col min-h-[84px] transition">
               <div class="flex justify-between items-center border-b border-slate-100 pb-0.5">
-                <span class="font-extrabold text-xs text-slate-800 font-mono">${dateNum}</span>
-                <div class="flex items-center gap-0.5">
-                  ${s.tc ? `<span class="text-[7px] font-bold bg-amber-100 text-amber-800 px-1 rounded-full">⚡</span>` : ''}
-                  <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-700 p-0.5">
-                    <i class="fa-solid fa-pen text-[7px]"></i>
-                  </button>
+                <span class="font-extrabold text-xs ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono">${dateNum}</span>
+                <div class="flex items-center gap-1">
+                  ${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px]">🎉 Lễ</span>` : ''}
+                  ${adminActionButtons}
                 </div>
               </div>
               <div class="space-y-0.5 text-[8.5px]">
@@ -1717,28 +1885,24 @@
             </div>
           `;
         } else {
-          // DESKTOP: 1A VÀ 2A NẰM RIÊNG 2 DÒNG RÕ RÀNG, CHỮ ĐẬM TO RÕ
           const badgeSpanDesk = (k) => k ? `<span class="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[13px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
           const badgesSpanDesk = (arr) => arr ? arr.map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[12px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
 
           cells += `
-            <div onclick="handleDayClick(${dateNum})" 
-                 class="bg-white border-2 ${isViewing ? 'border-[#ee2f26] ring-2 ring-red-100' : 'border-slate-200 hover:border-slate-400'} rounded-xl p-3 shadow-xs justify-between flex flex-col min-h-[148px] cursor-pointer transition">
+            <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-3 shadow-xs justify-between flex flex-col min-h-[148px] transition">
               
               <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                 <div class="flex items-center gap-1.5">
-                  <span class="font-extrabold text-base sm:text-lg text-slate-800 font-mono leading-none">${dateNum}</span>
+                  <span class="font-extrabold text-base sm:text-lg ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono leading-none">${dateNum}</span>
                   <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">T${dow+2}</span>
+                  ${holidayObj ? `<span class="text-[9.5px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md truncate max-w-[130px]">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
                 </div>
-                <div class="flex items-center gap-1">
+                <div class="flex items-center gap-1.5">
                   ${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5">⚡ Backup</span>` : ''}
-                  <button onclick="event.stopPropagation(); openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-800 p-0.5" title="Edit Roster">
-                    <i class="fa-solid fa-pen text-xs"></i>
-                  </button>
+                  ${adminActionButtons}
                 </div>
               </div>
 
-              <!-- NỘI DUNG PHÂN BỔ 2 DÒNG 1A VÀ 2A -->
               <div class="space-y-1.5 my-auto text-xs sm:text-[13px] font-mono pt-1">
                 <div class="flex items-center justify-between">
                   <span class="text-slate-500 font-bold text-xs">1A:</span>
@@ -1767,12 +1931,43 @@
       renderDutyStats(currentMonthSched);
     }
 
-    function handleDayClick(dayNum) {
+    function deleteFutureMonthRoster() {
       if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin accounts can switch viewing dates!");
+        alert("Only Admin can delete month rosters!");
         return;
       }
-      syncDayStatus(dayNum);
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const confirmMsg = (currentLang === 'vi')
+        ? `Xác nhận XÓA TOÀN BỘ lịch của tháng tương lai ${monthKey}?\n\nTháng này sẽ quay về trạng thái chưa thiết lập (No roster) kèm nút khởi tạo lại!`
+        : `Are you sure you want to DELETE the entire roster for ${monthKey}?\n\nThis month will revert to unconfigured (No roster) state!`;
+
+      if (confirm(confirmMsg)) {
+        delete SCHEDULE_STORE[monthKey];
+        saveData();
+        renderDutyBoard();
+        alert((currentLang === 'vi') ? `Đã xóa lịch tháng ${monthKey} thành công!` : `Deleted roster for ${monthKey} successfully!`);
+      }
+    }
+
+    function deleteDutyShift(dayNum) {
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
+        alert("Only Admin accounts can delete shift assignments!");
+        return;
+      }
+
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const confirmMsg = (currentLang === 'vi')
+        ? `Xác nhận xóa ca trực ngày ${dayNum}/${currentMonth + 1}/${currentYear}?`
+        : `Delete shift for ${dayNum}/${currentMonth + 1}/${currentYear}?`;
+
+      if (confirm(confirmMsg)) {
+        if (SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum]) {
+          delete SCHEDULE_STORE[monthKey][dayNum];
+          saveData();
+          renderDutyBoard();
+        }
+      }
     }
 
     function renderDutyStats(sched) {
@@ -1812,6 +2007,184 @@
       }).join("");
     }
 
+    // -------------------------------------------------------------
+    // RENDER TAB PUBLIC HOLIDAYS
+    // -------------------------------------------------------------
+    function renderHolidaysTab() {
+      const tbody = document.getElementById('holiday-table-body');
+      tbody.innerHTML = '';
+
+      const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+
+      HOLIDAYS_STORE.forEach((h, index) => {
+        let actionButtons = '';
+        if (isPrivileged) {
+          actionButtons = `
+            <td class="py-2 px-3 text-center whitespace-nowrap">
+              <button onclick="openHolidayModal('${h.id}')" class="text-indigo-600 hover:text-indigo-800 p-1 mr-1" title="Edit Holiday"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button onclick="deleteHoliday('${h.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete Holiday"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          `;
+        }
+
+        const typeBadge = (h.type === 'solar') 
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Dương Lịch (Solar)</span>`
+          : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">Âm Lịch (Lunar)</span>`;
+
+        const sDate = h.startDate || h.solarDate || "";
+        const eDate = h.endDate || sDate;
+        const dateRangeDisplay = (sDate === eDate) ? sDate : `${sDate} → ${eDate}`;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px]">${index + 1}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-[11.5px]">${h.name}</td>
+          <td class="py-2.5 px-3">${typeBadge}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-slate-700">${h.detail}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-[#ee2f26]">${dateRangeDisplay}</td>
+          <td class="py-2.5 px-3 text-center font-bold text-emerald-700">${h.daysOff} d</td>
+          <td class="py-2.5 px-3 text-slate-500 text-[11px]">${h.desc || '—'}</td>
+          ${actionButtons}
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openHolidayModal(holidayId = null) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
+        alert("Only Admin and Manager can edit holidays!");
+        return;
+      }
+
+      const form = document.getElementById('holiday-form');
+      form.reset();
+
+      if (holidayId) {
+        const item = HOLIDAYS_STORE.find(h => h.id === holidayId);
+        if (item) {
+          document.getElementById('holiday-modal-title').innerText = "Edit Public Holiday";
+          document.getElementById('form-holiday-id').value = item.id;
+          document.getElementById('form-holiday-name').value = item.name;
+          document.getElementById('form-holiday-type').value = item.type;
+          document.getElementById('form-holiday-datedetail').value = item.detail;
+          
+          const sDate = item.startDate || item.solarDate || "";
+          const eDate = item.endDate || sDate;
+          document.getElementById('form-holiday-startdate').value = sDate;
+          document.getElementById('form-holiday-enddate').value = eDate;
+          document.getElementById('form-holiday-daysoff').value = item.daysOff || 1;
+          document.getElementById('calc-daysoff-preview').innerText = `${item.daysOff || 1} Ngày`;
+          document.getElementById('form-holiday-desc').value = item.desc || '';
+        }
+      } else {
+        document.getElementById('holiday-modal-title').innerText = "Add Public Holiday";
+        document.getElementById('form-holiday-id').value = "";
+        document.getElementById('calc-daysoff-preview').innerText = "1 Ngày";
+      }
+
+      document.getElementById('holiday-modal').classList.remove('hidden');
+    }
+
+    // TỰ ĐỘNG TÍNH TOÁN SỐ NGÀY NGHỈ KHI CHỌN TỪ NGÀY ĐẾN NGÀY
+    function autoCalcDaysOff() {
+      const sVal = document.getElementById('form-holiday-startdate').value;
+      const eVal = document.getElementById('form-holiday-enddate').value;
+
+      if (sVal && eVal) {
+        const s = new Date(sVal);
+        const e = new Date(eVal);
+        if (e >= s) {
+          const diffDays = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
+          document.getElementById('form-holiday-daysoff').value = diffDays;
+          document.getElementById('calc-daysoff-preview').innerText = `${diffDays} Ngày`;
+          return;
+        }
+      }
+      document.getElementById('form-holiday-daysoff').value = 1;
+      document.getElementById('calc-daysoff-preview').innerText = `1 Ngày`;
+    }
+
+    function handleSaveHoliday(e) {
+      e.preventDefault();
+      const id = document.getElementById('form-holiday-id').value;
+      const name = document.getElementById('form-holiday-name').value.trim();
+      const type = document.getElementById('form-holiday-type').value;
+      const detail = document.getElementById('form-holiday-datedetail').value.trim();
+      const startDate = document.getElementById('form-holiday-startdate').value;
+      let endDate = document.getElementById('form-holiday-enddate').value;
+
+      if (!endDate || new Date(endDate) < new Date(startDate)) {
+        endDate = startDate;
+      }
+
+      const diffDays = Math.round((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
+      const daysOff = diffDays > 0 ? diffDays : 1;
+      const desc = document.getElementById('form-holiday-desc').value.trim();
+
+      if (id) {
+        const item = HOLIDAYS_STORE.find(h => h.id === id);
+        if (item) {
+          item.name = name; item.type = type; item.detail = detail;
+          item.startDate = startDate; item.endDate = endDate;
+          item.solarDate = startDate; item.daysOff = daysOff; item.desc = desc;
+        }
+      } else {
+        const newId = "H_" + Date.now();
+        HOLIDAYS_STORE.push({ id: newId, name, type, detail, startDate, endDate, solarDate: startDate, daysOff, desc });
+      }
+
+      saveData();
+      closeModal('holiday-modal');
+      renderHolidaysTab();
+      renderDutyBoard();
+      alert("Saved holiday successfully!");
+    }
+
+    function deleteHoliday(holidayId) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
+        alert("Only Admin and Manager can delete holidays!");
+        return;
+      }
+
+      if (confirm("Delete this holiday from the list?")) {
+        HOLIDAYS_STORE = HOLIDAYS_STORE.filter(h => h.id !== holidayId);
+        saveData();
+        renderHolidaysTab();
+        renderDutyBoard();
+      }
+    }
+
+    function syncHolidayDatesForYear(targetYear) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
+        alert("Only Admin and Manager can sync holiday dates!");
+        return;
+      }
+
+      if (confirm(`Auto-sync solar holiday dates for year ${targetYear}?`)) {
+        HOLIDAYS_STORE.forEach(h => {
+          if (h.type === 'solar') {
+            if (h.startDate) {
+              const sp = h.startDate.split('-');
+              if (sp.length === 3) h.startDate = `${targetYear}-${sp[1]}-${sp[2]}`;
+            }
+            if (h.endDate) {
+              const ep = h.endDate.split('-');
+              if (ep.length === 3) h.endDate = `${targetYear}-${ep[1]}-${ep[2]}`;
+            }
+            h.solarDate = h.startDate;
+          }
+        });
+        saveData();
+        renderHolidaysTab();
+        renderDutyBoard();
+        alert(`Successfully synchronized holidays for ${targetYear}!`);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // RENDER STAFF LIST (ĐÃ TÁCH BIỆT RÕ ROLE VÀ SEAT, KHÔNG LỖI VỠ HÀNG)
+    // -------------------------------------------------------------
     function renderDashboard() {
       if (currentLoggedInUser && currentLoggedInUser.role === 'User') {
         return;
@@ -1840,9 +2213,9 @@
         return;
       }
 
-      const monthKey = getMonthKey(currentYear, currentMonth);
-      const currentMonthSched = SCHEDULE_STORE[monthKey];
-      const daySched = (currentMonthSched && currentMonthSched[currentViewingDay]) ? currentMonthSched[currentViewingDay] : null;
+      const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
+      const currentMonthSched = SCHEDULE_STORE[realMonthKey];
+      const daySched = (currentMonthSched && currentMonthSched[REAL_TODAY_DAY]) ? currentMonthSched[REAL_TODAY_DAY] : null;
 
       sorted.forEach((emp, index) => {
         let seatDisplay = '';
@@ -1874,18 +2247,26 @@
           }
 
           const badgeText = assignedCode ? `Mobile (${assignedCode})` : 'Mobile';
-          seatDisplay = `<span class="font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded text-[9px] sm:text-xs">${badgeText}</span>`;
+          seatDisplay = `<span class="inline-block font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${badgeText}</span>`;
         } else if (!emp.seating) {
-          seatDisplay = `<span class="text-slate-400 italic text-[9px] sm:text-xs">Unassigned</span>`;
+          seatDisplay = `<span class="text-slate-400 italic text-[10px] sm:text-[11px]">Unassigned</span>`;
         } else {
-          seatDisplay = `<span class="font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-1.5 py-0.5 rounded text-[9px] sm:text-xs">${emp.seating}</span>`;
+          seatDisplay = `<span class="inline-block font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${emp.seating}</span>`;
         }
 
-        let statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>`;
-        if (liveStatus === 'WFH') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-amber-50 text-amber-700 border border-amber-200">WFH</span>`;
-        else if (liveStatus === 'On Site') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-blue-50 text-blue-700 border border-blue-200">Site</span>`;
-        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-rose-50 text-rose-700 border border-rose-200">Off</span>`;
-        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-1.5 py-0.2 rounded-full text-[9px] font-medium bg-purple-50 text-purple-700 border border-purple-200">Backup</span>`;
+        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>`;
+        if (liveStatus === 'WFH') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200">WFH</span>`;
+        else if (liveStatus === 'On Site') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Site</span>`;
+        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200">Off</span>`;
+        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-purple-50 text-purple-700 border border-purple-200">Backup</span>`;
+
+        // Badge phân biệt vai trò (Role)
+        let roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-slate-100 text-slate-600 border border-slate-200">User</span>`;
+        if (emp.role === 'Admin') {
+          roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-red-50 text-[#ee2f26] border border-red-200">Admin</span>`;
+        } else if (emp.role === 'Manager') {
+          roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-indigo-50 text-indigo-700 border border-indigo-200">Manager</span>`;
+        }
 
         const tr = document.createElement('tr');
         tr.className = `hover:bg-slate-50 transition ${emp.isHidden ? 'bg-slate-100/60 opacity-60' : ''}`;
@@ -1893,24 +2274,24 @@
         let actionsTd = '';
         if (showActions) {
           actionsTd = `
-            <td class="py-1.5 px-2 text-center whitespace-nowrap">
-              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1 py-0.5 mr-0.5 text-[8.5px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition" title="Reset default password">
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1.5 py-0.5 mr-1 text-[9px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition" title="Reset default password">
                 <i class="fa-solid fa-key text-[7.5px]"></i> Reset
               </button>
-              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-0.5" title="Edit"><i class="fa-solid fa-pen-to-square text-[9px]"></i></button>
-              <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete"><i class="fa-solid fa-trash-can text-[9px]"></i></button>
+              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-1" title="Edit"><i class="fa-solid fa-pen-to-square text-[10px]"></i></button>
+              <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
             </td>
           `;
         }
 
         tr.innerHTML = `
-          <td class="py-1.5 px-2 text-center font-medium text-slate-400 text-[9.5px]">${index + 1}</td>
-          <td class="py-1.5 px-2 font-bold text-slate-800 text-[11px]">${formatNameForDisplay(emp.fullName)}</td>
-          <td class="py-1.5 px-2 desktop-only text-slate-600">${emp.role}</td>
-          <td class="py-1.5 px-2 desktop-only font-mono text-[10px] text-slate-600">${emp.emailCompany}</td>
-          <td class="py-1.5 px-2 desktop-only font-mono text-[10px] text-slate-400">${emp.emailPersonal || '-'}</td>
-          <td class="py-1.5 px-2">${seatDisplay}</td>
-          <td class="py-1.5 px-2 text-center">${statusBadge}</td>
+          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px]">${index + 1}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs">${formatNameForDisplay(emp.fullName)}</td>
+          <td class="py-2.5 px-3 desktop-only text-center">${roleBadge}</td>
+          <td class="py-2.5 px-3 desktop-only font-mono text-[11px] text-slate-600">${emp.emailCompany}</td>
+          <td class="py-2.5 px-3 desktop-only font-mono text-[11px] text-slate-400">${emp.emailPersonal || '—'}</td>
+          <td class="py-2.5 px-3 desktop-only text-center">${seatDisplay}</td>
+          <td class="py-2.5 px-3 text-center">${statusBadge}</td>
           ${actionsTd}
         `;
         tbody.appendChild(tr);
@@ -1919,8 +2300,9 @@
 
     function renderAll() {
       applyLanguageUI();
-      renderFloorplan();
+      syncRealTodayLiveStatus();
       renderDutyBoard();
+      renderHolidaysTab();
       renderDashboard();
     }
 
@@ -2063,7 +2445,7 @@
 
       saveData();
       closeModal('duty-edit-modal');
-      syncDayStatus(dayNum);
+      renderDutyBoard();
     }
 
     function changeMonth(delta) {
@@ -2200,27 +2582,30 @@
       const viewDuty = document.getElementById('view-duty');
       const viewFloor = document.getElementById('view-floorplan');
       const viewDash = document.getElementById('view-dashboard');
+      const viewHoliday = document.getElementById('view-holiday');
 
       const btnDuty = document.getElementById('tab-duty-btn');
       const btnFloor = document.getElementById('tab-floorplan-btn');
       const btnDash = document.getElementById('tab-dashboard-btn');
+      const btnHoliday = document.getElementById('tab-holiday-btn');
 
       const active = "px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-bold rounded-lg bg-[#ee2f26] text-white shadow-xs transition flex items-center justify-center gap-1.5";
       const inactive = "px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs sm:text-sm font-heading font-semibold rounded-lg bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition flex items-center justify-center gap-1.5";
 
-      viewDuty.classList.add('hidden'); viewFloor.classList.add('hidden'); viewDash.classList.add('hidden');
-      btnDuty.className = inactive; btnFloor.className = inactive; btnDash.className = inactive;
+      viewDuty.classList.add('hidden'); viewFloor.classList.add('hidden'); viewDash.classList.add('hidden'); viewHoliday.classList.add('hidden');
+      btnDuty.className = inactive; btnFloor.className = inactive; btnDash.className = inactive; btnHoliday.className = inactive;
 
-      if (tab === 'duty') { viewDuty.classList.remove('hidden'); btnDuty.className = active; }
-      else if (tab === 'floorplan') { viewFloor.classList.remove('hidden'); btnFloor.className = active; }
-      else if (tab === 'dashboard') { viewDash.classList.remove('hidden'); btnDash.className = active; }
+      if (tab === 'duty') { viewDuty.classList.remove('hidden'); btnDuty.className = active; renderDutyBoard(); }
+      else if (tab === 'floorplan') { viewFloor.classList.remove('hidden'); btnFloor.className = active; renderFloorplan(); }
+      else if (tab === 'dashboard') { viewDash.classList.remove('hidden'); btnDash.className = active; renderDashboard(); }
+      else if (tab === 'holiday') { viewHoliday.classList.remove('hidden'); btnHoliday.className = active; renderHolidaysTab(); }
     }
 
     window.onload = function() {
       initDeviceMode();
       loadData();
       applyLanguageUI();
-      syncDayStatus(currentViewingDay);
+      syncRealTodayLiveStatus();
     };
   </script>
 </body>
