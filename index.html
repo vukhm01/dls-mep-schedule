@@ -9,7 +9,7 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-  <!-- BRAND TYPOGRAPHY: MONTSERRAT & MULISH (BRAND GUIDELINES PAGE 5) -->
+  <!-- BRAND TYPOGRAPHY: MONTSERRAT, MULISH & JETBRAINS MONO -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Montserrat:wght@600;700;800&family=Mulish:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
       font-family: "Montserrat", sans-serif;
     }
     .font-mono {
-      font-family: "JetBrains Mono", monospace;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
 
     .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
@@ -33,7 +33,7 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    /* OFFICIAL DLS BRAND COLORS (BRAND GUIDELINES PAGE 6) */
+    /* OFFICIAL DLS BRAND COLORS */
     :root {
       --dls-red: #ee2f26;
       --dls-red-soft: #fef2f2;
@@ -73,7 +73,6 @@
     .desktop-only { display: block !important; }
     .desktop-inline { display: inline !important; }
     
-    /* FIX: Giữ nguyên thuộc tính table-cell cho thẻ TH và TD trên giao diện Desktop */
     th.desktop-only, td.desktop-only, .desktop-table-cell { display: table-cell !important; }
 
     body.is-mobile-view .mobile-only { display: block !important; }
@@ -83,7 +82,6 @@
     body.is-mobile-view .desktop-inline { display: none !important; }
     body.is-mobile-view th.desktop-only, body.is-mobile-view td.desktop-only, body.is-mobile-view .desktop-table-cell { display: none !important; }
 
-    /* Phone preview frame on wide desktop screens */
     body.device-mobile-sim {
       background-color: #0b0f19 !important;
     }
@@ -98,10 +96,9 @@
       min-height: 88vh;
     }
 
-    /* Responsive Seat Card Box */
-    .seat-card-box { min-height: 94px; }
+    .seat-card-box { min-height: 98px; }
     body.is-mobile-view .seat-card-box {
-      min-height: 56px !important;
+      min-height: 60px !important;
       padding: 3px 3px !important;
     }
     body.is-mobile-view .seat-card-title {
@@ -119,9 +116,7 @@
 </head>
 <body class="bg-slate-50 antialiased min-h-screen flex flex-col transition-all duration-200">
 
-  <!-- ========================================================================= -->
-  <!-- TOP STICKY BAR: MODE SWITCHER & LANGUAGE TOGGLE                           -->
-  <!-- ========================================================================= -->
+  <!-- TOP STICKY BAR -->
   <div id="top-device-switcher" class="bg-slate-900 text-white px-3 py-1 flex items-center justify-between text-xs z-50 sticky top-0 border-b border-slate-800 no-print">
     <div class="flex items-center gap-2">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -135,10 +130,10 @@
       </button>
 
       <div class="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
-        <button id="top-btn-desktop" onclick="setDeviceMode('desktop')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300">
+        <button id="top-btn-desktop" onclick="setDeviceMode('desktop')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300 font-heading">
           <i class="fa-solid fa-desktop text-xs"></i><span class="desktop-inline">Desktop</span>
         </button>
-        <button id="top-btn-mobile" onclick="setDeviceMode('mobile')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300">
+        <button id="top-btn-mobile" onclick="setDeviceMode('mobile')" class="px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 text-slate-300 font-heading">
           <i class="fa-solid fa-mobile-screen-button text-xs"></i><span class="desktop-inline">Mobile</span>
         </button>
       </div>
@@ -185,7 +180,7 @@
                  class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:outline-none text-xs">
         </div>
 
-        <div id="login-error-msg" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200">
+        <div id="login-error-msg" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200 font-heading">
           Invalid email or password! Please try again.
         </div>
 
@@ -228,15 +223,21 @@
             <i class="fa-solid fa-arrows-rotate" id="refresh-icon"></i>
           </button>
 
-          <button onclick="openStatusModal()" class="px-2.5 py-1.5 sm:px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-xs">
+          <!-- NÚT STATUS / LEAVE: MỞ THIẾT LẬP TRẠNG THÁI -->
+          <button onclick="openStatusModal()" class="px-2.5 py-1.5 sm:px-3 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap shadow-xs font-heading">
             <i class="fa-solid fa-bell text-amber-600 text-xs"></i>
             <span class="desktop-inline" id="btn-ooo-text">Status / Leave</span>
           </button>
 
-          <div class="relative border-l border-slate-200 pl-1">
-            <button onclick="toggleUserDropdown()" class="flex items-center gap-0.5 p-0.5 rounded-lg hover:bg-slate-100 transition">
-              <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300">
+          <!-- KHỐI PROFILE: HIỂN THỊ TÊN ĐẦY ĐỦ TRÊN DESKTOP, VIẾT TẮT TRÊN MOBILE -->
+          <div class="relative border-l border-slate-200 pl-1 sm:pl-2">
+            <button onclick="toggleUserDropdown()" class="flex items-center gap-1.5 p-1 rounded-lg hover:bg-slate-100 transition">
+              <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300 shrink-0">
                 --
+              </div>
+              <div class="desktop-only text-left leading-tight pr-0.5">
+                <div id="header-user-name" class="font-heading font-bold text-xs text-slate-800 whitespace-nowrap">Not Logged In</div>
+                <div id="header-user-role" class="text-[9px] font-bold text-[#ee2f26] uppercase font-heading">Guest</div>
               </div>
               <i class="fa-solid fa-chevron-down text-[7px] text-slate-400"></i>
             </button>
@@ -244,12 +245,12 @@
             <div id="user-dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-slate-200 py-1.5 z-50 text-xs">
               <div class="px-3 py-2 border-b border-slate-100">
                 <div id="dropdown-user-name" class="font-bold text-slate-800 truncate font-heading">Not Logged In</div>
-                <div id="dropdown-user-role" class="text-[10px] text-[#ee2f26] font-bold uppercase">Guest</div>
+                <div id="dropdown-user-role" class="text-[10px] text-[#ee2f26] font-bold uppercase font-heading">Guest</div>
               </div>
-              <button onclick="openChangePasswordModal()" class="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-slate-700 font-medium" id="btn-change-pass-text">
+              <button onclick="openChangePasswordModal()" class="w-full px-3 py-2 text-left hover:bg-slate-50 flex items-center gap-2 text-slate-700 font-medium font-heading" id="btn-change-pass-text">
                 <i class="fa-solid fa-key text-slate-400"></i> Change Password
               </button>
-              <button onclick="handleLogout()" class="w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 border-t border-slate-100 font-semibold" id="btn-logout-text">
+              <button onclick="handleLogout()" class="w-full px-3 py-2 text-left hover:bg-red-50 text-red-600 flex items-center gap-2 border-t border-slate-100 font-semibold font-heading" id="btn-logout-text">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out
               </button>
             </div>
@@ -298,15 +299,32 @@
       <!-- TAB 1: FLOOR MAP -->
       <div id="view-floorplan" class="space-y-2 sm:space-y-3">
         
-        <div id="backup-active-banner" class="hidden p-2 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex justify-between items-center animate-pulse">
+        <!-- THÔNG BÁO RIÊNG CHO TRAN HOANG DUY NẾU BÁO OFF -->
+        <div id="thd-status-banner" onclick="handleFloorBannerClick()" class="hidden p-2.5 sm:p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-950 flex items-center justify-between shadow-2xs cursor-pointer hover:bg-sky-100 transition" title="Bấm để cập nhật trạng thái nhân sự này">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-sky-600 text-base"></i>
+            <div>
+              <h4 class="font-heading font-bold text-xs text-sky-900 leading-tight">THÔNG BÁO NHÂN SỰ</h4>
+              <p id="thd-status-msg" class="text-[11px] text-sky-800 font-medium"></p>
+            </div>
+          </div>
+          <span class="text-[10px] font-bold uppercase bg-sky-200 text-sky-900 px-2 py-0.5 rounded font-heading shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-pen text-[8px]"></i> Chỉnh sửa
+          </span>
+        </div>
+
+        <!-- ALERT BANNER CHO BACKUP CÁC VỊ TRÍ TRỐNG (CỐ ĐỊNH & MOBILE 1A/2A) -->
+        <div id="backup-active-banner" class="hidden p-2.5 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex flex-wrap justify-between items-center gap-2 animate-pulse">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
             <div>
-              <h4 class="font-heading font-bold text-xs text-red-900 leading-tight" id="txt-backup-activated-title">⚡ BACKUP ACTIVATED FOR OFFICE!</h4>
-              <p id="backup-active-msg" class="text-[10.5px] text-red-800"></p>
+              <h4 class="font-heading font-bold text-xs text-red-900 leading-tight" id="txt-backup-activated-title">⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!</h4>
+              <p id="backup-active-msg" class="text-[11px] text-red-800 font-medium"></p>
             </div>
           </div>
-          <span class="text-[9px] font-bold uppercase bg-red-200 text-red-900 px-1.5 py-0.5 rounded font-heading shrink-0">Backup</span>
+          <div class="text-[10px] font-bold uppercase bg-red-200 text-red-900 px-2 py-0.5 rounded font-heading shrink-0">
+            Cần Mobile xác nhận
+          </div>
         </div>
 
         <div class="bg-white p-2.5 sm:p-4 rounded-xl border border-slate-200 shadow-xs space-y-2">
@@ -323,7 +341,7 @@
 
           <!-- Front Pod: Rows 1 & 2 -->
           <div class="space-y-1 sm:space-y-2">
-            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1" id="txt-front-pod-title">
+            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1 font-heading" id="txt-front-pod-title">
               <i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> Front Pod (Rows 1 & 2)
             </div>
 
@@ -351,7 +369,7 @@
 
           <!-- Back Pod: Rows 3 & 4 -->
           <div class="space-y-1 sm:space-y-2">
-            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1" id="txt-back-pod-title">
+            <div class="text-[9.5px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1 font-heading" id="txt-back-pod-title">
               <i class="fa-solid fa-layer-group text-slate-400 text-[9px]"></i> Back Pod (Rows 3 & 4)
             </div>
 
@@ -388,7 +406,7 @@
               </button>
               <div class="text-center px-2 min-w-[90px] sm:min-w-[120px]">
                 <div class="text-xs sm:text-sm font-bold text-slate-800 font-heading" id="duty-month-display">September 2026</div>
-                <div class="text-[8px] sm:text-[10px] font-semibold text-emerald-600" id="duty-status-badge">Configured</div>
+                <div class="text-[8px] sm:text-[10px] font-semibold text-emerald-600 font-heading" id="duty-status-badge">Configured</div>
               </div>
               <button onclick="changeMonth(1)" class="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition">
                 <i class="fa-solid fa-chevron-right text-[9px]"></i>
@@ -396,23 +414,23 @@
             </div>
 
             <div class="flex items-center gap-1">
-              <button id="btn-delete-future-roster" onclick="deleteFutureMonthRoster()" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold transition flex items-center gap-1" title="Reset this future month back to unconfigured state">
+              <button id="btn-delete-future-roster" onclick="deleteFutureMonthRoster()" class="hidden px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-semibold transition flex items-center gap-1 font-heading" title="Reset this future month back to unconfigured state">
                 <i class="fa-solid fa-calendar-xmark text-xs"></i>
                 <span class="desktop-inline" id="btn-delete-roster-text">Delete Month Roster</span>
               </button>
 
               <button onclick="exportScheduleJSON()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition" title="Export JSON">
                 <i class="fa-solid fa-download"></i>
-                <span class="desktop-inline text-[11px] font-medium ml-1">Export</span>
+                <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Export</span>
               </button>
               <label class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs cursor-pointer transition" title="Import JSON">
                 <i class="fa-solid fa-upload"></i>
-                <span class="desktop-inline text-[11px] font-medium ml-1">Import</span>
+                <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Import</span>
                 <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
               </label>
               <button onclick="window.print()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-800 hover:bg-slate-900 text-white text-xs transition">
                 <i class="fa-solid fa-print"></i>
-                <span class="desktop-inline text-[11px] font-medium ml-1">Print</span>
+                <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Print</span>
               </button>
             </div>
           </div>
@@ -449,7 +467,7 @@
 
       </div>
 
-      <!-- TAB 3: PUBLIC HOLIDAYS (HỖ TRỢ DẢI NGÀY TỪ NGÀY ĐẾN NGÀY) -->
+      <!-- TAB 3: PUBLIC HOLIDAYS -->
       <div id="view-holiday" class="hidden space-y-3 sm:space-y-4">
         <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden p-4 sm:p-5 space-y-4">
           
@@ -460,7 +478,7 @@
             </div>
 
             <div class="flex items-center gap-1.5" id="holiday-manager-actions">
-              <button onclick="syncHolidayDatesForYear(currentYear)" class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition flex items-center gap-1">
+              <button onclick="syncHolidayDatesForYear(currentYear)" class="px-2.5 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition flex items-center gap-1 font-heading">
                 <i class="fa-solid fa-arrows-rotate text-xs"></i>
                 <span id="btn-sync-holidays-text">Auto Sync Current Year</span>
               </button>
@@ -475,14 +493,14 @@
             <table class="w-full text-left border-collapse text-xs">
               <thead>
                 <tr class="bg-slate-100/80 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px]">
-                  <th class="py-2.5 px-3 w-10 text-center">No</th>
-                  <th class="py-2.5 px-3">Holiday Name</th>
-                  <th class="py-2.5 px-3">Calendar Type</th>
-                  <th class="py-2.5 px-3">Date Details</th>
-                  <th class="py-2.5 px-3">Solar Date Range</th>
-                  <th class="py-2.5 px-3 text-center">Days Off</th>
-                  <th class="py-2.5 px-3">Description</th>
-                  <th class="py-2.5 px-3 text-center" id="th-holiday-action">Actions</th>
+                  <th class="py-2.5 px-3 w-10 text-center font-heading">No</th>
+                  <th class="py-2.5 px-3 font-heading">Holiday Name</th>
+                  <th class="py-2.5 px-3 font-heading">Calendar Type</th>
+                  <th class="py-2.5 px-3 font-heading">Date Details</th>
+                  <th class="py-2.5 px-3 font-heading">Solar Date Range</th>
+                  <th class="py-2.5 px-3 text-center font-heading">Days Off</th>
+                  <th class="py-2.5 px-3 font-heading">Description</th>
+                  <th class="py-2.5 px-3 text-center font-heading" id="th-holiday-action">Actions</th>
                 </tr>
               </thead>
               <tbody id="holiday-table-body" class="divide-y divide-slate-200"></tbody>
@@ -497,25 +515,24 @@
         
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
-            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-total-headcount">Total Staff</p>
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider" id="kpi-total-headcount">Total Staff</p>
             <h3 id="stat-total-headcount" class="text-base sm:text-xl font-heading font-extrabold text-slate-900 mt-0.5">0</h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
-            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase" id="kpi-fixed-seats">Fixed Seats</p>
-            <h3 class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">7 <span class="text-[10px] text-slate-400 font-normal">/ 16</span></h3>
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider" id="kpi-fixed-seats">Fixed Seats</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">7 <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
-            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase">Mobile Pool</p>
-            <h3 class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal">staff</span></h3>
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Mobile Pool</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
-            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase">Locked Desks</p>
-            <h3 class="text-base sm:text-xl font-heading font-extrabold text-slate-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal">desks</span></h3>
+            <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Locked Desks</p>
+            <h3 class="text-base sm:text-xl font-heading font-extrabold text-slate-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal font-sans">desks</span></h3>
           </div>
         </div>
 
         <div class="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
-          <!-- CÂN BẰNG THANH MENU ĐIỀU HƯỚNG TRÊN STAFF LIST -->
           <div class="px-3.5 py-2.5 border-b border-slate-200/80 bg-slate-50/80 flex flex-wrap justify-between items-center gap-2 text-xs">
             <div class="flex items-center gap-2">
               <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-600 shadow-2xs">
@@ -523,9 +540,9 @@
                 <span id="txt-synced-with-date" class="text-slate-500 font-medium">Active Date:</span> 
                 <strong id="table-date-sync" class="font-mono text-slate-800 font-bold">--/--/----</strong>
               </span>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 shadow-2xs">
-                <i class="fa-solid fa-users text-slate-400"></i>
-                <span id="table-count" class="font-bold font-heading">0 members</span>
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 shadow-2xs font-heading font-bold">
+                <i class="fa-solid fa-users text-slate-400 font-normal"></i>
+                <span id="table-count">0 members</span>
               </span>
             </div>
 
@@ -535,19 +552,18 @@
             </button>
           </div>
 
-          <!-- BẢNG NHÂN SỰ VỚI CỘT ROLE VÀ SEAT TÁCH BIỆT CĂN CHỈNH THẲNG HÀNG -->
           <div class="overflow-x-auto custom-scrollbar">
             <table class="w-full text-left border-collapse text-xs">
               <thead>
                 <tr class="bg-slate-100/90 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9.5px] sm:text-[10px] tracking-wider whitespace-nowrap" id="table-head-row">
-                  <th class="py-3 px-3 w-12 text-center">No</th>
-                  <th class="py-3 px-3 min-w-[140px]">Full Name</th>
-                  <th class="py-3 px-3 desktop-only text-center w-24" id="th-role-col">Role</th>
-                  <th class="py-3 px-3 desktop-only min-w-[170px]">Work Email</th>
-                  <th class="py-3 px-3 desktop-only min-w-[170px]">Personal Email</th>
-                  <th class="py-3 px-3 desktop-only text-center w-28" id="th-seat-col">Seat</th>
-                  <th class="py-3 px-3 text-center w-24">Status</th>
-                  <th class="py-3 px-3 text-center w-28" id="th-action-col">Actions</th>
+                  <th class="py-3 px-3 w-12 text-center font-heading">No</th>
+                  <th class="py-3 px-3 min-w-[150px] font-heading">Full Name</th>
+                  <th class="py-3 px-3 desktop-only text-center w-24 font-heading" id="th-role-col">Role</th>
+                  <th class="py-3 px-3 desktop-only min-w-[180px] font-heading">Work Email</th>
+                  <th class="py-3 px-3 desktop-only min-w-[180px] font-heading">Personal Email</th>
+                  <th class="py-3 px-3 desktop-only text-center w-32 font-heading" id="th-seat-col">Seat</th>
+                  <th class="py-3 px-3 text-center w-24 font-heading">Status</th>
+                  <th class="py-3 px-3 text-center w-28 font-heading" id="th-action-col">Actions</th>
                 </tr>
               </thead>
               <tbody id="employee-table-body" class="divide-y divide-slate-200 bg-white"></tbody>
@@ -561,7 +577,7 @@
 
   </div>
 
-  <!-- MODAL: ADD / EDIT PUBLIC HOLIDAY (TỪ NGÀY - ĐẾN NGÀY) -->
+  <!-- MODAL: ADD / EDIT PUBLIC HOLIDAY -->
   <div id="holiday-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 space-y-3 text-xs">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
@@ -594,7 +610,6 @@
           </div>
         </div>
 
-        <!-- THIẾT LẬP DẢI NGÀY DƯƠNG LỊCH: TỪ NGÀY ĐẾN NGÀY -->
         <div class="bg-red-50/60 p-3 rounded-xl border border-red-200 space-y-2">
           <div class="font-heading font-bold text-[#ee2f26] text-[11px] flex items-center gap-1">
             <i class="fa-regular fa-calendar-check"></i> Dải ngày Dương Lịch áp dụng trên Calendar:
@@ -622,7 +637,7 @@
         </div>
 
         <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('holiday-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs">Cancel</button>
+          <button type="button" onclick="closeModal('holiday-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs font-heading">Cancel</button>
           <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs">Save Holiday</button>
         </div>
       </form>
@@ -642,60 +657,124 @@
       <form onsubmit="handleSaveOwnPassword(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-semibold text-slate-700 mb-1" id="lbl-new-pwd">New Password:</label>
-          <input type="password" id="new-own-pass" required placeholder="Enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500">
+          <input type="password" id="new-own-pass" required placeholder="Enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 font-mono">
         </div>
         <div>
           <label class="block font-semibold text-slate-700 mb-1" id="lbl-confirm-pwd">Confirm New Password:</label>
-          <input type="password" id="confirm-own-pass" required placeholder="Re-enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500">
+          <input type="password" id="confirm-own-pass" required placeholder="Re-enter new password" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-red-500 font-mono">
         </div>
 
-        <div id="change-pass-error" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200">
+        <div id="change-pass-error" class="hidden text-red-600 text-[11px] font-semibold bg-red-50 p-2 rounded-lg border border-red-200 font-heading">
           Passwords do not match!
         </div>
 
         <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('change-pass-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg">Cancel</button>
+          <button type="button" onclick="closeModal('change-pass-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg font-heading">Cancel</button>
           <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold shadow-xs">Save</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- MODAL: ATTENDANCE & LEAVE STATUS REPORT -->
+  <!-- MODAL: ATTENDANCE & LEAVE STATUS (ADMIN & MANAGER SỬA ĐƯỢC MỌI NHÂN SỰ) -->
   <div id="status-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-    <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
+    <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col">
       <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
         <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5" id="txt-modal-status-title">
-          <i class="fa-solid fa-clipboard-user text-[#ee2f26]"></i> Attendance & Status Report
+          <i class="fa-solid fa-clipboard-user text-[#ee2f26]"></i> Attendance & Status Settings
         </h3>
         <button onclick="closeModal('status-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <div class="p-4 space-y-3 text-xs">
+      <!-- TABS CHUYỂN ĐỔI: HÔM NAY / THIẾT LẬP TUẦN NÀY & TUẦN TỚI -->
+      <div class="flex border-b border-slate-200 bg-slate-100/70 p-1 gap-1 text-xs font-heading font-semibold">
+        <button id="btn-tab-status-today" onclick="switchStatusModalTab('today')" class="flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center">
+          Hôm Nay (Active Date)
+        </button>
+        <button id="btn-tab-status-advance" onclick="switchStatusModalTab('advance')" class="flex-1 py-1.5 rounded-lg text-slate-600 hover:bg-white/60 text-center">
+          Lên lịch trước (Tuần Này & Tuần Tới)
+        </button>
+      </div>
+
+      <div class="p-4 space-y-3 text-xs overflow-y-auto custom-scrollbar flex-1">
         <div>
-          <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-user">Select Staff Member:</label>
-          <select id="status-user-select" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium"></select>
+          <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-user">Tài khoản được chọn:</label>
+          <select id="status-user-select" onchange="onStatusUserSelectChange()" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-semibold text-slate-800 text-xs"></select>
+          <div class="text-[10.5px] text-slate-500 italic mt-1" id="txt-status-user-hint">
+            * Thiết lập trạng thái làm việc cho nhân sự được chọn.
+          </div>
         </div>
 
-        <div>
-          <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-type">Current Working Status:</label>
-          <select id="status-action-select" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium">
-            <option value="Active">🟢 In Office (Active)</option>
-            <option value="WFH">🏠 Working From Home (WFH)</option>
-            <option value="On Site">🚗 On Site Visit (Client/Field)</option>
-            <option value="In Meeting">🤝 External Meeting (Full-day)</option>
-            <option value="Day Off">🔴 Leave / Day Off / Sick</option>
-          </select>
+        <!-- PHẦN 1: CẬP NHẬT HÔM NAY -->
+        <div id="status-panel-today" class="space-y-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-type">Current Working Status:</label>
+            <select id="status-action-select" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-medium text-xs">
+              <option value="Active">🟢 In Office (Active)</option>
+              <option value="WFH">🏠 Working From Home (WFH)</option>
+              <option value="On Site">🚗 On Site Visit (Client/Field)</option>
+              <option value="In Meeting">🤝 External Meeting (Full-day)</option>
+              <option value="Day Off">🔴 Leave / Day Off / Sick</option>
+            </select>
+          </div>
+
+          <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[10.5px] leading-relaxed" id="txt-status-backup-notice">
+            <strong>⚡ Cơ chế Backup:</strong> Khi nhân sự có ghế (cố định hoặc Mobile 1A/2A) báo WFH/Off/Site, bàn sẽ <strong>nhấp nháy đỏ</strong> để các nhân sự Mobile còn lại xác nhận thế chỗ (ngoại trừ anh Trần Hoàng Duy).
+          </div>
         </div>
 
-        <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[10.5px] leading-relaxed" id="txt-status-backup-notice">
-          <strong>⚡ Automatic Backup Trigger:</strong> If a fixed desk owner reports WFH, On Site, or Day Off, their desk will <strong>flash pulsing red</strong> to summon today's Backup staff!
+        <!-- PHẦN 2: THIẾT LẬP TRƯỚC TUẦN NÀY & TUẦN TIẾP THEO -->
+        <div id="status-panel-advance" class="hidden space-y-3.5">
+          <p class="text-[11px] text-slate-500">Mặc định các ngày là <strong>🟢 In-Office</strong>. Bạn có thể chọn trước ngày <strong>Off/WFH</strong> bên dưới:</p>
+          
+          <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50/70 space-y-2">
+            <h4 class="font-heading font-bold text-slate-800 text-[11px] flex items-center gap-1">
+              <i class="fa-regular fa-calendar text-[#ee2f26]"></i> Tuần này (This Week)
+            </h4>
+            <div id="advance-this-week-list" class="space-y-1.5"></div>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50/70 space-y-2">
+            <h4 class="font-heading font-bold text-slate-800 text-[11px] flex items-center gap-1">
+              <i class="fa-regular fa-calendar-plus text-indigo-600"></i> Tuần tiếp theo (Next Week)
+            </h4>
+            <div id="advance-next-week-list" class="space-y-1.5"></div>
+          </div>
         </div>
 
         <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('status-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs" id="btn-status-cancel">Cancel</button>
-          <button type="button" onclick="submitStatusUpdate()" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs" id="btn-status-submit">Update</button>
+          <button type="button" onclick="closeModal('status-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs font-heading" id="btn-status-cancel">Cancel</button>
+          <button type="button" onclick="submitStatusUpdate()" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs" id="btn-status-submit">Lưu Thay Đổi</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: XÁC NHẬN MOBILE NHẬN CHỖ BACKUP (CLAIM DESK) -->
+  <div id="claim-seat-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-5 space-y-3.5 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-chair text-[#ee2f26]"></i>
+          <span>Xác nhận Backup ngồi vào ghế <strong id="claim-modal-seat-title" class="text-[#ee2f26] font-mono">--</strong></span>
+        </h3>
+        <button onclick="closeModal('claim-seat-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+
+      <input type="hidden" id="claim-seat-code-hidden">
+
+      <p class="text-[11px] text-slate-600 leading-relaxed" id="claim-modal-desc">
+        Vị trí này đang trống do nhân sự vắng mặt. 1 trong các nhân sự Mobile có thể xác nhận ngồi vào để đưa trạng thái bàn về màu xanh bình thường:
+      </p>
+
+      <div id="claim-candidates-container" class="space-y-2"></div>
+
+      <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-[10px] text-slate-500">
+        * Lưu ý: Mỗi người Mobile chỉ được ngồi tối đa 1 bàn. Nếu đã xác nhận bàn này thì không thể nhận bàn khác trừ khi có bàn mới báo Off.
+      </div>
+
+      <div class="pt-2 border-t border-slate-200 flex justify-end">
+        <button type="button" onclick="closeModal('claim-seat-modal')" class="px-3.5 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs font-heading">Đóng</button>
       </div>
     </div>
   </div>
@@ -734,7 +813,7 @@
         </div>
 
         <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('duty-edit-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs">Cancel</button>
+          <button type="button" onclick="closeModal('duty-edit-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs font-heading">Cancel</button>
           <button type="button" onclick="saveDutyEdit()" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold text-xs shadow-xs">Save</button>
         </div>
       </div>
@@ -768,7 +847,7 @@
           </div>
           <div>
             <label class="block font-semibold text-slate-700 mb-1">Assigned Desk</label>
-            <input type="text" id="form-seating-display" readonly class="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-bold font-mono text-slate-800">
+            <input type="text" id="form-seating-display" readonly class="w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-bold font-heading text-slate-800">
             <input type="hidden" id="form-seating">
           </div>
         </div>
@@ -777,8 +856,8 @@
           <div class="flex justify-between items-center">
             <label class="font-heading font-bold text-slate-700 text-[11px]">Click Desk to Assign:</label>
             <div class="flex gap-1">
-              <button type="button" onclick="selectSeatPicker('Mobile')" class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold font-mono">Mobile</button>
-              <button type="button" onclick="selectSeatPicker('')" class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-bold">Unassigned</button>
+              <button type="button" onclick="selectSeatPicker('Mobile')" class="px-2 py-0.5 rounded bg-indigo-100 text-indigo-800 text-[10px] font-bold font-heading">Mobile</button>
+              <button type="button" onclick="selectSeatPicker('')" class="px-2 py-0.5 rounded bg-slate-200 text-slate-700 text-[10px] font-bold font-heading">Unassigned</button>
             </div>
           </div>
           <div class="grid grid-cols-4 gap-1 pt-0.5" id="mini-seat-picker-grid"></div>
@@ -809,13 +888,13 @@
           <div class="flex items-end pb-1.5">
             <label class="flex items-center gap-1.5 cursor-pointer select-none">
               <input type="checkbox" id="form-is-hidden" class="rounded border-slate-300 text-red-600">
-              <span class="text-slate-700 text-[11px] font-medium">Hide employee</span>
+              <span class="text-slate-700 text-[11px] font-medium font-heading">Hide employee</span>
             </label>
           </div>
         </div>
 
         <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">
-          <button type="button" onclick="closeModal('employee-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg">Cancel</button>
+          <button type="button" onclick="closeModal('employee-modal')" class="px-3 py-1.5 border border-slate-300 text-slate-600 rounded-lg font-heading">Cancel</button>
           <button type="submit" class="px-4 py-1.5 bg-[#ee2f26] hover:bg-red-700 text-white rounded-lg font-heading font-bold">Save</button>
         </div>
       </form>
@@ -842,7 +921,7 @@
         dateLbl: "Active Date:",
         addStaff: "Add Staff",
         deleteMonthRoster: "Delete Month Roster",
-        backupAlertTitle: "⚡ BACKUP ACTIVATED FOR OFFICE!",
+        backupAlertTitle: "⚡ BACKUP NEEDED: DESK IS OFF!",
         floorTitle: "Workstation Pod (4 Rows x 4 Desks)",
         present: "Present",
         absent: "Absent/WFH",
@@ -888,7 +967,7 @@
         dateLbl: "Ngày hiện hành:",
         addStaff: "Thêm Nhân Sự",
         deleteMonthRoster: "Xóa Lịch Tháng Này",
-        backupAlertTitle: "⚡ ĐÃ KÍCH HOẠT BACKUP VÀO VĂN PHÒNG!",
+        backupAlertTitle: "⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!",
         floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)",
         present: "Có mặt",
         absent: "Vắng/WFH",
@@ -1054,7 +1133,6 @@
       VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "2A" },
     };
 
-    // DANH SÁCH NGÀY LỄ VIỆT NAM (CHUẨN HÓA DẢI NGÀY: STARTDATE & ENDDATE)
     const DEFAULT_VN_HOLIDAYS = [
       { id: "VN_H01", name: "Tết Dương Lịch (New Year's Day)", type: "solar", detail: "01/01", startDate: "2026-01-01", endDate: "2026-01-01", daysOff: 1, desc: "Nghỉ Tết Dương Lịch toàn quốc" },
       { id: "VN_H02", name: "Tết Nguyên Đán (Lunar New Year)", type: "lunar", detail: "29/12 - 03/01 ÂL", startDate: "2026-02-15", endDate: "2026-02-19", daysOff: 5, desc: "Tết Âm Lịch cổ truyền Bính Ngọ (5 ngày)" },
@@ -1091,9 +1169,11 @@
       }
     };
 
+    let LEAVE_PRESETS = {};
+    let SEAT_CLAIMS = {};
+
     let employees = [];
 
-    // ACTIVE DATE CỐ ĐỊNH CHÍNH XÁC VỚI NGÀY GIỜ HIỆN THỰC CỦA MÁY
     const todayNow = new Date();
     const REAL_TODAY_DAY = todayNow.getDate();
     const REAL_TODAY_MONTH = todayNow.getMonth();
@@ -1107,6 +1187,10 @@
 
     function getMonthKey(year, month) {
       return `${year}-${String(month + 1).padStart(2, '0')}`;
+    }
+
+    function getActiveDateStr() {
+      return `${REAL_TODAY_YEAR}-${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}-${String(REAL_TODAY_DAY).padStart(2, '0')}`;
     }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
@@ -1159,7 +1243,7 @@
         if (matched.emailCompany) {
           optionsContainer.innerHTML += `
             <button type="button" onclick="selectLoginMethod('${matched.emailCompany}')" 
-                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-red-50 rounded-lg border border-red-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition">
+                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-red-50 rounded-lg border border-red-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading">
               <span>🏢 <b>${currentLang === 'vi' ? 'Email C.Ty' : 'Work Email'}:</b> ${matched.emailCompany}</span>
               <i class="fa-solid fa-arrow-right text-[9px] text-[#ee2f26]"></i>
             </button>
@@ -1169,7 +1253,7 @@
         if (matched.emailPersonal) {
           optionsContainer.innerHTML += `
             <button type="button" onclick="selectLoginMethod('${matched.emailPersonal}')" 
-                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-emerald-50 rounded-lg border border-emerald-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition">
+                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-emerald-50 rounded-lg border border-emerald-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading">
               <span>📧 <b>${currentLang === 'vi' ? 'Email Riêng' : 'Personal'}:</b> ${matched.emailPersonal}</span>
               <i class="fa-solid fa-arrow-right text-[9px] text-emerald-600"></i>
             </button>
@@ -1188,12 +1272,19 @@
     function applyUserIdentityUI() {
       if (!currentLoggedInUser) return;
       const avatar = document.getElementById('header-avatar');
+      const headerName = document.getElementById('header-user-name');
+      const headerRole = document.getElementById('header-user-role');
       const dropdownName = document.getElementById('dropdown-user-name');
       const dropdownRole = document.getElementById('dropdown-user-role');
 
       const words = currentLoggedInUser.fullName.split(' ');
       const initials = words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2);
       avatar.innerText = initials.toUpperCase();
+      
+      // Hiển thị tên đầy đủ và vai trò trực tiếp trên Desktop header
+      if (headerName) headerName.innerText = currentLoggedInUser.fullName;
+      if (headerRole) headerRole.innerText = currentLoggedInUser.role;
+
       dropdownName.innerText = currentLoggedInUser.fullName;
       dropdownRole.innerText = currentLoggedInUser.role;
 
@@ -1233,7 +1324,7 @@
 
     window.addEventListener('click', (e) => {
       const menu = document.getElementById('user-dropdown-menu');
-      if (!e.target.closest('#header-avatar') && !e.target.closest('#user-dropdown-menu')) {
+      if (!e.target.closest('#header-avatar') && !e.target.closest('#user-dropdown-menu') && !e.target.closest('#header-user-name')) {
         menu.classList.add('hidden');
       }
     });
@@ -1247,6 +1338,13 @@
         document.getElementById('login-input-pass').value = "";
         document.getElementById('login-error-msg').classList.add('hidden');
         document.getElementById('login-detected-box').classList.add('hidden');
+
+        const headerName = document.getElementById('header-user-name');
+        const headerRole = document.getElementById('header-user-role');
+        if (headerName) headerName.innerText = "Not Logged In";
+        if (headerRole) headerRole.innerText = "Guest";
+        document.getElementById('header-avatar').innerText = "--";
+
         document.getElementById('login-modal-overlay').classList.remove('hidden');
       }
     }
@@ -1376,13 +1474,13 @@
         } else {
           body.classList.remove('device-mobile-sim');
         }
-        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-[#ee2f26] text-white shadow-xs";
-        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white";
+        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-[#ee2f26] text-white shadow-xs font-heading";
+        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white font-heading";
       } else {
         body.classList.remove('is-mobile-view');
         body.classList.remove('device-mobile-sim');
-        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-white text-slate-900 shadow-xs";
-        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white";
+        topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-white text-slate-900 shadow-xs font-heading";
+        topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white font-heading";
       }
 
       renderAll();
@@ -1400,7 +1498,7 @@
     });
 
     // -------------------------------------------------------------
-    // REFRESH & GOOGLE SHEETS SYNC
+    // DATA SYNC & LOAD
     // -------------------------------------------------------------
     async function refreshDataUI() {
       const icon = document.getElementById('refresh-icon');
@@ -1418,7 +1516,7 @@
       const badge = document.getElementById('duty-status-badge');
       if (badge) {
         badge.innerText = text;
-        badge.className = isSaving ? "text-[8px] text-amber-500 animate-pulse font-bold" : "text-[8px] text-emerald-600 font-bold";
+        badge.className = isSaving ? "text-[8px] text-amber-500 animate-pulse font-bold font-heading" : "text-[8px] text-emerald-600 font-bold font-heading";
       }
     }
 
@@ -1426,6 +1524,8 @@
       const storedEmp = localStorage.getItem('dls_v11_emp');
       const storedStore = localStorage.getItem('dls_v11_sched_store');
       const storedHolidays = localStorage.getItem('dls_v11_holidays');
+      const storedPresets = localStorage.getItem('dls_v11_leave_presets');
+      const storedClaims = localStorage.getItem('dls_v11_seat_claims');
 
       if (storedEmp) {
         try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
@@ -1435,6 +1535,10 @@
 
       employees.forEach(emp => {
         if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
+        // Chuẩn hóa tên ghế Mobile tránh phân biệt hoa thường
+        if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
+          emp.seating = 'Mobile';
+        }
       });
 
       if (storedStore) {
@@ -1447,7 +1551,14 @@
         HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
       }
 
-      // Đảm bảo tương thích dữ liệu cũ: nếu chỉ có solarDate thì gán startDate và endDate
+      if (storedPresets) {
+        try { LEAVE_PRESETS = JSON.parse(storedPresets); } catch(e) { LEAVE_PRESETS = {}; }
+      }
+
+      if (storedClaims) {
+        try { SEAT_CLAIMS = JSON.parse(storedClaims); } catch(e) { SEAT_CLAIMS = {}; }
+      }
+
       HOLIDAYS_STORE.forEach(h => {
         if (!h.startDate && h.solarDate) h.startDate = h.solarDate;
         if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
@@ -1463,19 +1574,16 @@
             employees = onlineData.employees;
             employees.forEach(emp => {
               if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
+              if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
+                emp.seating = 'Mobile';
+              }
             });
             SCHEDULE_STORE = onlineData.schedule;
-            if (onlineData.holidays) {
-              HOLIDAYS_STORE = onlineData.holidays;
-              HOLIDAYS_STORE.forEach(h => {
-                if (!h.startDate && h.solarDate) h.startDate = h.solarDate;
-                if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
-              });
-            }
+            if (onlineData.holidays) HOLIDAYS_STORE = onlineData.holidays;
+            if (onlineData.leavePresets) LEAVE_PRESETS = onlineData.leavePresets;
+            if (onlineData.seatClaims) SEAT_CLAIMS = onlineData.seatClaims;
 
-            localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
-            localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
-            localStorage.setItem('dls_v11_holidays', JSON.stringify(HOLIDAYS_STORE));
+            saveLocalOnly();
             renderAll();
             setSyncStatus("Synced");
           } else {
@@ -1490,10 +1598,16 @@
       checkAutoAuthentication();
     }
 
-    async function saveData() {
+    function saveLocalOnly() {
       localStorage.setItem('dls_v11_emp', JSON.stringify(employees));
       localStorage.setItem('dls_v11_sched_store', JSON.stringify(SCHEDULE_STORE));
       localStorage.setItem('dls_v11_holidays', JSON.stringify(HOLIDAYS_STORE));
+      localStorage.setItem('dls_v11_leave_presets', JSON.stringify(LEAVE_PRESETS));
+      localStorage.setItem('dls_v11_seat_claims', JSON.stringify(SEAT_CLAIMS));
+    }
+
+    async function saveData() {
+      saveLocalOnly();
 
       if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
         setSyncStatus("Saving...", true);
@@ -1502,6 +1616,8 @@
             employees: employees,
             schedule: SCHEDULE_STORE,
             holidays: HOLIDAYS_STORE,
+            leavePresets: LEAVE_PRESETS,
+            seatClaims: SEAT_CLAIMS,
             lastUpdated: new Date().toISOString()
           });
 
@@ -1580,31 +1696,47 @@
       alert(`Successfully generated 3-2 roster for ${monthKey}!`);
     }
 
+    // -------------------------------------------------------------
+    // ĐỒNG BỘ TRẠNG THÁI NGÀY HIỆN HÀNH & LỊCH THIẾT LẬP TRƯỚC
+    // -------------------------------------------------------------
     function syncRealTodayLiveStatus() {
       const formattedDate = `${String(REAL_TODAY_DAY).padStart(2, '0')}/${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}/${REAL_TODAY_YEAR}`;
       document.getElementById('current-active-date-badge').innerText = formattedDate;
       document.getElementById('table-date-sync').innerText = formattedDate;
 
+      const todayStr = getActiveDateStr();
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
 
+      // Mặc định tất cả nhân sự là Active (In Office)
+      employees.forEach(emp => {
+        emp.status = "Active";
+
+        if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
+          emp.status = LEAVE_PRESETS[emp.id][todayStr];
+        }
+      });
+
       if (sched) {
-        const empWs1 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
-        const empWs2 = employees.find(e => e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
-        if (empWs1) empWs1.status = "Active";
-        if (empWs2) empWs2.status = "Active";
-
-        if (sched.backup) {
-          const empBackup = employees.find(e => e.fullName === STAFF_DUTY[sched.backup]?.fullName);
-          if (empBackup && empBackup.status !== "Active") empBackup.status = "Active";
-        }
-
+        const mobileStaffMapping = {
+          [sched.ws1]: "Active",
+          [sched.ws2]: "Active",
+          [sched.backup]: "Active"
+        };
         if (sched.online) {
-          sched.online.forEach(k => {
-            const empOnline = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
-            if (empOnline) empOnline.status = "WFH";
-          });
+          sched.online.forEach(k => { mobileStaffMapping[k] = "WFH"; });
         }
+
+        Object.entries(mobileStaffMapping).forEach(([k, dutyStatus]) => {
+          const emp = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
+          if (emp) {
+            if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
+              emp.status = LEAVE_PRESETS[emp.id][todayStr];
+            } else {
+              emp.status = dutyStatus;
+            }
+          }
+        });
       }
 
       renderFloorplan();
@@ -1613,7 +1745,7 @@
 
     function formatNameForDisplay(fullName) {
       if (!fullName) return "";
-      if (activeDeviceMode !== 'mobile') return fullName;
+      if (activeDeviceMode !== 'mobile') return fullName; // Trên desktop luôn hiển thị đầy đủ Họ và Tên
 
       const shortMap = {
         "TRAN HOANG DUY": "T.H.Duy",
@@ -1641,6 +1773,16 @@
       return `${initial}.${firstName}`;
     }
 
+    function handleFloorBannerClick() {
+      const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
+      if (thdUser) {
+        openStatusModal(thdUser.id);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN)
+    // -------------------------------------------------------------
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
       const row2El = document.getElementById('row-2-grid');
@@ -1649,20 +1791,55 @@
 
       row1El.innerHTML = ''; row2El.innerHTML = ''; row3El.innerHTML = ''; row4El.innerHTML = '';
 
+      const todayStr = getActiveDateStr();
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
       const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, backup: null };
 
-      const absentFixedUsers = employees.filter(e => !e.isHidden && e.seating && e.seating !== "Mobile" && e.status !== "Active");
-      const isBackupTriggered = absentFixedUsers.length > 0;
+      // 1. Kiểm tra trạng thái của TRAN HOANG DUY
+      const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
+      const thdBanner = document.getElementById('thd-status-banner');
+      const thdMsg = document.getElementById('thd-status-msg');
 
+      if (thdUser && thdUser.status !== "Active") {
+        thdBanner.classList.remove('hidden');
+        let statusText = thdUser.status;
+        if (thdUser.status === 'WFH') statusText = 'Làm việc từ xa (WFH)';
+        else if (thdUser.status === 'On Site') statusText = 'Đi công tác / On Site';
+        else if (thdUser.status === 'Day Off') statusText = 'Nghỉ phép / Day Off';
+        else if (thdUser.status === 'In Meeting') statusText = 'Họp ngoài (Full-day Meeting)';
+        thdMsg.innerHTML = `Anh <strong>${formatNameForDisplay(thdUser.fullName)}</strong> hôm nay: <span class="font-bold text-sky-900">${statusText}</span>.`;
+      } else {
+        thdBanner.classList.add('hidden');
+      }
+
+      // 2. Lấy danh sách bàn vắng mặt: Bàn Fixed + Bàn Mobile (1A / 2A) khi nhân sự chuyển trạng thái khác Active (LOẠI TRỪ TRAN HOANG DUY)
+      const absentDesks = [];
+      SEAT_LAYOUT.forEach(seat => {
+        if (seat.type === "fixed") {
+          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
+          if (occupant && occupant.status !== "Active" && !occupant.fullName.includes("TRAN HOANG DUY")) {
+            absentDesks.push({ seatCode: seat.code, occupant });
+          }
+        } else if (seat.type === "mobile") {
+          const dutyKey = seat.code === "1A" ? daySched.ws1 : daySched.ws2;
+          const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
+          const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
+          if (mobileEmp && mobileEmp.status !== "Active") {
+            absentDesks.push({ seatCode: seat.code, occupant: mobileEmp });
+          }
+        }
+      });
+
+      const todayClaims = SEAT_CLAIMS[todayStr] || {};
+      const unclaimedAbsentDesks = absentDesks.filter(d => !todayClaims[d.seatCode]);
       const banner = document.getElementById('backup-active-banner');
       const msg = document.getElementById('backup-active-msg');
-      if (isBackupTriggered) {
+
+      if (unclaimedAbsentDesks.length > 0) {
         banner.classList.remove('hidden');
-        const absentNames = absentFixedUsers.map(u => `${formatNameForDisplay(u.fullName)} (${u.seating})`).join(', ');
-        const backupPersonName = daySched.backup ? STAFF_DUTY[daySched.backup].name : "Backup";
-        msg.innerHTML = `${absentNames} absent → Summoned <strong>${backupPersonName}</strong> into office!`;
+        const descNames = unclaimedAbsentDesks.map(u => `${u.seatCode} (${formatNameForDisplay(u.occupant.fullName)} - ${u.occupant.status})`).join(', ');
+        msg.innerHTML = `Vị trí trống: <strong>${descNames}</strong>. Vui lòng nhân sự Mobile nhấn vào bàn để xác nhận chỗ ngồi!`;
       } else {
         banner.classList.add('hidden');
       }
@@ -1677,59 +1854,170 @@
             <div class="p-1 sm:p-2.5 rounded-lg border border-dashed border-slate-300 bg-slate-100/50 flex flex-col justify-between seat-card-box text-slate-400">
               <div class="flex justify-between items-center text-[8px] sm:text-[9.5px] font-mono font-bold">
                 <span>${seat.code}</span>
-                <span class="text-[7px] bg-slate-200 px-1 rounded ${isMobile ? 'hidden' : 'inline'}">LOCK</span>
+                <span class="text-[7px] bg-slate-200 px-1 rounded font-heading ${isMobile ? 'hidden' : 'inline'}">LOCK</span>
               </div>
-              <div class="text-center my-auto text-[9px] sm:text-[10px] font-medium">${t('locked')}</div>
+              <div class="text-center my-auto text-[9px] sm:text-[10px] font-medium font-heading">${t('locked')}</div>
             </div>
           `;
         } else if (seat.type === "mobile") {
           const dutyKey = seat.code === "1A" ? daySched.ws1 : daySched.ws2;
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
+          const displayMobileName = staffObj ? (isMobile ? formatNameForDisplay(staffObj.fullName) : staffObj.fullName) : "Empty";
+          const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
 
-          cardHTML = `
-            <div class="p-1 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs transition relative">
-              <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                <span class="text-indigo-800 font-extrabold">${seat.code}</span>
-                <span class="bg-indigo-600 text-white px-1 rounded text-[7px] sm:text-[8.5px]">Mobile</span>
-              </div>
-              <div class="my-auto truncate text-center sm:text-left">
-                <div class="font-extrabold text-[12px] sm:text-sm text-indigo-950 truncate seat-card-title font-heading">${staffObj ? formatNameForDisplay(staffObj.fullName) : "Empty"}</div>
-              </div>
-            </div>
-          `;
-        } else {
-          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
-          if (occupant) {
-            let isAbsent = occupant.status !== "Active";
-            let colorClass = 'border-emerald-300 bg-emerald-50/80 text-emerald-950';
-            let extraGlowClass = "";
-            let backupNotice = "";
-
-            if (isAbsent) {
-              colorClass = 'border-amber-400 bg-amber-50 text-amber-950';
-              extraGlowClass = 'seat-backup-active';
-              const backupName = daySched.backup ? STAFF_DUTY[daySched.backup].name : "Backup";
-              backupNotice = `<div class="text-[7px] sm:text-[8.5px] font-bold text-red-800 bg-red-100 px-0.5 rounded truncate mt-0.5">⚡ ${backupName}</div>`;
-            }
-
+          if (!mobileEmp) {
             cardHTML = `
-              <div onclick="openStatusModal('${occupant.id}')" title="Report status" 
-                   class="p-1 sm:p-2.5 rounded-lg border ${colorClass} ${extraGlowClass} flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:shadow-xs transition relative">
-                <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                  <span class="bg-white/90 px-1 rounded border border-slate-200">${seat.code}</span>
-                  <span class="text-[7px] sm:text-[8px] font-semibold truncate ${isAbsent ? 'text-red-600 font-bold' : 'text-emerald-600'}">${isAbsent ? occupant.status : 'Active'}</span>
-                </div>
-                <div class="my-auto truncate text-center sm:text-left">
-                  <div class="font-extrabold text-[12px] sm:text-sm truncate seat-card-title font-heading text-slate-900">${formatNameForDisplay(occupant.fullName)}</div>
-                  ${backupNotice}
-                </div>
+              <div class="p-1.5 sm:p-2.5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/40 flex flex-col justify-between seat-card-box text-slate-400">
+                <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seat.code}</div>
+                <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty</div>
               </div>
             `;
+          } else {
+            const isAbsent = (mobileEmp.status !== "Active");
+            const claimedMobileKey = todayClaims[seat.code];
+
+            if (isAbsent && claimedMobileKey) {
+              // ĐÃ CÓ MOBILE KHÁC XÁC NHẬN BACKUP VÀO BÀN 1A/2A -> CHUYỂN MÀU XANH BÌNH THƯỜNG
+              const claimingStaff = STAFF_DUTY[claimedMobileKey];
+              const claimingDisplayName = claimingStaff ? (isMobile ? claimingStaff.name : claimingStaff.fullName) : claimedMobileKey;
+
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
+                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                  </div>
+                  <div class="my-auto truncate text-center sm:text-left py-0.5">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950" title="${claimingDisplayName}">
+                      ⚡ ${claimingDisplayName}
+                    </div>
+                    <div onclick="openStatusModal('${mobileEmp.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:text-slate-800 hover:underline" title="Chỉnh sửa trạng thái ${mobileEmp.fullName}">
+                      Thế chỗ: ${formatNameForDisplay(mobileEmp.fullName)} (${mobileEmp.status}) <i class="fa-solid fa-pen text-[7.5px] ml-0.5 text-slate-400"></i>
+                    </div>
+                  </div>
+                  <div class="pt-0.5 flex justify-end">
+                    <button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">
+                      Huỷ nhận chỗ
+                    </button>
+                  </div>
+                </div>
+              `;
+            } else if (isAbsent) {
+              // BÀN MOBILE 1A/2A BÁO VẮNG/WFH/OFF VÀ CHƯA CÓ NGƯỜI NHẬN -> NHẤP NHÁY ĐỎ CẢNH BÁO
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <div class="flex items-center gap-1">
+                      <span class="bg-white px-1.5 rounded border border-red-300 text-red-600 font-bold font-mono">${seat.code}</span>
+                      <span class="bg-indigo-600 text-white px-1 py-0.2 rounded text-[7px] font-heading ${isMobile ? 'hidden' : 'inline'}">Mobile</span>
+                    </div>
+                    <span onclick="openStatusModal('${mobileEmp.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer hover:bg-red-200 font-heading" title="Bấm để chỉnh trạng thái">${mobileEmp.status} <i class="fa-solid fa-pen text-[6.5px] ml-0.5"></i></span>
+                  </div>
+                  <div onclick="openStatusModal('${mobileEmp.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer" title="Bấm để chỉnh trạng thái cho ${mobileEmp.fullName}">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700 hover:text-slate-900" title="${mobileEmp.fullName}">
+                      ${formatNameForDisplay(mobileEmp.fullName)}
+                    </div>
+                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                  </div>
+                  <button onclick="openClaimSeatModal('${seat.code}', '${mobileEmp.fullName}')" 
+                          class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
+                    <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
+                  </button>
+                </div>
+              `;
+            } else {
+              // MOBILE CÓ MẶT BÌNH THƯỜNG
+              cardHTML = `
+                <div onclick="openStatusModal('${mobileEmp.id}')" title="Cập nhật trạng thái cho ${mobileEmp.fullName}" 
+                     class="p-1.5 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-indigo-600 hover:shadow-md transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="text-indigo-800 font-extrabold">${seat.code}</span>
+                    <span class="bg-indigo-600 text-white px-1.5 py-0.2 rounded text-[7px] sm:text-[8.5px] font-heading">Mobile</span>
+                  </div>
+                  <div class="my-auto truncate text-center sm:text-left">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] text-indigo-950 truncate seat-card-title font-heading" title="${mobileEmp.fullName}">
+                      ${displayMobileName}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+          }
+        } else {
+          // BÀN CỐ ĐỊNH (FIXED SEAT)
+          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
+          if (occupant) {
+            const isAbsent = (occupant.status !== "Active");
+            const claimedMobileKey = todayClaims[seat.code];
+
+            if (isAbsent && claimedMobileKey) {
+              // ĐÃ CÓ MOBILE XÁC NHẬN NGỒI -> CHUYỂN MÀU XANH BÌNH THƯỜNG
+              const mobileStaff = STAFF_DUTY[claimedMobileKey];
+              const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
+
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
+                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                  </div>
+                  <div class="my-auto truncate text-center sm:text-left py-0.5">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950" title="${mobileDisplayName}">
+                      ⚡ ${mobileDisplayName}
+                    </div>
+                    <div onclick="openStatusModal('${occupant.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:text-slate-800 hover:underline" title="Chỉnh sửa trạng thái ${occupant.fullName}">
+                      Thế chỗ: ${formatNameForDisplay(occupant.fullName)} (${occupant.status}) <i class="fa-solid fa-pen text-[7.5px] ml-0.5 text-slate-400"></i>
+                    </div>
+                  </div>
+                  <div class="pt-0.5 flex justify-end">
+                    <button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">
+                      Huỷ nhận chỗ
+                    </button>
+                  </div>
+                </div>
+              `;
+            } else if (isAbsent) {
+              // VẮNG VÀ CHƯA CÓ NGƯỜI NHẬN -> NHẤP NHÁY ĐỎ
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
+                    <span onclick="openStatusModal('${occupant.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer hover:bg-red-200 font-heading" title="Bấm để chỉnh trạng thái">${occupant.status} <i class="fa-solid fa-pen text-[6.5px] ml-0.5"></i></span>
+                  </div>
+                  <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer" title="Bấm để chỉnh trạng thái cho ${occupant.fullName}">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700 hover:text-slate-900" title="${occupant.fullName}">
+                      ${formatNameForDisplay(occupant.fullName)}
+                    </div>
+                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                  </div>
+                  <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" 
+                          class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
+                    <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
+                  </button>
+                </div>
+              `;
+            } else {
+              // CÓ MẶT BÌNH THƯỜNG
+              cardHTML = `
+                <div onclick="openStatusModal('${occupant.id}')" title="Cập nhật trạng thái cho ${occupant.fullName}" 
+                     class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 hover:shadow-md transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="bg-white/90 px-1.5 rounded border border-slate-200">${seat.code}</span>
+                    <span class="text-[7.5px] sm:text-[8px] font-semibold text-emerald-600 truncate font-heading">Active</span>
+                  </div>
+                  <div class="my-auto truncate text-center sm:text-left">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-900" title="${occupant.fullName}">
+                      ${formatNameForDisplay(occupant.fullName)}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
           } else {
             cardHTML = `
               <div class="p-1 sm:p-2 rounded-lg border border-dashed border-slate-300 bg-white flex flex-col justify-between seat-card-box text-slate-400">
                 <div class="font-mono text-[8px] sm:text-[9.5px] font-bold">${seat.code}</div>
-                <div class="text-center text-[8.5px] sm:text-[10px] my-auto">Empty</div>
+                <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty</div>
               </div>
             `;
           }
@@ -1742,28 +2030,291 @@
       });
     }
 
-    // THUẬT TOÁN KIỂM TRA NGÀY LỄ THEO DẢI NGÀY: TỪ STARTDATE ĐẾN ENDDATE
-    function getHolidayForDate(year, monthIndex, dayNum) {
-      const cur = new Date(year, monthIndex, dayNum);
-      cur.setHours(0, 0, 0, 0);
+    // -------------------------------------------------------------
+    // LOGIC NHẬN CHỖ BACKUP (CLAIM / UNCLAIM SEAT)
+    // -------------------------------------------------------------
+    function getTodayMobileCandidates(targetSeatCode = null) {
+      const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
+      const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
+      if (!sched) return ["DD", "MT", "XA", "VK"];
 
-      return HOLIDAYS_STORE.find(h => {
-        const s = new Date(h.startDate || h.solarDate);
-        s.setHours(0, 0, 0, 0);
-        const e = new Date(h.endDate || h.startDate || h.solarDate);
-        e.setHours(23, 59, 59, 999);
-        return cur >= s && cur <= e;
+      const activelySeatedMobileKeys = [];
+      
+      if (sched.ws1 && targetSeatCode !== "1A") {
+        const emp1 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
+        if (emp1 && emp1.status === "Active") {
+          activelySeatedMobileKeys.push(sched.ws1);
+        }
+      }
+      if (sched.ws2 && targetSeatCode !== "2A") {
+        const emp2 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
+        if (emp2 && emp2.status === "Active") {
+          activelySeatedMobileKeys.push(sched.ws2);
+        }
+      }
+
+      return ["DD", "MT", "XA", "VK"].filter(k => {
+        if (activelySeatedMobileKeys.includes(k)) return false;
+        if (targetSeatCode === "1A" && sched.ws1 === k) return false;
+        if (targetSeatCode === "2A" && sched.ws2 === k) return false;
+        return true;
       });
     }
 
-    // RENDER LỊCH DUTY ROSTER
+    function openClaimSeatModal(seatCode, occupantName) {
+      document.getElementById('claim-seat-code-hidden').value = seatCode;
+      document.getElementById('claim-modal-seat-title').innerText = seatCode;
+      document.getElementById('claim-modal-desc').innerHTML = `Bàn <strong>${seatCode}</strong> của <strong>${occupantName}</strong> đang vắng mặt. Chọn nhân sự Mobile xác nhận vào ngồi thế chỗ:`;
+
+      const todayStr = getActiveDateStr();
+      const todayClaims = SEAT_CLAIMS[todayStr] || {};
+      const claimedStaffKeys = Object.values(todayClaims);
+
+      const candidateKeys = getTodayMobileCandidates(seatCode);
+      const container = document.getElementById('claim-candidates-container');
+      container.innerHTML = '';
+
+      const isMobile = (activeDeviceMode === 'mobile');
+
+      candidateKeys.forEach(k => {
+        const staff = STAFF_DUTY[k];
+        const isAlreadyClaimedAnotherSeat = claimedStaffKeys.includes(k);
+        const staffDisplayName = isMobile ? staff.name : staff.fullName;
+
+        if (isAlreadyClaimedAnotherSeat) {
+          container.innerHTML += `
+            <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-100/70 flex justify-between items-center opacity-60">
+              <div>
+                <strong class="font-heading font-bold text-slate-700">${staffDisplayName}</strong>
+                <p class="text-[10px] text-amber-700">Đã nhận bàn khác hôm nay</p>
+              </div>
+              <span class="text-[10px] font-bold text-slate-400 bg-slate-200 px-2 py-0.5 rounded font-heading">Đã nhận chỗ</span>
+            </div>
+          `;
+        } else {
+          container.innerHTML += `
+            <div class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/80 flex justify-between items-center hover:bg-emerald-100/70 transition">
+              <div>
+                <strong class="font-heading font-bold text-emerald-950">${staffDisplayName}</strong>
+                <p class="text-[10px] text-emerald-700">Sẵn sàng nhận chỗ backup</p>
+              </div>
+              <button onclick="confirmClaimSeat('${seatCode}', '${k}')" 
+                      class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-heading font-bold text-[11px] shadow-xs transition">
+                Xác nhận ngồi
+              </button>
+            </div>
+          `;
+        }
+      });
+
+      document.getElementById('claim-seat-modal').classList.remove('hidden');
+    }
+
+    function confirmClaimSeat(seatCode, staffKey) {
+      const todayStr = getActiveDateStr();
+      if (!SEAT_CLAIMS[todayStr]) SEAT_CLAIMS[todayStr] = {};
+
+      SEAT_CLAIMS[todayStr][seatCode] = staffKey;
+      saveData();
+      closeModal('claim-seat-modal');
+      renderAll();
+      alert(`Đã xác nhận ${STAFF_DUTY[staffKey].fullName} ngồi vào bàn ${seatCode}! Ghế đã chuyển sang trạng thái xanh bình thường.`);
+    }
+
+    function unclaimSeat(seatCode) {
+      if (confirm(`Hủy nhận chỗ cho bàn ${seatCode}? Bàn sẽ quay về trạng thái vắng mặt nhấp nháy đỏ.`)) {
+        const todayStr = getActiveDateStr();
+        if (SEAT_CLAIMS[todayStr]) {
+          delete SEAT_CLAIMS[todayStr][seatCode];
+          saveData();
+          renderAll();
+        }
+      }
+    }
+
+    // -------------------------------------------------------------
+    // LOGIC THIẾT LẬP LỊCH NGHỈ TRƯỚC (TUẦN NÀY & TUẦN TỚI)
+    // -------------------------------------------------------------
+    function switchStatusModalTab(tab) {
+      const pToday = document.getElementById('status-panel-today');
+      const pAdvance = document.getElementById('status-panel-advance');
+      const bToday = document.getElementById('btn-tab-status-today');
+      const bAdvance = document.getElementById('btn-tab-status-advance');
+
+      if (tab === 'today') {
+        pToday.classList.remove('hidden');
+        pAdvance.classList.add('hidden');
+        bToday.className = "flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center";
+        bAdvance.className = "flex-1 py-1.5 rounded-lg text-slate-600 hover:bg-white/60 text-center";
+      } else {
+        pToday.classList.add('hidden');
+        pAdvance.classList.remove('hidden');
+        bAdvance.className = "flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center";
+        bToday.className = "flex-1 py-1.5 rounded-lg text-slate-600 hover:bg-white/60 text-center";
+        loadUserAdvanceSchedule();
+      }
+    }
+
+    function getWeekWorkingDays(baseDate, weekOffset = 0) {
+      const d = new Date(baseDate);
+      const dow = (d.getDay() + 6) % 7;
+      const mon = new Date(d);
+      mon.setDate(d.getDate() - dow + (weekOffset * 7));
+
+      const days = [];
+      for (let i = 0; i < 5; i++) {
+        const item = new Date(mon);
+        item.setDate(mon.getDate() + i);
+        days.push(item);
+      }
+      return days;
+    }
+
+    function formatDateKey(d) {
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function loadUserAdvanceSchedule(targetUserId = null) {
+      const select = document.getElementById('status-user-select');
+      const userId = targetUserId || (select ? select.value : null) || (currentLoggedInUser ? currentLoggedInUser.id : null);
+      if (!userId) return;
+
+      const thisWeekContainer = document.getElementById('advance-this-week-list');
+      const nextWeekContainer = document.getElementById('advance-next-week-list');
+
+      thisWeekContainer.innerHTML = '';
+      nextWeekContainer.innerHTML = '';
+
+      const thisWeekDays = getWeekWorkingDays(todayNow, 0);
+      const nextWeekDays = getWeekWorkingDays(todayNow, 1);
+
+      const renderRow = (d, container) => {
+        const dateKey = formatDateKey(d);
+        const dayName = (currentLang === 'vi') ? `Thứ ${((d.getDay() + 6) % 7) + 2}` : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][(d.getDay() + 6) % 7];
+        const dateDisplay = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
+
+        const savedStatus = (LEAVE_PRESETS[userId] && LEAVE_PRESETS[userId][dateKey]) ? LEAVE_PRESETS[userId][dateKey] : "Active";
+
+        container.innerHTML += `
+          <div class="flex items-center justify-between py-1 px-2 rounded-lg bg-white border border-slate-200">
+            <span class="font-mono text-slate-700 font-semibold text-[11px]">${dayName}, ${dateDisplay}</span>
+            <select data-advance-date="${dateKey}" class="advance-status-input p-1 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium">
+              <option value="Active" ${savedStatus === 'Active' ? 'selected' : ''}>🟢 In-Office (Mặc định)</option>
+              <option value="WFH" ${savedStatus === 'WFH' ? 'selected' : ''}>🏠 WFH</option>
+              <option value="Day Off" ${savedStatus === 'Day Off' ? 'selected' : ''}>🔴 Day Off (Nghỉ)</option>
+              <option value="On Site" ${savedStatus === 'On Site' ? 'selected' : ''}>🚗 On Site</option>
+              <option value="In Meeting" ${savedStatus === 'In Meeting' ? 'selected' : ''}>🤝 Meeting</option>
+            </select>
+          </div>
+        `;
+      };
+
+      thisWeekDays.forEach(d => renderRow(d, thisWeekContainer));
+      nextWeekDays.forEach(d => renderRow(d, nextWeekContainer));
+    }
+
+    function onStatusUserSelectChange() {
+      const selectedId = document.getElementById('status-user-select').value;
+      const emp = employees.find(e => e.id === selectedId);
+      if (!emp) return;
+      document.getElementById('status-action-select').value = emp.status || "Active";
+      const pAdvance = document.getElementById('status-panel-advance');
+      if (pAdvance && !pAdvance.classList.contains('hidden')) {
+        loadUserAdvanceSchedule(selectedId);
+      }
+    }
+
+    // -------------------------------------------------------------
+    // OPEN STATUS MODAL (CHO PHÉP ADMIN & MANAGER CHỈNH SỬA TRỰC TIẾP)
+    // -------------------------------------------------------------
+    function openStatusModal(targetUserId = null) {
+      if (!currentLoggedInUser) {
+        alert("Vui lòng đăng nhập để cập nhật trạng thái làm việc!");
+        return;
+      }
+
+      const isAdminOrManager = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+
+      if (targetUserId && targetUserId !== currentLoggedInUser.id && !isAdminOrManager) {
+        const targetEmp = employees.find(e => e.id === targetUserId);
+        const targetName = targetEmp ? targetEmp.fullName : "nhân sự khác";
+        alert(`Bạn chỉ có thể tự cập nhật trạng thái cho chính mình (${currentLoggedInUser.fullName}).\n\nChỉ Admin và Manager mới có quyền điều chỉnh trực tiếp trạng thái cho ${targetName}.`);
+        return;
+      }
+
+      const activeUserId = targetUserId || currentLoggedInUser.id;
+      const activeUser = employees.find(e => e.id === activeUserId) || currentLoggedInUser;
+
+      const select = document.getElementById('status-user-select');
+      const hint = document.getElementById('txt-status-user-hint');
+
+      if (isAdminOrManager) {
+        select.disabled = false;
+        select.className = "w-full p-2 border border-slate-300 rounded-lg bg-white font-semibold text-slate-800 text-xs";
+        select.innerHTML = employees.filter(e => !e.isHidden).map(e => 
+          `<option value="${e.id}" ${e.id === activeUser.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Mobile'}) - [${e.role}]</option>`
+        ).join('');
+        if (hint) {
+          hint.innerHTML = `* Quyền <strong>${currentLoggedInUser.role}</strong>: Bạn có thể cập nhật trạng thái trực tiếp cho bất kỳ nhân sự nào.`;
+        }
+      } else {
+        select.disabled = true;
+        select.className = "w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-semibold text-slate-800 text-xs";
+        select.innerHTML = `<option value="${activeUser.id}" selected>${activeUser.fullName} (${activeUser.seating || 'Mobile/Không cố định'}) - [Tài khoản của bạn]</option>`;
+        if (hint) {
+          hint.innerHTML = `* Chỉ thiết lập trạng thái cho tài khoản của bạn.`;
+        }
+      }
+
+      document.getElementById('status-action-select').value = activeUser.status || "Active";
+
+      switchStatusModalTab('today');
+      document.getElementById('status-modal').classList.remove('hidden');
+    }
+
+    function submitStatusUpdate() {
+      if (!currentLoggedInUser) return;
+      const select = document.getElementById('status-user-select');
+      const userId = (select && select.value) ? select.value : currentLoggedInUser.id;
+      const targetEmp = employees.find(e => e.id === userId);
+      if (!targetEmp) return;
+
+      const todayStatus = document.getElementById('status-action-select').value;
+      const todayStr = getActiveDateStr();
+
+      targetEmp.status = todayStatus;
+      if (currentLoggedInUser.id === userId) {
+        currentLoggedInUser.status = todayStatus;
+      }
+
+      if (!LEAVE_PRESETS[userId]) LEAVE_PRESETS[userId] = {};
+      LEAVE_PRESETS[userId][todayStr] = todayStatus;
+
+      const advanceSelects = document.querySelectorAll('.advance-status-input');
+      advanceSelects.forEach(sel => {
+        const dKey = sel.getAttribute('data-advance-date');
+        const st = sel.value;
+        LEAVE_PRESETS[userId][dKey] = st;
+      });
+
+      saveData();
+      renderAll();
+      closeModal('status-modal');
+      alert(currentLang === 'vi' 
+        ? `Đã lưu trạng thái thành công cho ${targetEmp.fullName}!` 
+        : `Status updated successfully for ${targetEmp.fullName}!`);
+    }
+
+    // -------------------------------------------------------------
+    // RENDER LỊCH DUTY ROSTER & STATISTICS
+    // -------------------------------------------------------------
     function renderDutyBoard() {
       const monthKey = getMonthKey(currentYear, currentMonth);
       const isConfigured = !!SCHEDULE_STORE[monthKey];
 
       document.getElementById('duty-month-display').innerText = `${new Date(currentYear, currentMonth).toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}`;
       document.getElementById('duty-status-badge').innerText = isConfigured ? (currentLang === 'vi' ? "Đã có lịch" : "Configured") : (currentLang === 'vi' ? "Chưa tạo" : "Unset");
-      document.getElementById('duty-status-badge').className = isConfigured ? "text-[8px] sm:text-[10px] text-emerald-600 font-bold" : "text-[8px] sm:text-[10px] text-amber-600 font-bold";
+      document.getElementById('duty-status-badge').className = isConfigured ? "text-[8px] sm:text-[10px] text-emerald-600 font-bold font-heading" : "text-[8px] sm:text-[10px] text-amber-600 font-bold font-heading";
 
       const unconfigContainer = document.getElementById('duty-unconfigured-container');
       const configContainer = document.getElementById('duty-configured-container');
@@ -1814,7 +2365,6 @@
           continue;
         }
 
-        // KIỂM TRA XEM NGÀY ĐÓ CÓ TRÙNG VÀO DẢI NGÀY LỄ NÀO KHÔNG
         const holidayObj = getHolidayForDate(currentYear, currentMonth, dateNum);
 
         if (isWeekend) {
@@ -1822,7 +2372,7 @@
             <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
               <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
               <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
-              ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
+              ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 font-heading ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
             </div>
           `;
           continue;
@@ -1833,8 +2383,8 @@
           cells += `
             <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
               <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
-              ${holidayObj ? `<span class="text-[8.5px] sm:text-[10px] font-bold text-rose-700 mt-1">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
-              ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1">+ Setup</button>` : `<span class="text-[8px] text-slate-400">Empty</span>`}
+              ${holidayObj ? `<span class="text-[8.5px] sm:text-[10px] font-bold text-rose-700 mt-1 font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
+              ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1 font-heading">+ Setup</button>` : `<span class="text-[8px] text-slate-400 font-heading">Empty</span>`}
             </div>
           `;
           continue;
@@ -1864,7 +2414,7 @@
               <div class="flex justify-between items-center border-b border-slate-100 pb-0.5">
                 <span class="font-extrabold text-xs ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono">${dateNum}</span>
                 <div class="flex items-center gap-1">
-                  ${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px]">🎉 Lễ</span>` : ''}
+                  ${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px] font-heading">🎉 Lễ</span>` : ''}
                   ${adminActionButtons}
                 </div>
               </div>
@@ -1878,7 +2428,7 @@
                   <div>${badgeSpanMob(s.ws2)}</div>
                 </div>
                 <div class="flex justify-between items-center border-t border-slate-50 pt-0.5">
-                  <span class="text-red-600 font-bold">BK:</span>
+                  <span class="text-red-600 font-bold font-mono">BK:</span>
                   <div>${badgeSpanMob(s.backup)}</div>
                 </div>
               </div>
@@ -1895,10 +2445,10 @@
                 <div class="flex items-center gap-1.5">
                   <span class="font-extrabold text-base sm:text-lg ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono leading-none">${dateNum}</span>
                   <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">T${dow+2}</span>
-                  ${holidayObj ? `<span class="text-[9.5px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md truncate max-w-[130px]">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
+                  ${holidayObj ? `<span class="text-[9.5px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md truncate max-w-[130px] font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
                 </div>
                 <div class="flex items-center gap-1.5">
-                  ${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5">⚡ Backup</span>` : ''}
+                  ${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-heading">⚡ Backup</span>` : ''}
                   ${adminActionButtons}
                 </div>
               </div>
@@ -1939,8 +2489,8 @@
 
       const monthKey = getMonthKey(currentYear, currentMonth);
       const confirmMsg = (currentLang === 'vi')
-        ? `Xác nhận XÓA TOÀN BỘ lịch của tháng tương lai ${monthKey}?\n\nTháng này sẽ quay về trạng thái chưa thiết lập (No roster) kèm nút khởi tạo lại!`
-        : `Are you sure you want to DELETE the entire roster for ${monthKey}?\n\nThis month will revert to unconfigured (No roster) state!`;
+        ? `Xác nhận XÓA TOÀN BỘ lịch của tháng tương lai ${monthKey}?\n\nTháng này sẽ quay về trạng thái chưa thiết lập kèm nút khởi tạo lại!`
+        : `Are you sure you want to DELETE the entire roster for ${monthKey}?\n\nThis month will revert to unconfigured state!`;
 
       if (confirm(confirmMsg)) {
         delete SCHEDULE_STORE[monthKey];
@@ -2008,8 +2558,21 @@
     }
 
     // -------------------------------------------------------------
-    // RENDER TAB PUBLIC HOLIDAYS
+    // PUBLIC HOLIDAYS
     // -------------------------------------------------------------
+    function getHolidayForDate(year, monthIndex, dayNum) {
+      const cur = new Date(year, monthIndex, dayNum);
+      cur.setHours(0, 0, 0, 0);
+
+      return HOLIDAYS_STORE.find(h => {
+        const s = new Date(h.startDate || h.solarDate);
+        s.setHours(0, 0, 0, 0);
+        const e = new Date(h.endDate || h.startDate || h.solarDate);
+        e.setHours(23, 59, 59, 999);
+        return cur >= s && cur <= e;
+      });
+    }
+
     function renderHolidaysTab() {
       const tbody = document.getElementById('holiday-table-body');
       tbody.innerHTML = '';
@@ -2028,8 +2591,8 @@
         }
 
         const typeBadge = (h.type === 'solar') 
-          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Dương Lịch (Solar)</span>`
-          : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200">Âm Lịch (Lunar)</span>`;
+          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 font-heading">Dương Lịch</span>`
+          : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 font-heading">Âm Lịch</span>`;
 
         const sDate = h.startDate || h.solarDate || "";
         const eDate = h.endDate || sDate;
@@ -2038,12 +2601,12 @@
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition";
         tr.innerHTML = `
-          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px]">${index + 1}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800 text-[11.5px]">${h.name}</td>
+          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px] font-mono">${index + 1}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs font-heading">${h.name}</td>
           <td class="py-2.5 px-3">${typeBadge}</td>
           <td class="py-2.5 px-3 font-mono font-bold text-slate-700">${h.detail}</td>
           <td class="py-2.5 px-3 font-mono font-bold text-[#ee2f26]">${dateRangeDisplay}</td>
-          <td class="py-2.5 px-3 text-center font-bold text-emerald-700">${h.daysOff} d</td>
+          <td class="py-2.5 px-3 text-center font-bold text-emerald-700 font-mono">${h.daysOff} d</td>
           <td class="py-2.5 px-3 text-slate-500 text-[11px]">${h.desc || '—'}</td>
           ${actionButtons}
         `;
@@ -2086,7 +2649,6 @@
       document.getElementById('holiday-modal').classList.remove('hidden');
     }
 
-    // TỰ ĐỘNG TÍNH TOÁN SỐ NGÀY NGHỈ KHI CHỌN TỪ NGÀY ĐẾN NGÀY
     function autoCalcDaysOff() {
       const sVal = document.getElementById('form-holiday-startdate').value;
       const eVal = document.getElementById('form-holiday-enddate').value;
@@ -2183,7 +2745,7 @@
     }
 
     // -------------------------------------------------------------
-    // RENDER STAFF LIST (ĐÃ TÁCH BIỆT RÕ ROLE VÀ SEAT, KHÔNG LỖI VỠ HÀNG)
+    // RENDER STAFF LIST (ĐỒNG BỘ TYPOGRAPHY EMAIL & SEAT HOÀN TOÀN)
     // -------------------------------------------------------------
     function renderDashboard() {
       if (currentLoggedInUser && currentLoggedInUser.role === 'User') {
@@ -2209,7 +2771,7 @@
       tbody.innerHTML = '';
 
       if (sorted.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${showActions ? 8 : 7}" class="py-4 text-center text-slate-400">No records found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${showActions ? 8 : 7}" class="py-4 text-center text-slate-400 font-heading">No records found</td></tr>`;
         return;
       }
 
@@ -2221,7 +2783,10 @@
         let seatDisplay = '';
         let liveStatus = emp.status;
 
-        if (emp.seating === 'Mobile') {
+        // Xử lý chuẩn hóa chỗ ngồi Mobile không phân biệt hoa thường
+        const isMobileSeat = emp.seating && emp.seating.trim().toLowerCase() === 'mobile';
+
+        if (isMobileSeat) {
           let assignedCode = "";
           let staffKey = null;
 
@@ -2233,34 +2798,29 @@
           if (daySched && staffKey) {
             if (daySched.ws1 === staffKey) {
               assignedCode = "1A";
-              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "In Office";
             } else if (daySched.ws2 === staffKey) {
               assignedCode = "2A";
-              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "In Office";
             } else if (daySched.backup === staffKey) {
               assignedCode = "Backup";
-              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "Backup (Office)";
             } else if (daySched.online && daySched.online.includes(staffKey)) {
               assignedCode = "WFH";
-              if (emp.status === "Active" || emp.status === "In Office") liveStatus = "WFH";
             }
           }
 
           const badgeText = assignedCode ? `Mobile (${assignedCode})` : 'Mobile';
-          seatDisplay = `<span class="inline-block font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${badgeText}</span>`;
+          seatDisplay = `<span class="inline-block font-heading font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${badgeText}</span>`;
         } else if (!emp.seating) {
-          seatDisplay = `<span class="text-slate-400 italic text-[10px] sm:text-[11px]">Unassigned</span>`;
+          seatDisplay = `<span class="text-slate-400 italic text-[10px] sm:text-[11px] font-heading font-semibold">Unassigned</span>`;
         } else {
-          seatDisplay = `<span class="inline-block font-mono font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${emp.seating}</span>`;
+          seatDisplay = `<span class="inline-block font-heading font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${emp.seating}</span>`;
         }
 
-        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Active</span>`;
-        if (liveStatus === 'WFH') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200">WFH</span>`;
-        else if (liveStatus === 'On Site') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200">Site</span>`;
-        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200">Off</span>`;
-        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-purple-50 text-purple-700 border border-purple-200">Backup</span>`;
+        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 font-heading">Active</span>`;
+        if (liveStatus === 'WFH') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 font-heading">WFH</span>`;
+        else if (liveStatus === 'On Site') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200 font-heading">Site</span>`;
+        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 font-heading">Off</span>`;
+        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-purple-50 text-purple-700 border border-purple-200 font-heading">Backup</span>`;
 
-        // Badge phân biệt vai trò (Role)
         let roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-slate-100 text-slate-600 border border-slate-200">User</span>`;
         if (emp.role === 'Admin') {
           roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-red-50 text-[#ee2f26] border border-red-200">Admin</span>`;
@@ -2275,21 +2835,21 @@
         if (showActions) {
           actionsTd = `
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
-              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1.5 py-0.5 mr-1 text-[9px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition" title="Reset default password">
+              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1.5 py-0.5 mr-1 text-[9px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition font-heading" title="Reset default password">
                 <i class="fa-solid fa-key text-[7.5px]"></i> Reset
               </button>
-              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-1" title="Edit"><i class="fa-solid fa-pen-to-square text-[10px]"></i></button>
+              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-1" title="Chỉnh sửa thông tin"><i class="fa-solid fa-pen-to-square text-[10px]"></i></button>
               <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
             </td>
           `;
         }
 
         tr.innerHTML = `
-          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px]">${index + 1}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs">${formatNameForDisplay(emp.fullName)}</td>
+          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px] font-mono">${index + 1}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs font-heading">${formatNameForDisplay(emp.fullName)}</td>
           <td class="py-2.5 px-3 desktop-only text-center">${roleBadge}</td>
-          <td class="py-2.5 px-3 desktop-only font-mono text-[11px] text-slate-600">${emp.emailCompany}</td>
-          <td class="py-2.5 px-3 desktop-only font-mono text-[11px] text-slate-400">${emp.emailPersonal || '—'}</td>
+          <td class="py-2.5 px-3 desktop-only text-slate-600 text-xs font-medium">${emp.emailCompany}</td>
+          <td class="py-2.5 px-3 desktop-only text-slate-400 text-xs font-medium">${emp.emailPersonal || '—'}</td>
           <td class="py-2.5 px-3 desktop-only text-center">${seatDisplay}</td>
           <td class="py-2.5 px-3 text-center">${statusBadge}</td>
           ${actionsTd}
@@ -2335,39 +2895,9 @@
 
     function selectSeatPicker(seatCode) {
       document.getElementById('form-seating').value = seatCode;
-      document.getElementById('form-seating-display').value = seatCode ? (seatCode === 'Mobile' ? 'Mobile' : `Desk ${seatCode}`) : 'Unassigned';
+      document.getElementById('form-seating-display').value = seatCode ? (seatCode.toLowerCase() === 'mobile' ? 'Mobile' : `Desk ${seatCode}`) : 'Unassigned';
       const editingId = document.getElementById('form-id').value;
       renderMiniSeatPicker(seatCode, editingId);
-    }
-
-    function openStatusModal(defaultUserId = null) {
-      const select = document.getElementById('status-user-select');
-      const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
-      const listToShow = isPrivileged ? employees.filter(e => !e.isHidden) : [currentLoggedInUser].filter(Boolean);
-
-      select.innerHTML = listToShow.map(e => `
-        <option value="${e.id}" ${defaultUserId === e.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'None'})</option>
-      `).join('');
-
-      if (defaultUserId) {
-        const emp = employees.find(e => e.id === defaultUserId);
-        if (emp) document.getElementById('status-action-select').value = emp.status;
-      }
-
-      document.getElementById('status-modal').classList.remove('hidden');
-    }
-
-    function submitStatusUpdate() {
-      const userId = document.getElementById('status-user-select').value;
-      const newStatus = document.getElementById('status-action-select').value;
-
-      const emp = employees.find(e => e.id === userId);
-      if (emp) {
-        emp.status = newStatus;
-        saveData();
-        renderAll();
-        closeModal('status-modal');
-      }
     }
 
     function openDutyEditModal(dayNum) {
@@ -2420,7 +2950,7 @@
       const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
 
       const chipsEl = document.getElementById('duty-edit-online-chips');
-      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold">${STAFF_DUTY[k].name}</span>`).join(' ');
+      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold font-mono">${STAFF_DUTY[k].name}</span>`).join(' ');
     }
 
     function saveDutyEdit() {
@@ -2523,11 +3053,17 @@
       const id = document.getElementById('form-id').value;
       const fullName = document.getElementById('form-fullname').value.trim().toUpperCase();
       const role = document.getElementById('form-role').value;
-      const seating = document.getElementById('form-seating').value.trim().toUpperCase();
+      let seating = document.getElementById('form-seating').value.trim();
       let emailCompany = document.getElementById('form-email-company').value.trim();
       const emailPersonal = document.getElementById('form-email-personal').value.trim();
       const status = document.getElementById('form-status').value;
       const isHidden = document.getElementById('form-is-hidden').checked;
+
+      if (seating.toLowerCase() === 'mobile') {
+        seating = 'Mobile';
+      } else {
+        seating = seating.toUpperCase();
+      }
 
       if (emailCompany && !emailCompany.includes('@')) {
         emailCompany += '@dlsconsultant.com';
