@@ -46,16 +46,19 @@
       --dd: #0a8f7f; --dd-soft: #dcf1ee;
       --vk: #3b32b8; --vk-soft: #e7e5fa;
       --mt: #a3195b; --mt-soft: #f8dfea;
+      --ts: #0284c7; --ts-soft: #e0f2fe;
     }
 
     .badge-xa { background: var(--xa-soft); color: var(--xa); }
     .badge-dd { background: var(--dd-soft); color: var(--dd); }
     .badge-vk { background: var(--vk-soft); color: var(--vk); }
     .badge-mt { background: var(--mt-soft); color: var(--mt); }
+    .badge-ts { background: var(--ts-soft); color: var(--ts); }
     .dot-xa { background: var(--xa); }
     .dot-dd { background: var(--dd); }
     .dot-vk { background: var(--vk); }
     .dot-mt { background: var(--mt); }
+    .dot-ts { background: var(--ts); }
 
     /* Backup Activated Pulsing Glow */
     @keyframes backup-glow {
@@ -229,7 +232,7 @@
             <span class="desktop-inline" id="btn-ooo-text">Status / Leave</span>
           </button>
 
-          <!-- KHỐI PROFILE: HIỂN THỊ TÊN ĐẦY ĐỦ TRÊN DESKTOP, VIẾT TẮT TRÊN MOBILE -->
+          <!-- KHỐI PROFILE: HIỂN THỊ ĐẦY ĐỦ TRÊN DESKTOP -->
           <div class="relative border-l border-slate-200 pl-1 sm:pl-2">
             <button onclick="toggleUserDropdown()" class="flex items-center gap-1.5 p-1 rounded-lg hover:bg-slate-100 transition">
               <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300 shrink-0">
@@ -313,7 +316,7 @@
           </span>
         </div>
 
-        <!-- ALERT BANNER CHO BACKUP CÁC VỊ TRÍ TRỐNG (CỐ ĐỊNH & MOBILE 1A/2A) -->
+        <!-- ALERT BANNER CHO BACKUP CÁC VỊ TRÍ TRỐNG -->
         <div id="backup-active-banner" class="hidden p-2.5 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex flex-wrap justify-between items-center gap-2 animate-pulse">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
@@ -348,7 +351,7 @@
             <div>
               <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
                 <span id="txt-row-1-title">ROW 1</span>
-                <span>1A (D.Duy / M.Trung) • 1B • 1C • 1D</span>
+                <span>1A (Mobile) • 1B • 1C • 1D</span>
               </div>
               <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-1-grid"></div>
             </div>
@@ -356,7 +359,7 @@
             <div class="pt-0.5">
               <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
                 <span id="txt-row-2-title">ROW 2</span>
-                <span>2A (X.Anh / Khiem) • 2B • 2C • 2D</span>
+                <span>2A (Mobile) • 2B • 2C • 2D (Mobile)</span>
               </div>
               <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-2-grid"></div>
             </div>
@@ -404,7 +407,7 @@
               <button onclick="changeMonth(-1)" class="w-6 h-6 rounded bg-white border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600 transition">
                 <i class="fa-solid fa-chevron-left text-[9px]"></i>
               </button>
-              <div class="text-center px-2 min-w-[90px] sm:min-w-[120px]">
+              <div class="text-center px-2 min-w-[100px] sm:min-w-[130px]">
                 <div class="text-xs sm:text-sm font-bold text-slate-800 font-heading" id="duty-month-display">September 2026</div>
                 <div class="text-[8px] sm:text-[10px] font-semibold text-emerald-600 font-heading" id="duty-status-badge">Configured</div>
               </div>
@@ -437,7 +440,7 @@
 
           <div id="duty-unconfigured-container" class="hidden py-8 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 space-y-2">
             <h3 class="text-xs sm:text-sm font-heading font-bold text-slate-800" id="unconfigured-month-title">No roster configured for this month</h3>
-            <p class="text-[11px] text-slate-500" id="txt-roster-rule-hint">Rule: 1A = D.Duy/M.Trung, 2A = X.Anh/Khiem. 3 backup days per person.</p>
+            <p class="text-[11px] text-slate-500" id="txt-roster-rule-hint">Rule: 1A, 2A & 2D Mobile slots assigned with backup rotation.</p>
             <button onclick="generateScheduleByRule()" class="px-3.5 py-1.5 rounded-xl bg-[#ee2f26] hover:bg-red-700 text-white font-heading font-bold text-xs shadow-xs transition inline-flex items-center gap-1" id="btn-generate-roster">
               <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Generate Roster
             </button>
@@ -445,7 +448,7 @@
 
           <div id="duty-configured-container" class="space-y-3">
             <div class="overflow-x-auto custom-scrollbar">
-              <div class="min-w-[580px] sm:min-w-[820px]">
+              <div class="min-w-[620px] sm:min-w-[880px]">
                 <div class="grid grid-cols-7 gap-1 sm:gap-2 mb-1.5 font-mono text-[9px] sm:text-xs font-bold text-slate-400 uppercase text-center" id="cal-weekdays-header">
                   <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span>
                   <span class="text-slate-300">Sat</span><span class="text-slate-300">Sun</span>
@@ -459,7 +462,7 @@
                 <h3 class="font-heading font-bold text-slate-800" id="txt-breakdown-title">Monthly Working-Day Breakdown</h3>
                 <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2 py-0.5 rounded text-[10px] sm:text-xs">20 Working Days</span>
               </div>
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-3" id="duty-stats-rows"></div>
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-3" id="duty-stats-rows"></div>
             </div>
           </div>
 
@@ -520,11 +523,11 @@
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider" id="kpi-fixed-seats">Fixed Seats</p>
-            <h3 class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">7 <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span></h3>
+            <h3 id="stat-fixed-seats" class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">6 <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Mobile Pool</p>
-            <h3 class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span></h3>
+            <h3 id="stat-mobile-pool" class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Locked Desks</p>
@@ -546,10 +549,17 @@
               </span>
             </div>
 
-            <button id="btn-add-staff" onclick="openModal()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs font-semibold transition flex items-center gap-1.5 font-heading shrink-0" title="Add new employee">
-              <i class="fa-solid fa-user-plus text-xs"></i>
-              <span id="btn-add-staff-text">Add Staff</span>
-            </button>
+            <div class="flex items-center gap-1.5">
+              <button id="btn-manage-mobile" onclick="openMobilePoolModal()" class="px-3 py-1.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 shadow-xs text-xs font-semibold transition flex items-center gap-1.5 font-heading shrink-0" title="Quản lý danh sách Mobile">
+                <i class="fa-solid fa-users-gear text-xs"></i>
+                <span id="btn-manage-mobile-text">Mobile Pool</span>
+              </button>
+
+              <button id="btn-add-staff" onclick="openModal()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs font-semibold transition flex items-center gap-1.5 font-heading shrink-0" title="Add new employee">
+                <i class="fa-solid fa-user-plus text-xs"></i>
+                <span id="btn-add-staff-text">Add Staff</span>
+              </button>
+            </div>
           </div>
 
           <div class="overflow-x-auto custom-scrollbar">
@@ -575,6 +585,42 @@
 
     </main>
 
+  </div>
+
+  <!-- MODAL: QUẢN LÝ MOBILE POOL (ADMIN/MANAGER) -->
+  <div id="mobile-pool-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden p-5 space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
+        <h3 class="font-heading font-bold text-slate-800 text-sm flex items-center gap-1.5">
+          <i class="fa-solid fa-users-gear text-[#ee2f26]"></i>
+          <span>Quản Lý Danh Sách Mobile Pool</span>
+        </h3>
+        <button onclick="closeModal('mobile-pool-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="font-heading font-bold text-slate-700 text-xs">Nhân sự Mobile hiện tại:</span>
+          <span id="modal-mobile-count-badge" class="font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[10px]">5 staff</span>
+        </div>
+        <div id="modal-mobile-list-container" class="space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar p-1"></div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 space-y-2">
+        <label class="block font-heading font-bold text-slate-700 text-xs">Thêm nhân sự vào Mobile Pool:</label>
+        <div class="flex gap-2">
+          <select id="modal-add-mobile-select" class="flex-1 p-2 border border-slate-300 rounded-lg bg-white font-medium text-xs"></select>
+          <button type="button" onclick="handleAddStaffToMobile()" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-heading font-bold rounded-lg shadow-xs transition shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-plus text-xs"></i> Thêm
+          </button>
+        </div>
+        <p class="text-[10.5px] text-slate-500 italic">* Nhân sự trong Mobile Pool có thể được assign trực tiếp vào 1A, 2A, 2D và nhận backup khi có vị trí báo vắng.</p>
+      </div>
+
+      <div class="pt-2 border-t border-slate-200 flex justify-end">
+        <button type="button" onclick="closeModal('mobile-pool-modal')" class="px-4 py-1.5 border border-slate-300 text-slate-600 rounded-lg text-xs font-heading">Đóng</button>
+      </div>
+    </div>
   </div>
 
   <!-- MODAL: ADD / EDIT PUBLIC HOLIDAY -->
@@ -676,7 +722,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ATTENDANCE & LEAVE STATUS (ADMIN & MANAGER SỬA ĐƯỢC MỌI NHÂN SỰ) -->
+  <!-- MODAL: ATTENDANCE & LEAVE STATUS -->
   <div id="status-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden max-h-[90vh] flex flex-col">
       <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -686,7 +732,6 @@
         <button onclick="closeModal('status-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <!-- TABS CHUYỂN ĐỔI: HÔM NAY / THIẾT LẬP TUẦN NÀY & TUẦN TỚI -->
       <div class="flex border-b border-slate-200 bg-slate-100/70 p-1 gap-1 text-xs font-heading font-semibold">
         <button id="btn-tab-status-today" onclick="switchStatusModalTab('today')" class="flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center">
           Hôm Nay (Active Date)
@@ -705,7 +750,6 @@
           </div>
         </div>
 
-        <!-- PHẦN 1: CẬP NHẬT HÔM NAY -->
         <div id="status-panel-today" class="space-y-3">
           <div>
             <label class="block font-semibold text-slate-700 mb-1" id="lbl-status-type">Current Working Status:</label>
@@ -719,11 +763,10 @@
           </div>
 
           <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[10.5px] leading-relaxed" id="txt-status-backup-notice">
-            <strong>⚡ Cơ chế Backup:</strong> Khi nhân sự có ghế (cố định hoặc Mobile 1A/2A) báo WFH/Off/Site, bàn sẽ <strong>nhấp nháy đỏ</strong> để các nhân sự Mobile còn lại xác nhận thế chỗ (ngoại trừ anh Trần Hoàng Duy).
+            <strong>⚡ Cơ chế Backup:</strong> Khi nhân sự có ghế (cố định hoặc Mobile 1A/2A/2D) báo WFH/Off/Site, bàn sẽ <strong>nhấp nháy đỏ</strong> để các nhân sự Mobile còn lại xác nhận thế chỗ.
           </div>
         </div>
 
-        <!-- PHẦN 2: THIẾT LẬP TRƯỚC TUẦN NÀY & TUẦN TIẾP THEO -->
         <div id="status-panel-advance" class="hidden space-y-3.5">
           <p class="text-[11px] text-slate-500">Mặc định các ngày là <strong>🟢 In-Office</strong>. Bạn có thể chọn trước ngày <strong>Off/WFH</strong> bên dưới:</p>
           
@@ -764,13 +807,13 @@
       <input type="hidden" id="claim-seat-code-hidden">
 
       <p class="text-[11px] text-slate-600 leading-relaxed" id="claim-modal-desc">
-        Vị trí này đang trống do nhân sự vắng mặt. 1 trong các nhân sự Mobile có thể xác nhận ngồi vào để đưa trạng thái bàn về màu xanh bình thường:
+        Vị trí này đang trống do nhân sự vắng mặt. Chọn 1 nhân sự Mobile để xác nhận thế chỗ:
       </p>
 
       <div id="claim-candidates-container" class="space-y-2"></div>
 
       <div class="p-2 bg-slate-50 rounded-lg border border-slate-200 text-[10px] text-slate-500">
-        * Lưu ý: Mỗi người Mobile chỉ được ngồi tối đa 1 bàn. Nếu đã xác nhận bàn này thì không thể nhận bàn khác trừ khi có bàn mới báo Off.
+        * Lưu ý: Mỗi người Mobile chỉ được ngồi tối đa 1 bàn trong ngày.
       </div>
 
       <div class="pt-2 border-t border-slate-200 flex justify-end">
@@ -779,7 +822,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ADMIN EDIT DAILY ROSTER -->
+  <!-- MODAL: ADMIN EDIT DAILY ROSTER (1A, 2A, 2D) -->
   <div id="duty-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
       <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -787,28 +830,33 @@
         <button onclick="closeModal('duty-edit-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
 
-      <div class="p-4 space-y-3 text-xs">
+      <div class="p-4 space-y-2.5 text-xs">
         <input type="hidden" id="duty-edit-day-num">
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Desk 1A (D.Duy / M.Trung):</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">Desk 1A:</label>
           <select id="duty-edit-ws1" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Desk 2A (X.Anh / Khiem):</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">Desk 2A:</label>
           <select id="duty-edit-ws2" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Backup Staff:</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">Desk 2D (Mobile Slot):</label>
+          <select id="duty-edit-ws2d" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-0.5">Backup Staff:</label>
           <select id="duty-edit-backup" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono">
             <option value="">-- No Backup Assigned --</option>
           </select>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-1">Remote (WFH):</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">Remote (WFH):</label>
           <div id="duty-edit-online-chips" class="flex flex-wrap gap-1 pt-0.5 font-mono"></div>
         </div>
 
@@ -1099,12 +1147,14 @@
       return `${clean}@123`;
     }
 
+    // DANH SÁCH NHÂN SỰ GỐC: NGUYEN TIEN SANG Ở MOBILE POOL, 2D CHUYỂN THÀNH GHẾ MOBILE
     const INITIAL_EMPLOYEES = [
       { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "tranhoangduy@gmail.com", seating: "", status: "Active", isHidden: false },
       { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV003", fullName: "DANG DUY", role: "Manager", emailCompany: "duy.dang@dlsconsultant.com", emailPersonal: "dangduy@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "minhtrung@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV005", fullName: "NGUYEN XUAN ANH", role: "Manager", emailCompany: "anh.nguyenxuan@dlsconsultant.com", emailPersonal: "xuananh@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
+      { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "tiensang@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
 
       { id: "NV010", fullName: "VU VAN HIEU", role: "User", emailCompany: "hieu.vu@dlsconsultant.com", emailPersonal: "vanhieu@gmail.com", seating: "1B", status: "Active", isHidden: false },
       { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "congson@gmail.com", seating: "1C", status: "Active", isHidden: false },
@@ -1112,25 +1162,26 @@
 
       { id: "NV012", fullName: "NGUYEN HUU LONG", role: "User", emailCompany: "long.nguyen@dlsconsultant.com", emailPersonal: "huulong@gmail.com", seating: "2B", status: "Active", isHidden: false },
       { id: "NV008", fullName: "HUYNH NHAN TRI", role: "User", emailCompany: "tri.huynh@dlsconsultant.com", emailPersonal: "nhantri@gmail.com", seating: "2C", status: "Active", isHidden: false },
-      { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "tiensang@gmail.com", seating: "2D", status: "Active", isHidden: false },
 
       { id: "NV014", fullName: "NGUYEN HOANG MANH", role: "User", emailCompany: "manh.nguyen@dlsconsultant.com", emailPersonal: "hoangmanh@gmail.com", seating: "3B", status: "Active", isHidden: false },
       { id: "NV011", fullName: "NGUYEN THI LIEN", role: "User", emailCompany: "lien.nguyenthi@dlsconsultant.com", emailPersonal: "thilien@gmail.com", seating: "3C", status: "Active", isHidden: false },
       { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "baolong@gmail.com", seating: "3D", status: "Active", isHidden: false }
     ];
 
+    // CẤU HÌNH POD: 1A, 2A VÀ 2D LÀ CHỖ NGỒI MOBILE
     const SEAT_LAYOUT = [
       { code: "1A", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
-      { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "fixed" },
+      { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "mobile" },
       { code: "3A", type: "unused" }, { code: "3B", type: "fixed" }, { code: "3C", type: "fixed" }, { code: "3D", type: "fixed" },
       { code: "4A", type: "unused" }, { code: "4B", type: "unused" }, { code: "4C", type: "unused" }, { code: "4D", type: "unused" }
     ];
 
-    const STAFF_DUTY = {
+    let STAFF_DUTY = {
       DD: { name: "D.DUY", fullName: "DANG DUY", cls: "dd", defaultDesk: "1A" },
       MT: { name: "M.TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt", defaultDesk: "1A" },
       XA: { name: "X.ANH", fullName: "NGUYEN XUAN ANH", cls: "xa", defaultDesk: "2A" },
       VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "2A" },
+      TS: { name: "T.SANG", fullName: "NGUYEN TIEN SANG", cls: "ts", defaultDesk: "2D" },
     };
 
     const DEFAULT_VN_HOLIDAYS = [
@@ -1144,29 +1195,56 @@
 
     let HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
 
+    // LỊCH TRỰC THÁNG 10/2026 ĐƯỢC THIẾT LẬP VỚI 3 CHỖ MOBILE: 1A, 2A, 2D
+    const OCTOBER_2026_SCHEDULE = {
+      1:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
+      2:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
+      5:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"MT", online:["VK"], tc:true },
+      6:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
+      7:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      8:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
+      9:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      12: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
+      13: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
+      14: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
+      15: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      16: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
+      19: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      20: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
+      21: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      22: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
+      23: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"MT", online:["VK"], tc:true },
+      26: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
+      27: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
+      28: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
+      29: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
+      30: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
+    };
+
     let SCHEDULE_STORE = {
       "2026-09": {
-        3:  { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
-        4:  { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true },
-        7:  { ws1:"DD", ws2:"XA", backup:"MT", online:["VK"], tc:true },
-        8:  { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
-        9:  { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
-        10: { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true },
-        11: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
-        14: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
-        15: { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
-        16: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
-        17: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
-        18: { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
-        21: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
-        22: { ws1:"MT", ws2:"VK", backup:"XA", online:["DD"], tc:true },
-        23: { ws1:"DD", ws2:"XA", backup:null, online:["VK","MT"], tc:false },
-        24: { ws1:"MT", ws2:"VK", backup:"DD", online:["XA"], tc:true },
-        25: { ws1:"DD", ws2:"XA", backup:"MT", online:["VK"], tc:true },
-        28: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
-        29: { ws1:"DD", ws2:"XA", backup:"VK", online:["MT"], tc:true },
-        30: { ws1:"MT", ws2:"VK", backup:null, online:["XA","DD"], tc:false },
-      }
+        3:  { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
+        4:  { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
+        7:  { ws1:"DD", ws2:"XA", ws2d:null, backup:"MT", online:["VK"], tc:true },
+        8:  { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
+        9:  { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        10: { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
+        11: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        14: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
+        15: { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
+        16: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
+        17: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        18: { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
+        21: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        22: { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
+        23: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        24: { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
+        25: { ws1:"DD", ws2:"XA", ws2d:null, backup:"MT", online:["VK"], tc:true },
+        28: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
+        29: { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
+        30: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
+      },
+      "2026-10": OCTOBER_2026_SCHEDULE
     };
 
     let LEAVE_PRESETS = {};
@@ -1194,6 +1272,31 @@
     }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
+
+    // -------------------------------------------------------------
+    // ĐỒNG BỘ DỮ LIỆU MOBILE POOL
+    // -------------------------------------------------------------
+    function syncStaffDutyWithEmployees() {
+      employees.forEach(emp => {
+        if (emp.seating === 'Mobile') {
+          let foundKey = Object.keys(STAFF_DUTY).find(k => STAFF_DUTY[k].fullName === emp.fullName);
+          if (!foundKey) {
+            const words = emp.fullName.trim().split(/\s+/);
+            let candKey = words.length > 1 ? (words[0][0] + words[words.length - 1][0]).toUpperCase() : emp.fullName.slice(0, 2).toUpperCase();
+            if (STAFF_DUTY[candKey]) {
+              candKey = emp.id.replace('NV', '');
+            }
+            const shortName = formatNameForDisplay(emp.fullName).toUpperCase();
+            STAFF_DUTY[candKey] = {
+              name: shortName,
+              fullName: emp.fullName,
+              cls: candKey.toLowerCase(),
+              defaultDesk: "Mobile"
+            };
+          }
+        }
+      });
+    }
 
     // -------------------------------------------------------------
     // AUTHENTICATION & LOGIN
@@ -1281,7 +1384,6 @@
       const initials = words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2);
       avatar.innerText = initials.toUpperCase();
       
-      // Hiển thị tên đầy đủ và vai trò trực tiếp trên Desktop header
       if (headerName) headerName.innerText = currentLoggedInUser.fullName;
       if (headerRole) headerRole.innerText = currentLoggedInUser.role;
 
@@ -1304,6 +1406,11 @@
       const addStaffBtn = document.getElementById('btn-add-staff');
       if (addStaffBtn) {
         addStaffBtn.style.display = (currentLoggedInUser.role === 'Admin') ? '' : 'none';
+      }
+
+      const manageMobBtn = document.getElementById('btn-manage-mobile');
+      if (manageMobBtn) {
+        manageMobBtn.style.display = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager') ? '' : 'none';
       }
 
       const isPrivileged = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
@@ -1440,6 +1547,89 @@
     }
 
     // -------------------------------------------------------------
+    // QUẢN LÝ THÊM/BỚT NHÂN SỰ VÀO DANH SÁCH MOBILE POOL
+    // -------------------------------------------------------------
+    function openMobilePoolModal() {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
+        alert("Chỉ Admin và Manager mới có quyền quản lý Mobile Pool!");
+        return;
+      }
+
+      const container = document.getElementById('modal-mobile-list-container');
+      const select = document.getElementById('modal-add-mobile-select');
+      const badgeCount = document.getElementById('modal-mobile-count-badge');
+
+      container.innerHTML = '';
+      select.innerHTML = '<option value="">-- Chọn nhân sự để thêm --</option>';
+
+      const mobileStaff = employees.filter(e => !e.isHidden && e.seating === 'Mobile');
+      const nonMobileStaff = employees.filter(e => !e.isHidden && e.seating !== 'Mobile');
+
+      badgeCount.innerText = `${mobileStaff.length} staff`;
+
+      mobileStaff.forEach(emp => {
+        container.innerHTML += `
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200">
+            <div class="flex items-center gap-2">
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-bold font-heading flex items-center justify-center text-[10px]">
+                ${emp.fullName.slice(0, 2).toUpperCase()}
+              </span>
+              <div>
+                <div class="font-heading font-bold text-slate-800 text-[11px]">${emp.fullName}</div>
+                <div class="text-[9.5px] text-slate-500">${emp.emailCompany} • <span class="font-semibold text-indigo-600">${emp.role}</span></div>
+              </div>
+            </div>
+            <button type="button" onclick="handleRemoveStaffFromMobile('${emp.id}')" 
+                    class="px-2 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-heading font-bold text-[10px] transition" title="Bỏ khỏi Mobile">
+              ✕ Bỏ
+            </button>
+          </div>
+        `;
+      });
+
+      nonMobileStaff.forEach(emp => {
+        const deskText = emp.seating ? `(Đang ở bàn ${emp.seating})` : '(Chưa gán bàn)';
+        select.innerHTML += `<option value="${emp.id}">${emp.fullName} ${deskText}</option>`;
+      });
+
+      document.getElementById('mobile-pool-modal').classList.remove('hidden');
+    }
+
+    function handleRemoveStaffFromMobile(empId) {
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      if (confirm(`Chuyển ${emp.fullName} ra khỏi danh sách Mobile Pool?\nNhân sự sẽ được chuyển về trạng thái Chưa gán bàn (Unassigned).`)) {
+        emp.seating = '';
+        saveData();
+        renderAll();
+        openMobilePoolModal();
+      }
+    }
+
+    function handleAddStaffToMobile() {
+      const select = document.getElementById('modal-add-mobile-select');
+      const empId = select.value;
+      if (!empId) {
+        alert("Vui lòng chọn một nhân sự từ danh sách!");
+        return;
+      }
+
+      const emp = employees.find(e => e.id === empId);
+      if (!emp) return;
+
+      const notice = emp.seating ? `Nhân sự đang ngồi ghế ${emp.seating}. Ghế này sẽ được giải phóng.\n\n` : '';
+      if (confirm(`${notice}Xác nhận thêm ${emp.fullName} vào danh sách Mobile Pool?`)) {
+        emp.seating = 'Mobile';
+        syncStaffDutyWithEmployees();
+        saveData();
+        renderAll();
+        openMobilePoolModal();
+        alert(`Đã thêm ${emp.fullName} vào danh sách Mobile Pool thành công!`);
+      }
+    }
+
+    // -------------------------------------------------------------
     // DEVICE MODES & AUTO DETECTION
     // -------------------------------------------------------------
     function detectDevice() {
@@ -1533,9 +1723,14 @@
         employees = [...INITIAL_EMPLOYEES];
       }
 
+      // Đảm bảo Nguyen Tien Sang được đưa vào danh sách Mobile
+      const sang = employees.find(e => e.fullName.includes("TIEN SANG"));
+      if (sang && sang.seating !== 'Mobile') {
+        sang.seating = 'Mobile';
+      }
+
       employees.forEach(emp => {
         if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
-        // Chuẩn hóa tên ghế Mobile tránh phân biệt hoa thường
         if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
           emp.seating = 'Mobile';
         }
@@ -1543,6 +1738,11 @@
 
       if (storedStore) {
         try { SCHEDULE_STORE = JSON.parse(storedStore); } catch(e) {}
+      }
+
+      // Đảm bảo tháng 10/2026 luôn có sẵn
+      if (!SCHEDULE_STORE["2026-10"]) {
+        SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
       }
 
       if (storedHolidays) {
@@ -1564,6 +1764,8 @@
         if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
       });
 
+      syncStaffDutyWithEmployees();
+
       if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
         setSyncStatus("Sync...", true);
         try {
@@ -1572,6 +1774,11 @@
 
           if (onlineData && onlineData.employees && onlineData.schedule) {
             employees = onlineData.employees;
+            const sangOnline = employees.find(e => e.fullName.includes("TIEN SANG"));
+            if (sangOnline && sangOnline.seating !== 'Mobile') {
+              sangOnline.seating = 'Mobile';
+            }
+
             employees.forEach(emp => {
               if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
               if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
@@ -1579,10 +1786,15 @@
               }
             });
             SCHEDULE_STORE = onlineData.schedule;
+            if (!SCHEDULE_STORE["2026-10"]) {
+              SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+            }
+
             if (onlineData.holidays) HOLIDAYS_STORE = onlineData.holidays;
             if (onlineData.leavePresets) LEAVE_PRESETS = onlineData.leavePresets;
             if (onlineData.seatClaims) SEAT_CLAIMS = onlineData.seatClaims;
 
+            syncStaffDutyWithEmployees();
             saveLocalOnly();
             renderAll();
             setSyncStatus("Synced");
@@ -1645,8 +1857,7 @@
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
       const newMonthSched = {};
 
-      let backupCount = { DD: 0, MT: 0, XA: 0, VK: 0 };
-      let backupPool = ["VK", "XA", "MT", "DD"];
+      const mobileKeys = Object.keys(STAFF_DUTY);
       let bIdx = 0;
 
       for (let day = 1; day <= daysInMonth; day++) {
@@ -1657,7 +1868,7 @@
         const weekNum = Math.floor((day + (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7 - 1) / 7);
         const isPairA = (weekNum % 2 === 0);
 
-        let ws1, ws2;
+        let ws1, ws2, ws2d;
         if (dow === 0 || dow === 2 || dow === 4) {
           ws1 = isPairA ? "DD" : "MT";
           ws2 = isPairA ? "XA" : "VK";
@@ -1665,25 +1876,19 @@
           ws1 = isPairA ? "MT" : "DD";
           ws2 = isPairA ? "VK" : "XA";
         }
+        ws2d = "TS";
 
-        const idle = ["DD", "MT", "XA", "VK"].filter(k => k !== ws1 && k !== ws2);
-        let backupPerson = null;
-
-        for (let i = 0; i < idle.length; i++) {
-          let cand = idle[(bIdx + i) % idle.length];
-          if (backupCount[cand] < 3) {
-            backupPerson = cand;
-            backupCount[cand]++;
-            bIdx++;
-            break;
-          }
-        }
+        const seated = [ws1, ws2, ws2d];
+        const idle = mobileKeys.filter(k => !seated.includes(k));
+        let backupPerson = idle.length > 0 ? idle[bIdx % idle.length] : null;
+        bIdx++;
 
         const onlineList = idle.filter(k => k !== backupPerson);
 
         newMonthSched[day] = {
           ws1,
           ws2,
+          ws2d,
           backup: backupPerson,
           online: onlineList,
           tc: backupPerson !== null
@@ -1693,7 +1898,7 @@
       SCHEDULE_STORE[monthKey] = newMonthSched;
       saveData();
       renderAll();
-      alert(`Successfully generated 3-2 roster for ${monthKey}!`);
+      alert(`Successfully generated roster for ${monthKey}!`);
     }
 
     // -------------------------------------------------------------
@@ -1708,7 +1913,6 @@
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
 
-      // Mặc định tất cả nhân sự là Active (In Office)
       employees.forEach(emp => {
         emp.status = "Active";
 
@@ -1721,6 +1925,7 @@
         const mobileStaffMapping = {
           [sched.ws1]: "Active",
           [sched.ws2]: "Active",
+          [sched.ws2d]: "Active",
           [sched.backup]: "Active"
         };
         if (sched.online) {
@@ -1728,6 +1933,7 @@
         }
 
         Object.entries(mobileStaffMapping).forEach(([k, dutyStatus]) => {
+          if (!k) return;
           const emp = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
           if (emp) {
             if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
@@ -1745,7 +1951,7 @@
 
     function formatNameForDisplay(fullName) {
       if (!fullName) return "";
-      if (activeDeviceMode !== 'mobile') return fullName; // Trên desktop luôn hiển thị đầy đủ Họ và Tên
+      if (activeDeviceMode !== 'mobile') return fullName;
 
       const shortMap = {
         "TRAN HOANG DUY": "T.H.Duy",
@@ -1781,7 +1987,7 @@
     }
 
     // -------------------------------------------------------------
-    // RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN)
+    // RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN) - HỖ TRỢ 1A, 2A, 2D LÀ MOBILE
     // -------------------------------------------------------------
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
@@ -1794,7 +2000,7 @@
       const todayStr = getActiveDateStr();
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
-      const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, backup: null };
+      const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, ws2d: null, backup: null };
 
       // 1. Kiểm tra trạng thái của TRAN HOANG DUY
       const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
@@ -1813,7 +2019,7 @@
         thdBanner.classList.add('hidden');
       }
 
-      // 2. Lấy danh sách bàn vắng mặt: Bàn Fixed + Bàn Mobile (1A / 2A) khi nhân sự chuyển trạng thái khác Active (LOẠI TRỪ TRAN HOANG DUY)
+      // 2. Lấy danh sách bàn vắng mặt: Bàn Fixed + Bàn Mobile (1A / 2A / 2D) khi nhân sự chuyển trạng thái khác Active (LOẠI TRỪ TRAN HOANG DUY)
       const absentDesks = [];
       SEAT_LAYOUT.forEach(seat => {
         if (seat.type === "fixed") {
@@ -1822,7 +2028,11 @@
             absentDesks.push({ seatCode: seat.code, occupant });
           }
         } else if (seat.type === "mobile") {
-          const dutyKey = seat.code === "1A" ? daySched.ws1 : daySched.ws2;
+          let dutyKey = null;
+          if (seat.code === "1A") dutyKey = daySched.ws1;
+          else if (seat.code === "2A") dutyKey = daySched.ws2;
+          else if (seat.code === "2D") dutyKey = daySched.ws2d;
+
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
           const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
           if (mobileEmp && mobileEmp.status !== "Active") {
@@ -1860,7 +2070,11 @@
             </div>
           `;
         } else if (seat.type === "mobile") {
-          const dutyKey = seat.code === "1A" ? daySched.ws1 : daySched.ws2;
+          let dutyKey = null;
+          if (seat.code === "1A") dutyKey = daySched.ws1;
+          else if (seat.code === "2A") dutyKey = daySched.ws2;
+          else if (seat.code === "2D") dutyKey = daySched.ws2d;
+
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
           const displayMobileName = staffObj ? (isMobile ? formatNameForDisplay(staffObj.fullName) : staffObj.fullName) : "Empty";
           const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
@@ -1869,7 +2083,7 @@
             cardHTML = `
               <div class="p-1.5 sm:p-2.5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/40 flex flex-col justify-between seat-card-box text-slate-400">
                 <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seat.code}</div>
-                <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty</div>
+                <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty (Mobile)</div>
               </div>
             `;
           } else {
@@ -1877,7 +2091,6 @@
             const claimedMobileKey = todayClaims[seat.code];
 
             if (isAbsent && claimedMobileKey) {
-              // ĐÃ CÓ MOBILE KHÁC XÁC NHẬN BACKUP VÀO BÀN 1A/2A -> CHUYỂN MÀU XANH BÌNH THƯỜNG
               const claimingStaff = STAFF_DUTY[claimedMobileKey];
               const claimingDisplayName = claimingStaff ? (isMobile ? claimingStaff.name : claimingStaff.fullName) : claimedMobileKey;
 
@@ -1903,7 +2116,6 @@
                 </div>
               `;
             } else if (isAbsent) {
-              // BÀN MOBILE 1A/2A BÁO VẮNG/WFH/OFF VÀ CHƯA CÓ NGƯỜI NHẬN -> NHẤP NHÁY ĐỎ CẢNH BÁO
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
@@ -1926,7 +2138,6 @@
                 </div>
               `;
             } else {
-              // MOBILE CÓ MẶT BÌNH THƯỜNG
               cardHTML = `
                 <div onclick="openStatusModal('${mobileEmp.id}')" title="Cập nhật trạng thái cho ${mobileEmp.fullName}" 
                      class="p-1.5 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-indigo-600 hover:shadow-md transition relative">
@@ -1951,7 +2162,6 @@
             const claimedMobileKey = todayClaims[seat.code];
 
             if (isAbsent && claimedMobileKey) {
-              // ĐÃ CÓ MOBILE XÁC NHẬN NGỒI -> CHUYỂN MÀU XANH BÌNH THƯỜNG
               const mobileStaff = STAFF_DUTY[claimedMobileKey];
               const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
 
@@ -1977,7 +2187,6 @@
                 </div>
               `;
             } else if (isAbsent) {
-              // VẮNG VÀ CHƯA CÓ NGƯỜI NHẬN -> NHẤP NHÁY ĐỎ
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
@@ -1997,7 +2206,6 @@
                 </div>
               `;
             } else {
-              // CÓ MẶT BÌNH THƯỜNG
               cardHTML = `
                 <div onclick="openStatusModal('${occupant.id}')" title="Cập nhật trạng thái cho ${occupant.fullName}" 
                      class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 hover:shadow-md transition relative">
@@ -2031,40 +2239,49 @@
     }
 
     // -------------------------------------------------------------
-    // LOGIC NHẬN CHỖ BACKUP (CLAIM / UNCLAIM SEAT)
+    // LOGIC NHẬN CHỖ BACKUP CHO TẤT CẢ THÀNH VIÊN MOBILE
     // -------------------------------------------------------------
     function getTodayMobileCandidates(targetSeatCode = null) {
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
-      if (!sched) return ["DD", "MT", "XA", "VK"];
 
       const activelySeatedMobileKeys = [];
-      
-      if (sched.ws1 && targetSeatCode !== "1A") {
-        const emp1 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
-        if (emp1 && emp1.status === "Active") {
-          activelySeatedMobileKeys.push(sched.ws1);
+      if (sched) {
+        if (sched.ws1 && targetSeatCode !== "1A") {
+          const emp1 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
+          if (emp1 && emp1.status === "Active") activelySeatedMobileKeys.push(sched.ws1);
         }
-      }
-      if (sched.ws2 && targetSeatCode !== "2A") {
-        const emp2 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
-        if (emp2 && emp2.status === "Active") {
-          activelySeatedMobileKeys.push(sched.ws2);
+        if (sched.ws2 && targetSeatCode !== "2A") {
+          const emp2 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
+          if (emp2 && emp2.status === "Active") activelySeatedMobileKeys.push(sched.ws2);
+        }
+        if (sched.ws2d && targetSeatCode !== "2D") {
+          const emp2d = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2d]?.fullName);
+          if (emp2d && emp2d.status === "Active") activelySeatedMobileKeys.push(sched.ws2d);
         }
       }
 
-      return ["DD", "MT", "XA", "VK"].filter(k => {
-        if (activelySeatedMobileKeys.includes(k)) return false;
-        if (targetSeatCode === "1A" && sched.ws1 === k) return false;
-        if (targetSeatCode === "2A" && sched.ws2 === k) return false;
-        return true;
+      const mobileEmployees = employees.filter(e => !e.isHidden && e.seating === 'Mobile');
+      const candidateKeys = [];
+
+      mobileEmployees.forEach(emp => {
+        const k = Object.keys(STAFF_DUTY).find(key => STAFF_DUTY[key].fullName === emp.fullName);
+        if (k) {
+          if (activelySeatedMobileKeys.includes(k)) return;
+          if (sched && targetSeatCode === "1A" && sched.ws1 === k) return;
+          if (sched && targetSeatCode === "2A" && sched.ws2 === k) return;
+          if (sched && targetSeatCode === "2D" && sched.ws2d === k) return;
+          candidateKeys.push(k);
+        }
       });
+
+      return candidateKeys;
     }
 
     function openClaimSeatModal(seatCode, occupantName) {
       document.getElementById('claim-seat-code-hidden').value = seatCode;
       document.getElementById('claim-modal-seat-title').innerText = seatCode;
-      document.getElementById('claim-modal-desc').innerHTML = `Bàn <strong>${seatCode}</strong> của <strong>${occupantName}</strong> đang vắng mặt. Chọn nhân sự Mobile xác nhận vào ngồi thế chỗ:`;
+      document.getElementById('claim-modal-desc').innerHTML = `Bàn <strong>${seatCode}</strong> của <strong>${occupantName}</strong> đang vắng mặt. Chọn 1 nhân sự Mobile để xác nhận thế chỗ:`;
 
       const todayStr = getActiveDateStr();
       const todayClaims = SEAT_CLAIMS[todayStr] || {};
@@ -2306,7 +2523,7 @@
     }
 
     // -------------------------------------------------------------
-    // RENDER LỊCH DUTY ROSTER & STATISTICS
+    // RENDER LỊCH DUTY ROSTER & THỐNG KÊ (HIỂN THỊ CẢ 1A, 2A, 2D)
     // -------------------------------------------------------------
     function renderDutyBoard() {
       const monthKey = getMonthKey(currentYear, currentMonth);
@@ -2361,7 +2578,7 @@
         const isCurrentRealDay = inMonth && (currentMonth === REAL_TODAY_MONTH && currentYear === REAL_TODAY_YEAR && dateNum === REAL_TODAY_DAY);
 
         if (!inMonth) {
-          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}"></div>`;
+          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}"></div>`;
           continue;
         }
 
@@ -2369,7 +2586,7 @@
 
         if (isWeekend) {
           cells += `
-            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
+            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
               <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
               <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
               ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 font-heading ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
@@ -2381,7 +2598,7 @@
         const s = currentMonthSched[dateNum];
         if (!s) {
           cells += `
-            <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[84px]' : 'min-h-[148px]'}">
+            <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
               <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
               ${holidayObj ? `<span class="text-[8.5px] sm:text-[10px] font-bold text-rose-700 mt-1 font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
               ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1 font-heading">+ Setup</button>` : `<span class="text-[8px] text-slate-400 font-heading">Empty</span>`}
@@ -2407,10 +2624,10 @@
         const holidayHighlightClass = holidayObj ? "bg-rose-50/70 border-rose-300" : "bg-white border-slate-200";
 
         if (isMobile) {
-          const badgeSpanMob = (k) => k ? `<span class="px-1.5 py-0.2 rounded font-mono font-bold text-[8px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[8px]">—</span>`;
+          const badgeSpanMob = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-1.5 py-0.2 rounded font-mono font-bold text-[8px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[8px]">—</span>`;
 
           cells += `
-            <div class="${holidayHighlightClass} border ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : ''} rounded-lg p-1.5 shadow-xs justify-between flex flex-col min-h-[84px] transition">
+            <div class="${holidayHighlightClass} border ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : ''} rounded-lg p-1.5 shadow-xs justify-between flex flex-col min-h-[88px] transition">
               <div class="flex justify-between items-center border-b border-slate-100 pb-0.5">
                 <span class="font-extrabold text-xs ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono">${dateNum}</span>
                 <div class="flex items-center gap-1">
@@ -2418,7 +2635,7 @@
                   ${adminActionButtons}
                 </div>
               </div>
-              <div class="space-y-0.5 text-[8.5px]">
+              <div class="space-y-0.5 text-[8px]">
                 <div class="flex justify-between items-center">
                   <span class="text-slate-400 font-mono font-semibold">1A:</span>
                   <div>${badgeSpanMob(s.ws1)}</div>
@@ -2426,6 +2643,10 @@
                 <div class="flex justify-between items-center">
                   <span class="text-slate-400 font-mono font-semibold">2A:</span>
                   <div>${badgeSpanMob(s.ws2)}</div>
+                </div>
+                <div class="flex justify-between items-center">
+                  <span class="text-slate-400 font-mono font-semibold">2D:</span>
+                  <div>${badgeSpanMob(s.ws2d)}</div>
                 </div>
                 <div class="flex justify-between items-center border-t border-slate-50 pt-0.5">
                   <span class="text-red-600 font-bold font-mono">BK:</span>
@@ -2435,11 +2656,11 @@
             </div>
           `;
         } else {
-          const badgeSpanDesk = (k) => k ? `<span class="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[13px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
-          const badgesSpanDesk = (arr) => arr ? arr.map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[12px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
+          const badgeSpanDesk = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[12px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
+          const badgesSpanDesk = (arr) => arr ? arr.filter(k => STAFF_DUTY[k]).map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[11px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
 
           cells += `
-            <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-3 shadow-xs justify-between flex flex-col min-h-[148px] transition">
+            <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-2.5 sm:p-3 shadow-xs justify-between flex flex-col min-h-[160px] transition">
               
               <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                 <div class="flex items-center gap-1.5">
@@ -2453,7 +2674,7 @@
                 </div>
               </div>
 
-              <div class="space-y-1.5 my-auto text-xs sm:text-[13px] font-mono pt-1">
+              <div class="space-y-1 my-auto text-xs sm:text-[12.5px] font-mono pt-1">
                 <div class="flex items-center justify-between">
                   <span class="text-slate-500 font-bold text-xs">1A:</span>
                   <div>${badgeSpanDesk(s.ws1)}</div>
@@ -2461,6 +2682,10 @@
                 <div class="flex items-center justify-between">
                   <span class="text-slate-500 font-bold text-xs">2A:</span>
                   <div>${badgeSpanDesk(s.ws2)}</div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-slate-500 font-bold text-xs">2D:</span>
+                  <div>${badgeSpanDesk(s.ws2d)}</div>
                 </div>
                 <div class="flex items-center justify-between border-t border-slate-100 pt-1">
                   <span class="text-red-600 font-bold text-xs">⚡ BK:</span>
@@ -2521,18 +2746,17 @@
     }
 
     function renderDutyStats(sched) {
-      const statsObj = {
-        DD: { on: 0, basic: 0, backup: 0, off: 0 },
-        MT: { on: 0, basic: 0, backup: 0, off: 0 },
-        XA: { on: 0, basic: 0, backup: 0, off: 0 },
-        VK: { on: 0, basic: 0, backup: 0, off: 0 },
-      };
+      const statsObj = {};
+      Object.keys(STAFF_DUTY).forEach(k => {
+        statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 };
+      });
 
       const days = Object.keys(sched);
       days.forEach(d => {
         const item = sched[d];
         if (item.ws1 && statsObj[item.ws1]) { statsObj[item.ws1].basic++; statsObj[item.ws1].on++; }
         if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
+        if (item.ws2d && statsObj[item.ws2d]) { statsObj[item.ws2d].basic++; statsObj[item.ws2d].on++; }
         if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
         if (item.online) {
           item.online.forEach(k => { if(statsObj[k]) statsObj[k].off++; });
@@ -2745,7 +2969,7 @@
     }
 
     // -------------------------------------------------------------
-    // RENDER STAFF LIST (ĐỒNG BỘ TYPOGRAPHY EMAIL & SEAT HOÀN TOÀN)
+    // RENDER STAFF LIST
     // -------------------------------------------------------------
     function renderDashboard() {
       if (currentLoggedInUser && currentLoggedInUser.role === 'User') {
@@ -2756,7 +2980,12 @@
       const sorted = sortEmployees(filtered);
 
       const activeHeadcount = employees.filter(e => !e.isHidden);
+      const fixedCount = employees.filter(e => !e.isHidden && e.seating && e.seating !== 'Mobile').length;
+      const mobileCount = employees.filter(e => !e.isHidden && e.seating === 'Mobile').length;
+
       document.getElementById('stat-total-headcount').innerText = activeHeadcount.length;
+      document.getElementById('stat-fixed-seats').innerHTML = `${fixedCount} <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span>`;
+      document.getElementById('stat-mobile-pool').innerHTML = `${mobileCount} <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span>`;
       document.getElementById('table-count').innerText = `${sorted.length} ${t('members')}`;
 
       const isAdmin = currentLoggedInUser && currentLoggedInUser.role === 'Admin';
@@ -2783,7 +3012,6 @@
         let seatDisplay = '';
         let liveStatus = emp.status;
 
-        // Xử lý chuẩn hóa chỗ ngồi Mobile không phân biệt hoa thường
         const isMobileSeat = emp.seating && emp.seating.trim().toLowerCase() === 'mobile';
 
         if (isMobileSeat) {
@@ -2794,12 +3022,15 @@
           else if (emp.fullName.includes("MINH TRUNG")) staffKey = "MT";
           else if (emp.fullName.includes("XUAN ANH")) staffKey = "XA";
           else if (emp.fullName.includes("KHIEM")) staffKey = "VK";
+          else if (emp.fullName.includes("TIEN SANG")) staffKey = "TS";
 
           if (daySched && staffKey) {
             if (daySched.ws1 === staffKey) {
               assignedCode = "1A";
             } else if (daySched.ws2 === staffKey) {
               assignedCode = "2A";
+            } else if (daySched.ws2d === staffKey) {
+              assignedCode = "2D";
             } else if (daySched.backup === staffKey) {
               assignedCode = "Backup";
             } else if (daySched.online && daySched.online.includes(staffKey)) {
@@ -2910,32 +3141,30 @@
       document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}`;
 
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "DD", ws2: "XA", backup: "VK" };
+      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "DD", ws2: "XA", ws2d: "TS", backup: "VK" };
 
       const ws1Sel = document.getElementById('duty-edit-ws1');
-      ws1Sel.innerHTML = `
-        <option value="DD">D.DUY (Dang Duy)</option>
-        <option value="MT">M.TRUNG (Nguyen Minh Trung)</option>
-      `;
-
       const ws2Sel = document.getElementById('duty-edit-ws2');
-      ws2Sel.innerHTML = `
-        <option value="XA">X.ANH (Nguyen Xuan Anh)</option>
-        <option value="VK">V.KHIEM (Vu Khiem)</option>
-      `;
-
+      const ws2dSel = document.getElementById('duty-edit-ws2d');
       const backupSel = document.getElementById('duty-edit-backup');
-      const allOptions = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name}</option>`).join('');
+
+      const allOptions = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
+
+      ws1Sel.innerHTML = allOptions;
+      ws2Sel.innerHTML = allOptions;
+      ws2dSel.innerHTML = allOptions;
       backupSel.innerHTML = `<option value="">-- No Backup Assigned --</option>` + allOptions;
 
-      ws1Sel.value = (sched.ws1 === "DD" || sched.ws1 === "MT") ? sched.ws1 : "DD";
-      ws2Sel.value = (sched.ws2 === "XA" || sched.ws2 === "VK") ? sched.ws2 : "XA";
+      ws1Sel.value = sched.ws1 || "DD";
+      ws2Sel.value = sched.ws2 || "XA";
+      ws2dSel.value = sched.ws2d || "TS";
       backupSel.value = sched.backup || "";
 
       updateOnlineChipsPreview();
 
       ws1Sel.onchange = updateOnlineChipsPreview;
       ws2Sel.onchange = updateOnlineChipsPreview;
+      ws2dSel.onchange = updateOnlineChipsPreview;
       backupSel.onchange = updateOnlineChipsPreview;
 
       document.getElementById('duty-edit-modal').classList.remove('hidden');
@@ -2944,10 +3173,11 @@
     function updateOnlineChipsPreview() {
       const ws1 = document.getElementById('duty-edit-ws1').value;
       const ws2 = document.getElementById('duty-edit-ws2').value;
+      const ws2d = document.getElementById('duty-edit-ws2d').value;
       const backup = document.getElementById('duty-edit-backup').value;
 
       const allKeys = Object.keys(STAFF_DUTY);
-      const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
+      const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
 
       const chipsEl = document.getElementById('duty-edit-online-chips');
       chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold font-mono">${STAFF_DUTY[k].name}</span>`).join(' ');
@@ -2957,10 +3187,11 @@
       const dayNum = parseInt(document.getElementById('duty-edit-day-num').value);
       const ws1 = document.getElementById('duty-edit-ws1').value;
       const ws2 = document.getElementById('duty-edit-ws2').value;
+      const ws2d = document.getElementById('duty-edit-ws2d').value;
       const backup = document.getElementById('duty-edit-backup').value || null;
 
       const allKeys = Object.keys(STAFF_DUTY);
-      const online = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== backup);
+      const online = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
 
       const monthKey = getMonthKey(currentYear, currentMonth);
       if (!SCHEDULE_STORE[monthKey]) SCHEDULE_STORE[monthKey] = {};
@@ -2968,6 +3199,7 @@
       SCHEDULE_STORE[monthKey][dayNum] = {
         ws1,
         ws2,
+        ws2d,
         backup,
         online,
         tc: backup !== null
@@ -3082,6 +3314,7 @@
         employees.push({ id: newId, fullName, role, seating, emailCompany, emailPersonal, password: defaultPassword, status, isHidden });
       }
 
+      syncStaffDutyWithEmployees();
       saveData();
       closeModal('employee-modal');
       renderAll();
