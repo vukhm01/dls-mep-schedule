@@ -440,7 +440,9 @@
 
           <div id="duty-unconfigured-container" class="hidden py-8 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 space-y-2">
             <h3 class="text-xs sm:text-sm font-heading font-bold text-slate-800" id="unconfigured-month-title">No roster configured for this month</h3>
-            <p class="text-[11px] text-slate-500" id="txt-roster-rule-hint">Rule: 1A, 2A & 2D Mobile slots assigned with backup rotation.</p>
+            <p class="text-[11px] text-slate-500 max-w-xl mx-auto" id="txt-roster-rule-hint">
+              Quy tắc tự động (Áp dụng từ Tháng 11/2026): 1A (3 ngày M.Trung, xen giữa D.Duy) • 2A (D.Duy cách ngày 1A, X.Anh trước/sau, Khiêm vị trí còn lại) • 2D (Khiêm cùng lúc D.Duy, còn lại T.Sang trừ T6) • 8 ca Backup chia đều 4 người (mỗi người 2 ca).
+            </p>
             <button onclick="generateScheduleByRule()" class="px-3.5 py-1.5 rounded-xl bg-[#ee2f26] hover:bg-red-700 text-white font-heading font-bold text-xs shadow-xs transition inline-flex items-center gap-1" id="btn-generate-roster">
               <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Generate Roster
             </button>
@@ -457,12 +459,17 @@
               </div>
             </div>
 
-            <div class="pt-2 border-t border-slate-100 space-y-2">
+            <!-- BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG -->
+            <div class="pt-3 border-t border-slate-100 space-y-2.5">
               <div class="flex justify-between items-center text-xs sm:text-sm">
-                <h3 class="font-heading font-bold text-slate-800" id="txt-breakdown-title">Monthly Working-Day Breakdown</h3>
-                <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2 py-0.5 rounded text-[10px] sm:text-xs">20 Working Days</span>
+                <h3 class="font-heading font-bold text-slate-800 flex items-center gap-1.5" id="txt-breakdown-title">
+                  <i class="fa-solid fa-chart-column text-[#ee2f26]"></i> Monthly Working-Day Breakdown
+                </h3>
+                <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2.5 py-1 rounded-md text-[10px] sm:text-xs border border-red-200">20 Working Days</span>
               </div>
-              <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 sm:gap-3" id="duty-stats-rows"></div>
+              <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+                <div id="duty-stats-rows" class="divide-y divide-slate-100 bg-white"></div>
+              </div>
             </div>
           </div>
 
@@ -955,106 +962,28 @@
 
     const DICT = {
       en: {
-        toggleLabel: "VI",
-        viewMode: "View Mode:",
-        appTitle: "Workstation & Duty Roster Management",
-        appSub: "16-Seat Pod • Mobile & Backup Rotation",
-        statusBtn: "Status / Leave",
-        changePass: "Change Password",
-        signOut: "Sign Out",
-        tabFloorplan: "Floor Plan",
-        tabDuty: "Duty Roster",
-        tabHoliday: "Public Holidays",
-        tabStaff: "Staff List",
-        dateLbl: "Active Date:",
-        addStaff: "Add Staff",
-        deleteMonthRoster: "Delete Month Roster",
-        backupAlertTitle: "⚡ BACKUP NEEDED: DESK IS OFF!",
-        floorTitle: "Workstation Pod (4 Rows x 4 Desks)",
-        present: "Present",
-        absent: "Absent/WFH",
-        locked: "Locked",
-        frontPod: "Front Pod (Rows 1 & 2)",
-        backPod: "Back Pod (Rows 3 & 4)",
-        centralAisle: "CENTRAL AISLE",
-        row1: "ROW 1",
-        row2: "ROW 2",
-        row3: "ROW 3",
-        row4: "ROW 4",
-        breakdownTitle: "Monthly Working-Day Breakdown",
-        workingDays: "Working Days",
-        totalStaff: "Total Staff",
-        fixedSeats: "Fixed Seats",
-        syncedFor: "Active Date:",
-        members: "members",
-        thNo: "No",
-        thName: "Full Name",
-        thRole: "Role",
-        thWorkEmail: "Work Email",
-        thPersonalEmail: "Personal Email",
-        thSeat: "Seat",
-        thStatus: "Status",
-        thActions: "Actions",
-        resetPassConfirm: "Reset password for {name}?\n\nNew default password: {pass}",
-        resetPassSuccess: "Password reset successfully for {name}!\nNew password: {pass}",
-        deleteConfirm: "WARNING: Permanently delete {name} ({email}) from system?",
-        deleteSuccess: "Deleted {name} successfully!"
+        toggleLabel: "VI", viewMode: "View Mode:", appTitle: "Workstation & Duty Roster Management", appSub: "16-Seat Pod • Mobile & Backup Rotation",
+        statusBtn: "Status / Leave", changePass: "Change Password", signOut: "Sign Out", tabFloorplan: "Floor Plan", tabDuty: "Duty Roster",
+        tabHoliday: "Public Holidays", tabStaff: "Staff List", dateLbl: "Active Date:", addStaff: "Add Staff", deleteMonthRoster: "Delete Month Roster",
+        backupAlertTitle: "⚡ BACKUP NEEDED: DESK IS OFF!", floorTitle: "Workstation Pod (4 Rows x 4 Desks)", present: "Present", absent: "Absent/WFH",
+        locked: "Locked", frontPod: "Front Pod (Rows 1 & 2)", backPod: "Back Pod (Rows 3 & 4)", centralAisle: "CENTRAL AISLE", row1: "ROW 1",
+        row2: "ROW 2", row3: "ROW 3", row4: "ROW 4", breakdownTitle: "Monthly Working-Day Breakdown", workingDays: "Working Days", totalStaff: "Total Staff",
+        fixedSeats: "Fixed Seats", syncedFor: "Active Date:", members: "members", thNo: "No", thName: "Full Name", thRole: "Role", thWorkEmail: "Work Email",
+        thPersonalEmail: "Personal Email", thSeat: "Seat", thStatus: "Status", thActions: "Actions"
       },
       vi: {
-        toggleLabel: "EN",
-        viewMode: "Chế độ xem:",
-        appTitle: "Quản Lý Chỗ Ngồi & Duty Board",
-        appSub: "Sơ Đồ 16 Ghế • Phân Bổ Mobile & Backup",
-        statusBtn: "Báo Nghỉ / WFH",
-        changePass: "Đổi Mật Khẩu Riêng",
-        signOut: "Đăng Xuất (Sign Out)",
-        tabFloorplan: "Sơ Đồ Ghế",
-        tabDuty: "Lịch Trực",
-        tabHoliday: "Ngày Lễ VN",
-        tabStaff: "Nhân Sự",
-        dateLbl: "Ngày hiện hành:",
-        addStaff: "Thêm Nhân Sự",
-        deleteMonthRoster: "Xóa Lịch Tháng Này",
-        backupAlertTitle: "⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!",
-        floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)",
-        present: "Có mặt",
-        absent: "Vắng/WFH",
-        locked: "Khóa",
-        frontPod: "Cụm Trước (Hàng 1 & 2)",
-        backPod: "Cụm Sau (Hàng 3 & 4)",
-        centralAisle: "LỐI ĐI TRUNG TÂM (AISLE)",
-        row1: "HÀNG 1",
-        row2: "HÀNG 2",
-        row3: "HÀNG 3",
-        row4: "HÀNG 4",
-        breakdownTitle: "Thống Kê Ca Trực Tháng",
-        workingDays: "Ngày làm",
-        totalStaff: "Tổng Số",
-        fixedSeats: "Cố Định",
-        syncedFor: "Ngày hiện hành:",
-        members: "người",
-        thNo: "STT",
-        thName: "Họ Và Tên",
-        thRole: "Vai Trò",
-        thWorkEmail: "Email Công Ty",
-        thPersonalEmail: "Email Cá Nhân",
-        thSeat: "Chỗ Ngồi",
-        thStatus: "Trạng Thái",
-        thActions: "Thao Tác",
-        resetPassConfirm: "Đặt lại mật khẩu cho nhân sự {name}?\n\nMật khẩu mặc định mới: {pass}",
-        resetPassSuccess: "Đã đặt lại mật khẩu thành công cho {name}!\nMật khẩu mới: {pass}",
-        deleteConfirm: "CẢNH BÁO: Xóa vĩnh viễn nhân sự {name} ({email}) khỏi hệ thống?",
-        deleteSuccess: "Đã xóa thành công nhân sự {name}!"
+        toggleLabel: "EN", viewMode: "Chế độ xem:", appTitle: "Quản Lý Chỗ Ngồi & Duty Board", appSub: "Sơ Đồ 16 Ghế • Phân Bổ Mobile & Backup",
+        statusBtn: "Báo Nghỉ / WFH", changePass: "Đổi Mật Khẩu Riêng", signOut: "Đăng Xuất", tabFloorplan: "Sơ Đồ Ghế", tabDuty: "Lịch Trực",
+        tabHoliday: "Ngày Lễ VN", tabStaff: "Nhân Sự", dateLbl: "Ngày hiện hành:", addStaff: "Thêm Nhân Sự", deleteMonthRoster: "Xóa Lịch Tháng Này",
+        backupAlertTitle: "⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!", floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)", present: "Có mặt", absent: "Vắng/WFH",
+        locked: "Khóa", frontPod: "Cụm Trước (Hàng 1 & 2)", backPod: "Cụm Sau (Hàng 3 & 4)", centralAisle: "LỐI ĐI TRUNG TÂM (AISLE)", row1: "HÀNG 1",
+        row2: "HÀNG 2", row3: "HÀNG 3", row4: "HÀNG 4", breakdownTitle: "Thống Kê Ca Trực Tháng", workingDays: "Ngày làm", totalStaff: "Tổng Số",
+        fixedSeats: "Cố Định", syncedFor: "Ngày hiện hành:", members: "người", thNo: "STT", thName: "Họ Và Tên", thRole: "Vai Trò", thWorkEmail: "Email Công Ty",
+        thPersonalEmail: "Email Cá Nhân", thSeat: "Chỗ Ngồi", thStatus: "Trạng Thái", thActions: "Thao Tác"
       }
     };
 
-    function t(key, params = {}) {
-      let str = (DICT[currentLang] && DICT[currentLang][key]) ? DICT[currentLang][key] : (DICT['en'][key] || key);
-      Object.keys(params).forEach(k => {
-        str = str.replace(`{${k}}`, params[k]);
-      });
-      return str;
-    }
+    function t(key) { return (DICT[currentLang] && DICT[currentLang][key]) || DICT['en'][key] || key; }
 
     function toggleLanguage() {
       currentLang = (currentLang === 'en') ? 'vi' : 'en';
@@ -1079,7 +1008,6 @@
       
       const delRosterBtnText = document.getElementById('btn-delete-roster-text');
       if (delRosterBtnText) delRosterBtnText.innerText = t('deleteMonthRoster');
-
       const addStaffBtnText = document.getElementById('btn-add-staff-text');
       if (addStaffBtnText) addStaffBtnText.innerText = t('addStaff');
 
@@ -1095,59 +1023,41 @@
       document.getElementById('txt-row-2-title').innerText = t('row2');
       document.getElementById('txt-row-3-title').innerText = t('row3');
       document.getElementById('txt-row-4-title').innerText = t('row4');
-      document.getElementById('txt-breakdown-title').innerText = t('breakdownTitle');
+      document.getElementById('txt-breakdown-title').innerHTML = `<i class="fa-solid fa-chart-column text-[#ee2f26]"></i> ${t('breakdownTitle')}`;
       document.getElementById('kpi-total-headcount').innerText = t('totalStaff');
       document.getElementById('kpi-fixed-seats').innerText = t('fixedSeats');
       document.getElementById('txt-synced-with-date').innerText = t('syncedFor');
 
       const ths = document.querySelectorAll('#table-head-row th');
       if (ths.length >= 8) {
-        ths[0].innerText = t('thNo');
-        ths[1].innerText = t('thName');
-        ths[2].innerText = t('thRole');
-        ths[3].innerText = t('thWorkEmail');
-        ths[4].innerText = t('thPersonalEmail');
-        ths[5].innerText = t('thSeat');
-        ths[6].innerText = t('thStatus');
-        ths[7].innerText = t('thActions');
+        ths[0].innerText = t('thNo'); ths[1].innerText = t('thName'); ths[2].innerText = t('thRole');
+        ths[3].innerText = t('thWorkEmail'); ths[4].innerText = t('thPersonalEmail'); ths[5].innerText = t('thSeat');
+        ths[6].innerText = t('thStatus'); ths[7].innerText = t('thActions');
       }
 
       const calHdr = document.getElementById('cal-weekdays-header');
       if (calHdr) {
-        if (currentLang === 'vi') {
-          calHdr.innerHTML = `<span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span class="text-slate-300">T7</span><span class="text-slate-300">CN</span>`;
-        } else {
-          calHdr.innerHTML = `<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="text-slate-300">Sat</span><span class="text-slate-300">Sun</span>`;
-        }
+        calHdr.innerHTML = (currentLang === 'vi')
+          ? `<span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span class="text-slate-300">T7</span><span class="text-slate-300">CN</span>`
+          : `<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span class="text-slate-300">Sat</span><span class="text-slate-300">Sun</span>`;
       }
     }
 
     function removeVietnameseTones(str) {
       if (!str) return "";
-      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
-      str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
-      str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
-      str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
-      str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
-      str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
-      str = str.replace(/đ/g, "d");
-      str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
-      str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
-      str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
-      str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
-      str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
-      str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
-      str = str.replace(/Đ/g, "D");
+      str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a").replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+               .replace(/ì|í|ị|ỉ|ĩ/g, "i").replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+               .replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u").replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y").replace(/đ/g, "d")
+               .replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A").replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E")
+               .replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I").replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O")
+               .replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U").replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y").replace(/Đ/g, "D");
       return str;
     }
 
     function generateDefaultPassword(fullName) {
-      if (!fullName) return "dls@123";
-      const clean = removeVietnameseTones(fullName).toLowerCase().replace(/[^a-z0-9]/g, '');
-      return `${clean}@123`;
+      return `${removeVietnameseTones(fullName || '').toLowerCase().replace(/[^a-z0-9]/g, '')}@123`;
     }
 
-    // DANH SÁCH NHÂN SỰ GỐC: NGUYEN TIEN SANG Ở MOBILE POOL, 2D CHUYỂN THÀNH GHẾ MOBILE
     const INITIAL_EMPLOYEES = [
       { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "tranhoangduy@gmail.com", seating: "", status: "Active", isHidden: false },
       { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
@@ -1155,20 +1065,16 @@
       { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "minhtrung@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV005", fullName: "NGUYEN XUAN ANH", role: "Manager", emailCompany: "anh.nguyenxuan@dlsconsultant.com", emailPersonal: "xuananh@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "tiensang@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
-
       { id: "NV010", fullName: "VU VAN HIEU", role: "User", emailCompany: "hieu.vu@dlsconsultant.com", emailPersonal: "vanhieu@gmail.com", seating: "1B", status: "Active", isHidden: false },
       { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "congson@gmail.com", seating: "1C", status: "Active", isHidden: false },
       { id: "NV006", fullName: "NGUYEN THANH DAO", role: "User", emailCompany: "dao.nguyen@dlsconsultant.com", emailPersonal: "thanhdao@gmail.com", seating: "1D", status: "Active", isHidden: false },
-
       { id: "NV012", fullName: "NGUYEN HUU LONG", role: "User", emailCompany: "long.nguyen@dlsconsultant.com", emailPersonal: "huulong@gmail.com", seating: "2B", status: "Active", isHidden: false },
       { id: "NV008", fullName: "HUYNH NHAN TRI", role: "User", emailCompany: "tri.huynh@dlsconsultant.com", emailPersonal: "nhantri@gmail.com", seating: "2C", status: "Active", isHidden: false },
-
       { id: "NV014", fullName: "NGUYEN HOANG MANH", role: "User", emailCompany: "manh.nguyen@dlsconsultant.com", emailPersonal: "hoangmanh@gmail.com", seating: "3B", status: "Active", isHidden: false },
       { id: "NV011", fullName: "NGUYEN THI LIEN", role: "User", emailCompany: "lien.nguyenthi@dlsconsultant.com", emailPersonal: "thilien@gmail.com", seating: "3C", status: "Active", isHidden: false },
       { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "baolong@gmail.com", seating: "3D", status: "Active", isHidden: false }
     ];
 
-    // CẤU HÌNH POD: 1A, 2A VÀ 2D LÀ CHỖ NGỒI MOBILE
     const SEAT_LAYOUT = [
       { code: "1A", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
       { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "mobile" },
@@ -1186,39 +1092,39 @@
 
     const DEFAULT_VN_HOLIDAYS = [
       { id: "VN_H01", name: "Tết Dương Lịch (New Year's Day)", type: "solar", detail: "01/01", startDate: "2026-01-01", endDate: "2026-01-01", daysOff: 1, desc: "Nghỉ Tết Dương Lịch toàn quốc" },
-      { id: "VN_H02", name: "Tết Nguyên Đán (Lunar New Year)", type: "lunar", detail: "29/12 - 03/01 ÂL", startDate: "2026-02-15", endDate: "2026-02-19", daysOff: 5, desc: "Tết Âm Lịch cổ truyền Bính Ngọ (5 ngày)" },
-      { id: "VN_H03", name: "Giỗ Tổ Hùng Vương (Hung Kings Commemoration)", type: "lunar", detail: "10/03 ÂL", startDate: "2026-04-26", endDate: "2026-04-26", daysOff: 1, desc: "Giỗ Tổ Hùng Vương 10/3 Âm Lịch" },
-      { id: "VN_H04", name: "Ngày Giải Phóng Miền Nam (Reunification Day)", type: "solar", detail: "30/04", startDate: "2026-04-30", endDate: "2026-04-30", daysOff: 1, desc: "Kỷ niệm Ngày Giải phóng miền Nam 30/4" },
-      { id: "VN_H05", name: "Ngày Quốc Tế Lao Động (Labor Day)", type: "solar", detail: "01/05", startDate: "2026-05-01", endDate: "2026-05-01", daysOff: 1, desc: "Kỷ niệm Ngày Quốc tế Lao động 1/5" },
-      { id: "VN_H06", name: "Quốc Khánh (Vietnam National Day)", type: "solar", detail: "01/09 - 02/09", startDate: "2026-09-01", endDate: "2026-09-02", daysOff: 2, desc: "Kỷ niệm Quốc Khánh 2/9 & Ngày nghỉ liền kề (Nghỉ 2 ngày: 01/09 & 02/09)" }
+      { id: "VN_H02", name: "Tết Nguyên Đán (Lunar New Year)", type: "lunar", detail: "29/12 - 03/01 ÂL", startDate: "2026-02-15", endDate: "2026-02-19", daysOff: 5, desc: "Tết Âm Lịch Bính Ngọ (5 ngày)" },
+      { id: "VN_H03", name: "Giỗ Tổ Hùng Vương (Hung Kings)", type: "lunar", detail: "10/03 ÂL", startDate: "2026-04-26", endDate: "2026-04-26", daysOff: 1, desc: "Giỗ Tổ Hùng Vương 10/3 ÂL" },
+      { id: "VN_H04", name: "Ngày Giải Phóng (Reunification Day)", type: "solar", detail: "30/04", startDate: "2026-04-30", endDate: "2026-04-30", daysOff: 1, desc: "Kỷ niệm Ngày Giải phóng miền Nam 30/4" },
+      { id: "VN_H05", name: "Quốc Tế Lao Động (Labor Day)", type: "solar", detail: "01/05", startDate: "2026-05-01", endDate: "2026-05-01", daysOff: 1, desc: "Kỷ niệm Ngày Quốc tế Lao động 1/5" },
+      { id: "VN_H06", name: "Quốc Khánh (Vietnam National Day)", type: "solar", detail: "01/09 - 02/09", startDate: "2026-09-01", endDate: "2026-09-02", daysOff: 2, desc: "Nghỉ Quốc Khánh 2 ngày" }
     ];
 
     let HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
 
-    // LỊCH TRỰC THÁNG 10/2026 ĐƯỢC THIẾT LẬP VỚI 3 CHỖ MOBILE: 1A, 2A, 2D
+    /* LỊCH THÁNG 10/2026 CHUẨN XÁC ĐÃ CHỐT */
     const OCTOBER_2026_SCHEDULE = {
-      1:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
-      2:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
-      5:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"MT", online:["VK"], tc:true },
-      6:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
-      7:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      8:  { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
-      9:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      12: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
-      13: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
-      14: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
-      15: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      16: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
-      19: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      20: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"XA", online:["DD"], tc:true },
-      21: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      22: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
-      23: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"MT", online:["VK"], tc:true },
-      26: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
-      27: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
-      28: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["XA","DD"], tc:false },
-      29: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK","MT"], tc:false },
-      30: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:"DD", online:["XA"], tc:true },
+      1:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"VK", online:["DD"], tc:true },
+      2:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"XA", online:["TS"], tc:true },
+      5:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"DD", online:["VK"], tc:true },
+      6:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"TS", online:["XA"], tc:true },
+      7:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["MT","VK"], tc:false },
+      8:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
+      9:  { ws1:"MT", ws2:"XA", ws2d:"VK", backup:"DD", online:["TS"], tc:true },
+      12: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["DD","XA"], tc:false },
+      13: { ws1:"MT", ws2:"XA", ws2d:"DD", backup:null, online:["VK","TS"], tc:false },
+      14: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["MT","XA"], tc:false },
+      15: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"VK", online:["DD"], tc:true },
+      16: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
+      19: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD","VK"], tc:false },
+      20: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
+      21: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
+      22: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"XA", online:["TS"], tc:true },
+      23: { ws1:"MT", ws2:"XA", ws2d:"VK", backup:null, online:["DD","TS"], tc:false },
+      26: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["DD","XA"], tc:false },
+      27: { ws1:"MT", ws2:"XA", ws2d:"DD", backup:"TS", online:["VK"], tc:true },
+      28: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["MT","XA"], tc:false },
+      29: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD","VK"], tc:false },
+      30: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
     };
 
     let SCHEDULE_STORE = {
@@ -1249,7 +1155,6 @@
 
     let LEAVE_PRESETS = {};
     let SEAT_CLAIMS = {};
-
     let employees = [];
 
     const todayNow = new Date();
@@ -1259,23 +1164,14 @@
 
     let currentMonth = REAL_TODAY_MONTH;
     let currentYear = REAL_TODAY_YEAR;
-
     let activeDeviceMode = "auto";
     let currentLoggedInUser = null;
 
-    function getMonthKey(year, month) {
-      return `${year}-${String(month + 1).padStart(2, '0')}`;
-    }
-
-    function getActiveDateStr() {
-      return `${REAL_TODAY_YEAR}-${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}-${String(REAL_TODAY_DAY).padStart(2, '0')}`;
-    }
+    function getMonthKey(year, month) { return `${year}-${String(month + 1).padStart(2, '0')}`; }
+    function getActiveDateStr() { return `${REAL_TODAY_YEAR}-${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}-${String(REAL_TODAY_DAY).padStart(2, '0')}`; }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaQ3Rt7A0al98qkbAvFahpz6BvWFN1FZfTcjNSHoUtTIwtUm5eL8ikDv0SPpDi13BA/exec";
 
-    // -------------------------------------------------------------
-    // ĐỒNG BỘ DỮ LIỆU MOBILE POOL
-    // -------------------------------------------------------------
     function syncStaffDutyWithEmployees() {
       employees.forEach(emp => {
         if (emp.seating === 'Mobile') {
@@ -1283,27 +1179,15 @@
           if (!foundKey) {
             const words = emp.fullName.trim().split(/\s+/);
             let candKey = words.length > 1 ? (words[0][0] + words[words.length - 1][0]).toUpperCase() : emp.fullName.slice(0, 2).toUpperCase();
-            if (STAFF_DUTY[candKey]) {
-              candKey = emp.id.replace('NV', '');
-            }
-            const shortName = formatNameForDisplay(emp.fullName).toUpperCase();
-            STAFF_DUTY[candKey] = {
-              name: shortName,
-              fullName: emp.fullName,
-              cls: candKey.toLowerCase(),
-              defaultDesk: "Mobile"
-            };
+            if (STAFF_DUTY[candKey]) candKey = emp.id.replace('NV', '');
+            STAFF_DUTY[candKey] = { name: formatNameForDisplay(emp.fullName).toUpperCase(), fullName: emp.fullName, cls: candKey.toLowerCase(), defaultDesk: "Mobile" };
           }
         }
       });
     }
 
-    // -------------------------------------------------------------
-    // AUTHENTICATION & LOGIN
-    // -------------------------------------------------------------
     function checkAutoAuthentication() {
       const activeUserId = localStorage.getItem('dls_current_user_id');
-
       if (activeUserId) {
         const found = employees.find(e => e.id === activeUserId && !e.isHidden);
         if (found) {
@@ -1313,7 +1197,6 @@
           return;
         }
       }
-
       currentLoggedInUser = null;
       document.getElementById('login-modal-overlay').classList.remove('hidden');
     }
@@ -1323,48 +1206,24 @@
       const detectedBox = document.getElementById('login-detected-box');
       const detectedName = document.getElementById('detected-user-name');
       const optionsContainer = document.getElementById('detected-email-options');
+      if (!val || val.length < 2) { detectedBox.classList.add('hidden'); return; }
 
-      if (!val || val.length < 2) {
-        detectedBox.classList.add('hidden');
-        return;
-      }
-
-      const matched = employees.find(e => 
-        !e.isHidden && (
-          e.fullName.toLowerCase().includes(val) || 
-          removeVietnameseTones(e.fullName).toLowerCase().includes(val) ||
-          (e.emailCompany && e.emailCompany.toLowerCase().includes(val)) ||
-          (e.emailPersonal && e.emailPersonal.toLowerCase().includes(val))
-        )
-      );
+      const matched = employees.find(e => !e.isHidden && (
+        e.fullName.toLowerCase().includes(val) || removeVietnameseTones(e.fullName).toLowerCase().includes(val) ||
+        (e.emailCompany && e.emailCompany.toLowerCase().includes(val)) || (e.emailPersonal && e.emailPersonal.toLowerCase().includes(val))
+      ));
 
       if (matched) {
         detectedBox.classList.remove('hidden');
         detectedName.innerText = `${matched.fullName} (${matched.role})`;
         optionsContainer.innerHTML = '';
-
         if (matched.emailCompany) {
-          optionsContainer.innerHTML += `
-            <button type="button" onclick="selectLoginMethod('${matched.emailCompany}')" 
-                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-red-50 rounded-lg border border-red-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading">
-              <span>🏢 <b>${currentLang === 'vi' ? 'Email C.Ty' : 'Work Email'}:</b> ${matched.emailCompany}</span>
-              <i class="fa-solid fa-arrow-right text-[9px] text-[#ee2f26]"></i>
-            </button>
-          `;
+          optionsContainer.innerHTML += `<button type="button" onclick="selectLoginMethod('${matched.emailCompany}')" class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-red-50 rounded-lg border border-red-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading"><span>🏢 <b>${currentLang === 'vi' ? 'Email C.Ty' : 'Work Email'}:</b> ${matched.emailCompany}</span><i class="fa-solid fa-arrow-right text-[9px] text-[#ee2f26]"></i></button>`;
         }
-
         if (matched.emailPersonal) {
-          optionsContainer.innerHTML += `
-            <button type="button" onclick="selectLoginMethod('${matched.emailPersonal}')" 
-                    class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-emerald-50 rounded-lg border border-emerald-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading">
-              <span>📧 <b>${currentLang === 'vi' ? 'Email Riêng' : 'Personal'}:</b> ${matched.emailPersonal}</span>
-              <i class="fa-solid fa-arrow-right text-[9px] text-emerald-600"></i>
-            </button>
-          `;
+          optionsContainer.innerHTML += `<button type="button" onclick="selectLoginMethod('${matched.emailPersonal}')" class="w-full text-left px-2.5 py-1.5 bg-white hover:bg-emerald-50 rounded-lg border border-emerald-200 flex items-center justify-between text-[11px] font-medium text-slate-800 transition font-heading"><span>📧 <b>${currentLang === 'vi' ? 'Email Riêng' : 'Personal'}:</b> ${matched.emailPersonal}</span><i class="fa-solid fa-arrow-right text-[9px] text-emerald-600"></i></button>`;
         }
-      } else {
-        detectedBox.classList.add('hidden');
-      }
+      } else { detectedBox.classList.add('hidden'); }
     }
 
     function selectLoginMethod(email) {
@@ -1379,55 +1238,27 @@
       const headerRole = document.getElementById('header-user-role');
       const dropdownName = document.getElementById('dropdown-user-name');
       const dropdownRole = document.getElementById('dropdown-user-role');
-
       const words = currentLoggedInUser.fullName.split(' ');
-      const initials = words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2);
-      avatar.innerText = initials.toUpperCase();
-      
+      avatar.innerText = (words.length > 1 ? (words[0][0] + words[words.length - 1][0]) : words[0].slice(0, 2)).toUpperCase();
       if (headerName) headerName.innerText = currentLoggedInUser.fullName;
       if (headerRole) headerRole.innerText = currentLoggedInUser.role;
-
       dropdownName.innerText = currentLoggedInUser.fullName;
       dropdownRole.innerText = currentLoggedInUser.role;
 
       const staffTabBtn = document.getElementById('tab-dashboard-btn');
-      if (staffTabBtn) {
-        if (currentLoggedInUser.role === 'User') {
-          staffTabBtn.style.display = 'none';
-          const dashView = document.getElementById('view-dashboard');
-          if (dashView && !dashView.classList.contains('hidden')) {
-            switchTab('floorplan');
-          }
-        } else {
-          staffTabBtn.style.display = '';
-        }
-      }
-
+      if (staffTabBtn) staffTabBtn.style.display = (currentLoggedInUser.role === 'User') ? 'none' : '';
       const addStaffBtn = document.getElementById('btn-add-staff');
-      if (addStaffBtn) {
-        addStaffBtn.style.display = (currentLoggedInUser.role === 'Admin') ? '' : 'none';
-      }
-
+      if (addStaffBtn) addStaffBtn.style.display = (currentLoggedInUser.role === 'Admin') ? '' : 'none';
       const manageMobBtn = document.getElementById('btn-manage-mobile');
-      if (manageMobBtn) {
-        manageMobBtn.style.display = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager') ? '' : 'none';
-      }
-
+      if (manageMobBtn) manageMobBtn.style.display = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager') ? '' : 'none';
       const isPrivileged = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
       const holidayActions = document.getElementById('holiday-manager-actions');
-      if (holidayActions) {
-        holidayActions.style.display = isPrivileged ? 'flex' : 'none';
-      }
+      if (holidayActions) holidayActions.style.display = isPrivileged ? 'flex' : 'none';
       const thHolidayAction = document.getElementById('th-holiday-action');
-      if (thHolidayAction) {
-        thHolidayAction.style.display = isPrivileged ? '' : 'none';
-      }
+      if (thHolidayAction) thHolidayAction.style.display = isPrivileged ? '' : 'none';
     }
 
-    function toggleUserDropdown() {
-      const menu = document.getElementById('user-dropdown-menu');
-      menu.classList.toggle('hidden');
-    }
+    function toggleUserDropdown() { document.getElementById('user-dropdown-menu').classList.toggle('hidden'); }
 
     window.addEventListener('click', (e) => {
       const menu = document.getElementById('user-dropdown-menu');
@@ -1437,21 +1268,10 @@
     });
 
     function handleLogout() {
-      if (confirm(currentLang === 'vi' ? "Đăng xuất khỏi tài khoản hiện tại?" : "Sign out from current session?")) {
+      if (confirm(currentLang === 'vi' ? "Đăng xuất khỏi tài khoản hiện tại?" : "Sign out?")) {
         localStorage.removeItem('dls_current_user_id');
         currentLoggedInUser = null;
         document.getElementById('user-dropdown-menu').classList.add('hidden');
-        document.getElementById('login-input-email').value = "";
-        document.getElementById('login-input-pass').value = "";
-        document.getElementById('login-error-msg').classList.add('hidden');
-        document.getElementById('login-detected-box').classList.add('hidden');
-
-        const headerName = document.getElementById('header-user-name');
-        const headerRole = document.getElementById('header-user-role');
-        if (headerName) headerName.innerText = "Not Logged In";
-        if (headerRole) headerRole.innerText = "Guest";
-        document.getElementById('header-avatar').innerText = "--";
-
         document.getElementById('login-modal-overlay').classList.remove('hidden');
       }
     }
@@ -1460,10 +1280,7 @@
       e.preventDefault();
       let inputEmail = document.getElementById('login-input-email').value.trim().toLowerCase();
       const inputPass = document.getElementById('login-input-pass').value.trim();
-
-      if (inputEmail && !inputEmail.includes('@') && !inputEmail.includes(' ')) {
-        inputEmail += '@dlsconsultant.com';
-      }
+      if (inputEmail && !inputEmail.includes('@') && !inputEmail.includes(' ')) inputEmail += '@dlsconsultant.com';
 
       const user = employees.find(emp => {
         if (emp.isHidden) return false;
@@ -1478,8 +1295,6 @@
         currentLoggedInUser = user;
         localStorage.setItem('dls_current_user_id', user.id);
         document.getElementById('login-modal-overlay').classList.add('hidden');
-        document.getElementById('login-error-msg').classList.add('hidden');
-        document.getElementById('login-detected-box').classList.add('hidden');
         applyUserIdentityUI();
         renderAll();
       } else {
@@ -1499,107 +1314,71 @@
       e.preventDefault();
       const newPass = document.getElementById('new-own-pass').value.trim();
       const confirmPass = document.getElementById('confirm-own-pass').value.trim();
-
-      if (newPass !== confirmPass) {
-        document.getElementById('change-pass-error').classList.remove('hidden');
-        return;
-      }
-
+      if (newPass !== confirmPass) { document.getElementById('change-pass-error').classList.remove('hidden'); return; }
       if (currentLoggedInUser) {
         currentLoggedInUser.password = newPass;
         const emp = employees.find(x => x.id === currentLoggedInUser.id);
         if (emp) emp.password = newPass;
-
         saveData();
         closeModal('change-pass-modal');
-        alert(currentLang === 'vi' ? "Đã đổi mật khẩu thành công!" : "Password updated successfully!");
+        alert(currentLang === 'vi' ? "Đã đổi mật khẩu thành công!" : "Password updated!");
       }
     }
 
     function resetEmployeePassword(empId) {
       const emp = employees.find(e => e.id === empId);
       if (!emp) return;
-
       const defaultPass = generateDefaultPassword(emp.fullName);
-      if (confirm(t('resetPassConfirm', { name: emp.fullName, pass: defaultPass }))) {
+      if (confirm(`Reset password cho ${emp.fullName}?\nMật khẩu: ${defaultPass}`)) {
         emp.password = defaultPass;
         saveData();
         renderDashboard();
-        alert(t('resetPassSuccess', { name: emp.fullName, pass: defaultPass }));
+        alert(`Đã reset mật khẩu cho ${emp.fullName}!`);
       }
     }
 
     function deleteEmployee(empId) {
-      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin accounts can delete employees!");
-        return;
-      }
-
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') return;
       const emp = employees.find(e => e.id === empId);
       if (!emp) return;
-
-      if (confirm(t('deleteConfirm', { name: emp.fullName, email: emp.emailCompany }))) {
+      if (confirm(`CẢNH BÁO: Xóa nhân sự ${emp.fullName}?`)) {
         employees = employees.filter(e => e.id !== empId);
         saveData();
         renderAll();
-        alert(t('deleteSuccess', { name: emp.fullName }));
       }
     }
 
-    // -------------------------------------------------------------
-    // QUẢN LÝ THÊM/BỚT NHÂN SỰ VÀO DANH SÁCH MOBILE POOL
-    // -------------------------------------------------------------
     function openMobilePoolModal() {
-      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
-        alert("Chỉ Admin và Manager mới có quyền quản lý Mobile Pool!");
-        return;
-      }
-
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) return;
       const container = document.getElementById('modal-mobile-list-container');
       const select = document.getElementById('modal-add-mobile-select');
-      const badgeCount = document.getElementById('modal-mobile-count-badge');
-
       container.innerHTML = '';
       select.innerHTML = '<option value="">-- Chọn nhân sự để thêm --</option>';
 
       const mobileStaff = employees.filter(e => !e.isHidden && e.seating === 'Mobile');
       const nonMobileStaff = employees.filter(e => !e.isHidden && e.seating !== 'Mobile');
-
-      badgeCount.innerText = `${mobileStaff.length} staff`;
+      document.getElementById('modal-mobile-count-badge').innerText = `${mobileStaff.length} staff`;
 
       mobileStaff.forEach(emp => {
         container.innerHTML += `
           <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-200">
             <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-bold font-heading flex items-center justify-center text-[10px]">
-                ${emp.fullName.slice(0, 2).toUpperCase()}
-              </span>
-              <div>
-                <div class="font-heading font-bold text-slate-800 text-[11px]">${emp.fullName}</div>
-                <div class="text-[9.5px] text-slate-500">${emp.emailCompany} • <span class="font-semibold text-indigo-600">${emp.role}</span></div>
-              </div>
+              <span class="w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px]">${emp.fullName.slice(0, 2).toUpperCase()}</span>
+              <div><div class="font-heading font-bold text-slate-800 text-[11px]">${emp.fullName}</div><div class="text-[9.5px] text-slate-500">${emp.emailCompany}</div></div>
             </div>
-            <button type="button" onclick="handleRemoveStaffFromMobile('${emp.id}')" 
-                    class="px-2 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-heading font-bold text-[10px] transition" title="Bỏ khỏi Mobile">
-              ✕ Bỏ
-            </button>
-          </div>
-        `;
+            <button type="button" onclick="handleRemoveStaffFromMobile('${emp.id}')" class="px-2 py-1 rounded bg-rose-50 text-rose-700 border border-rose-200 font-bold text-[10px]">✕ Bỏ</button>
+          </div>`;
       });
-
       nonMobileStaff.forEach(emp => {
-        const deskText = emp.seating ? `(Đang ở bàn ${emp.seating})` : '(Chưa gán bàn)';
-        select.innerHTML += `<option value="${emp.id}">${emp.fullName} ${deskText}</option>`;
+        select.innerHTML += `<option value="${emp.id}">${emp.fullName} ${emp.seating ? `(${emp.seating})` : '(Chưa gán)'}</option>`;
       });
-
       document.getElementById('mobile-pool-modal').classList.remove('hidden');
     }
 
     function handleRemoveStaffFromMobile(empId) {
       const emp = employees.find(e => e.id === empId);
       if (!emp) return;
-
-      if (confirm(`Chuyển ${emp.fullName} ra khỏi danh sách Mobile Pool?\nNhân sự sẽ được chuyển về trạng thái Chưa gán bàn (Unassigned).`)) {
+      if (confirm(`Chuyển ${emp.fullName} ra khỏi Mobile Pool?`)) {
         emp.seating = '';
         saveData();
         renderAll();
@@ -1609,159 +1388,82 @@
 
     function handleAddStaffToMobile() {
       const select = document.getElementById('modal-add-mobile-select');
-      const empId = select.value;
-      if (!empId) {
-        alert("Vui lòng chọn một nhân sự từ danh sách!");
-        return;
-      }
-
-      const emp = employees.find(e => e.id === empId);
+      const emp = employees.find(e => e.id === select.value);
       if (!emp) return;
-
-      const notice = emp.seating ? `Nhân sự đang ngồi ghế ${emp.seating}. Ghế này sẽ được giải phóng.\n\n` : '';
-      if (confirm(`${notice}Xác nhận thêm ${emp.fullName} vào danh sách Mobile Pool?`)) {
+      if (confirm(`Thêm ${emp.fullName} vào Mobile Pool?`)) {
         emp.seating = 'Mobile';
         syncStaffDutyWithEmployees();
         saveData();
         renderAll();
         openMobilePoolModal();
-        alert(`Đã thêm ${emp.fullName} vào danh sách Mobile Pool thành công!`);
       }
     }
 
-    // -------------------------------------------------------------
-    // DEVICE MODES & AUTO DETECTION
-    // -------------------------------------------------------------
     function detectDevice() {
-      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      const isSmallScreen = window.innerWidth < 768;
-      return (isMobileUA || isSmallScreen) ? "mobile" : "desktop";
+      return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768) ? "mobile" : "desktop";
     }
 
     function initDeviceMode() {
-      const savedMode = localStorage.getItem('dls_device_mode_preference');
-      if (savedMode && (savedMode === 'desktop' || savedMode === 'mobile')) {
-        setDeviceMode(savedMode, false);
-      } else {
-        setDeviceMode(detectDevice(), false);
-      }
+      setDeviceMode(localStorage.getItem('dls_device_mode_preference') || detectDevice(), false);
     }
 
     function setDeviceMode(mode, savePref = true) {
       activeDeviceMode = mode;
-      if (savePref) {
-        localStorage.setItem('dls_device_mode_preference', mode);
-      }
-
+      if (savePref) localStorage.setItem('dls_device_mode_preference', mode);
       const body = document.body;
       const topDesk = document.getElementById('top-btn-desktop');
       const topMob = document.getElementById('top-btn-mobile');
 
       if (mode === 'mobile') {
         body.classList.add('is-mobile-view');
-        if (window.innerWidth >= 768) {
-          body.classList.add('device-mobile-sim');
-        } else {
-          body.classList.remove('device-mobile-sim');
-        }
+        if (window.innerWidth >= 768) body.classList.add('device-mobile-sim'); else body.classList.remove('device-mobile-sim');
         topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-[#ee2f26] text-white shadow-xs font-heading";
         topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white font-heading";
       } else {
-        body.classList.remove('is-mobile-view');
-        body.classList.remove('device-mobile-sim');
+        body.classList.remove('is-mobile-view', 'device-mobile-sim');
         topDesk.className = "px-2.5 py-1 rounded-md text-[11px] font-bold transition flex items-center gap-1 bg-white text-slate-900 shadow-xs font-heading";
         topMob.className = "px-2.5 py-1 rounded-md text-[11px] font-semibold transition flex items-center gap-1 text-slate-300 hover:text-white font-heading";
       }
-
       renderAll();
     }
 
-    window.addEventListener('resize', () => {
-      const savedMode = localStorage.getItem('dls_device_mode_preference');
-      if (!savedMode) {
-        setDeviceMode(detectDevice(), false);
-      } else if (savedMode === 'mobile' && window.innerWidth >= 768) {
-        document.body.classList.add('device-mobile-sim');
-      } else {
-        document.body.classList.remove('device-mobile-sim');
-      }
-    });
-
-    // -------------------------------------------------------------
-    // DATA SYNC & LOAD
-    // -------------------------------------------------------------
     async function refreshDataUI() {
       const icon = document.getElementById('refresh-icon');
       if (icon) icon.classList.add('fa-spin');
-      
       await loadData();
       syncRealTodayLiveStatus();
-
-      setTimeout(() => {
-        if (icon) icon.classList.remove('fa-spin');
-      }, 600);
+      setTimeout(() => { if (icon) icon.classList.remove('fa-spin'); }, 600);
     }
 
     function setSyncStatus(text, isSaving = false) {
       const badge = document.getElementById('duty-status-badge');
       if (badge) {
         badge.innerText = text;
-        badge.className = isSaving ? "text-[8px] text-amber-500 animate-pulse font-bold font-heading" : "text-[8px] text-emerald-600 font-bold font-heading";
+        badge.className = isSaving ? "text-[8px] text-amber-500 animate-pulse font-bold" : "text-[8px] text-emerald-600 font-bold";
       }
     }
 
     async function loadData() {
-      const storedEmp = localStorage.getItem('dls_v11_emp');
-      const storedStore = localStorage.getItem('dls_v11_sched_store');
-      const storedHolidays = localStorage.getItem('dls_v11_holidays');
-      const storedPresets = localStorage.getItem('dls_v11_leave_presets');
-      const storedClaims = localStorage.getItem('dls_v11_seat_claims');
+      try {
+        const storedEmp = localStorage.getItem('dls_v11_emp');
+        const storedStore = localStorage.getItem('dls_v11_sched_store');
+        const storedHolidays = localStorage.getItem('dls_v11_holidays');
+        const storedPresets = localStorage.getItem('dls_v11_leave_presets');
+        const storedClaims = localStorage.getItem('dls_v11_seat_claims');
 
-      if (storedEmp) {
-        try { employees = JSON.parse(storedEmp); } catch(e) { employees = [...INITIAL_EMPLOYEES]; }
-      } else {
+        employees = storedEmp ? JSON.parse(storedEmp) : [...INITIAL_EMPLOYEES];
+        if (storedStore) SCHEDULE_STORE = JSON.parse(storedStore);
+        SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+        HOLIDAYS_STORE = storedHolidays ? JSON.parse(storedHolidays) : [...DEFAULT_VN_HOLIDAYS];
+        LEAVE_PRESETS = storedPresets ? JSON.parse(storedPresets) : {};
+        SEAT_CLAIMS = storedClaims ? JSON.parse(storedClaims) : {};
+      } catch (e) {
         employees = [...INITIAL_EMPLOYEES];
-      }
-
-      // Đảm bảo Nguyen Tien Sang được đưa vào danh sách Mobile
-      const sang = employees.find(e => e.fullName.includes("TIEN SANG"));
-      if (sang && sang.seating !== 'Mobile') {
-        sang.seating = 'Mobile';
       }
 
       employees.forEach(emp => {
         if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
-        if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
-          emp.seating = 'Mobile';
-        }
-      });
-
-      if (storedStore) {
-        try { SCHEDULE_STORE = JSON.parse(storedStore); } catch(e) {}
-      }
-
-      // Đảm bảo tháng 10/2026 luôn có sẵn
-      if (!SCHEDULE_STORE["2026-10"]) {
-        SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
-      }
-
-      if (storedHolidays) {
-        try { HOLIDAYS_STORE = JSON.parse(storedHolidays); } catch(e) { HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS]; }
-      } else {
-        HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
-      }
-
-      if (storedPresets) {
-        try { LEAVE_PRESETS = JSON.parse(storedPresets); } catch(e) { LEAVE_PRESETS = {}; }
-      }
-
-      if (storedClaims) {
-        try { SEAT_CLAIMS = JSON.parse(storedClaims); } catch(e) { SEAT_CLAIMS = {}; }
-      }
-
-      HOLIDAYS_STORE.forEach(h => {
-        if (!h.startDate && h.solarDate) h.startDate = h.solarDate;
-        if (!h.endDate && (h.startDate || h.solarDate)) h.endDate = h.startDate || h.solarDate;
+        if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') emp.seating = 'Mobile';
       });
 
       syncStaffDutyWithEmployees();
@@ -1771,42 +1473,20 @@
         try {
           const response = await fetch(GOOGLE_SCRIPT_URL);
           const onlineData = await response.json();
-
           if (onlineData && onlineData.employees && onlineData.schedule) {
             employees = onlineData.employees;
-            const sangOnline = employees.find(e => e.fullName.includes("TIEN SANG"));
-            if (sangOnline && sangOnline.seating !== 'Mobile') {
-              sangOnline.seating = 'Mobile';
-            }
-
-            employees.forEach(emp => {
-              if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
-              if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') {
-                emp.seating = 'Mobile';
-              }
-            });
             SCHEDULE_STORE = onlineData.schedule;
-            if (!SCHEDULE_STORE["2026-10"]) {
-              SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
-            }
-
+            SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
             if (onlineData.holidays) HOLIDAYS_STORE = onlineData.holidays;
             if (onlineData.leavePresets) LEAVE_PRESETS = onlineData.leavePresets;
             if (onlineData.seatClaims) SEAT_CLAIMS = onlineData.seatClaims;
-
             syncStaffDutyWithEmployees();
             saveLocalOnly();
             renderAll();
             setSyncStatus("Synced");
-          } else {
-            saveData();
           }
-        } catch (err) {
-          console.warn("Offline fallback mode:", err);
-          setSyncStatus("Offline");
-        }
+        } catch (err) { setSyncStatus("Offline"); }
       }
-
       checkAutoAuthentication();
     }
 
@@ -1820,90 +1500,180 @@
 
     async function saveData() {
       saveLocalOnly();
-
       if (GOOGLE_SCRIPT_URL && !GOOGLE_SCRIPT_URL.includes("THAY_LINK")) {
         setSyncStatus("Saving...", true);
         try {
-          const payload = JSON.stringify({
-            employees: employees,
-            schedule: SCHEDULE_STORE,
-            holidays: HOLIDAYS_STORE,
-            leavePresets: LEAVE_PRESETS,
-            seatClaims: SEAT_CLAIMS,
-            lastUpdated: new Date().toISOString()
-          });
-
           await fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: payload
+            method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ employees, schedule: SCHEDULE_STORE, holidays: HOLIDAYS_STORE, leavePresets: LEAVE_PRESETS, seatClaims: SEAT_CLAIMS, lastUpdated: new Date().toISOString() })
           });
-
           setTimeout(() => setSyncStatus("Saved"), 800);
-        } catch (err) {
-          console.error("Error saving to Sheets:", err);
-          setSyncStatus("Save Error");
-        }
+        } catch (err) { setSyncStatus("Save Error"); }
       }
     }
 
+    /* =========================================================================
+       THUẬT TOÁN TỰ ĐỘNG PHÂN BỔ: CHỈ ÁP DỤNG TỪ THÁNG 11/2026 TRỞ ĐI
+       ========================================================================= */
     function generateScheduleByRule(force = false) {
       const monthKey = getMonthKey(currentYear, currentMonth);
+
+      // KHÓA HOÀN TOÀN: Tháng 9 và Tháng 10/2026 không được đụng đến
+      if (currentYear < 2026 || (currentYear === 2026 && currentMonth < 10)) {
+        alert(currentLang === 'vi' 
+          ? `Lịch tháng 09/2026 và 10/2026 đã được chốt và cài đặt hoàn tất, không thay đổi.\n\nTính năng 'Auto Generate Roster' chỉ áp dụng từ Tháng 11/2026 trở đi!` 
+          : `Roster for Sep and Oct 2026 is fixed and protected. Auto-generator is only allowed from November 2026 onwards!`);
+        return;
+      }
+
       if (SCHEDULE_STORE[monthKey] && !force) {
-        if (!confirm(`Roster already exists for ${monthKey}. Regenerate?`)) return;
+        const confirmMsg = currentLang === 'vi' 
+          ? `Lịch tháng ${monthKey} đã tồn tại. Tạo lại tự động theo nguyên tắc phân bổ mới?` 
+          : `Roster already exists for ${monthKey}. Regenerate?`;
+        if (!confirm(confirmMsg)) return;
       }
 
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-      const newMonthSched = {};
-
-      const mobileKeys = Object.keys(STAFF_DUTY);
-      let bIdx = 0;
-
+      const workDays = [];
       for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(currentYear, currentMonth, day);
-        const dow = (d.getDay() + 6) % 7;
-        if (dow >= 5) continue;
-
-        const weekNum = Math.floor((day + (new Date(currentYear, currentMonth, 1).getDay() + 6) % 7 - 1) / 7);
-        const isPairA = (weekNum % 2 === 0);
-
-        let ws1, ws2, ws2d;
-        if (dow === 0 || dow === 2 || dow === 4) {
-          ws1 = isPairA ? "DD" : "MT";
-          ws2 = isPairA ? "XA" : "VK";
-        } else {
-          ws1 = isPairA ? "MT" : "DD";
-          ws2 = isPairA ? "VK" : "XA";
-        }
-        ws2d = "TS";
-
-        const seated = [ws1, ws2, ws2d];
-        const idle = mobileKeys.filter(k => !seated.includes(k));
-        let backupPerson = idle.length > 0 ? idle[bIdx % idle.length] : null;
-        bIdx++;
-
-        const onlineList = idle.filter(k => k !== backupPerson);
-
-        newMonthSched[day] = {
-          ws1,
-          ws2,
-          ws2d,
-          backup: backupPerson,
-          online: onlineList,
-          tc: backupPerson !== null
-        };
+        const dow = (d.getDay() + 6) % 7; // 0: Mon ... 4: Fri
+        if (dow < 5) workDays.push({ day, dow });
       }
 
-      SCHEDULE_STORE[monthKey] = newMonthSched;
-      saveData();
-      renderAll();
-      alert(`Successfully generated roster for ${monthKey}!`);
+      const N = workDays.length;
+      if (N === 0) return;
+
+      let bestSchedule = null;
+      let bestScore = Infinity;
+
+      // Mô phỏng tối ưu hóa với 500 lần thử để tìm phương án không bị trùng WFH và cân bằng số ngày công
+      for (let iter = 0; iter < 500; iter++) {
+        const dayData = [];
+        const activeCounts = { MT: 0, DD: 0, VK: 0, XA: 0, TS: 0 };
+
+        // 1. Phân bổ Seat 1A, 2A, 2D theo chu kỳ và thứ Sáu
+        for (let i = 0; i < N; i++) {
+          const { day, dow } = workDays[i];
+          const c = i % 4;
+
+          // Seat 1A: 3 ngày M.Trung, xen giữa là D.Duy (c=3)
+          const ws1 = (c === 3) ? "DD" : "MT";
+
+          // Seat 2A: D.Duy ngồi cách ngày 1A (c=1). Trước (c=0) và sau (c=2) là X.Anh. Còn lại là Khiem (c=3).
+          let ws2 = "XA";
+          if (c === 1) ws2 = "DD";
+          else if (c === 3) ws2 = "VK";
+
+          // Seat 2D: Khiem ngồi cùng thời điểm D.Duy (c=1). Toàn bộ chỗ trống còn lại ngoại trừ thứ 6 sẽ là T.Sang.
+          let ws2d = null;
+          if (c === 1) {
+            ws2d = "VK";
+          } else {
+            if (dow !== 4) ws2d = "TS";
+          }
+
+          dayData.push({ day, dow, c, ws1, ws2, ws2d });
+        }
+
+        // 2. Điền các vị trí còn trống của Seat 2D (các thứ Sáu khi T.Sang WFH)
+        for (let i = 0; i < N; i++) {
+          const item = dayData[i];
+          if (!item.ws2d) {
+            const available = ["DD", "VK", "XA"].filter(s => s !== item.ws1 && s !== item.ws2);
+            available.sort((a, b) => (activeCounts[a] - activeCounts[b]) + (Math.random() - 0.5));
+            item.ws2d = available[0] || "XA";
+          }
+          activeCounts[item.ws1]++;
+          activeCounts[item.ws2]++;
+          activeCounts[item.ws2d]++;
+        }
+
+        // 3. Phân bổ đúng 8 ngày dự phòng (Backup) chia đều 4 người (mỗi người 2 ca, trừ MT)
+        const backupPlan = new Array(N).fill(null);
+        let backupSuccess = true;
+        const staffPool = ["TS", "DD", "VK", "XA"].sort(() => Math.random() - 0.5);
+
+        for (const staff of staffPool) {
+          const candidates = [];
+          for (let i = 0; i < N; i++) {
+            if (backupPlan[i] !== null) continue;
+            const item = dayData[i];
+            if (item.ws1 === staff || item.ws2 === staff || item.ws2d === staff) continue;
+            if (staff === "TS" && item.dow === 4) continue; // TS không trực backup thứ Sáu
+            candidates.push(i);
+          }
+
+          if (candidates.length < 2) { backupSuccess = false; break; }
+
+          candidates.sort(() => Math.random() - 0.5);
+          backupPlan[candidates[0]] = staff;
+          backupPlan[candidates[1]] = staff;
+          activeCounts[staff] += 2;
+        }
+
+        if (!backupSuccess) continue;
+
+        // 4. Kiểm tra ràng buộc: KHÔNG AI WFH 2 NGÀY LIÊN TIẾP (Active liên tiếp được phép)
+        let consecutiveWfh = 0;
+        const onlineHistory = [];
+        const trialSchedule = {};
+
+        for (let i = 0; i < N; i++) {
+          const item = dayData[i];
+          const bk = backupPlan[i];
+          const activeStaff = [item.ws1, item.ws2, item.ws2d];
+          if (bk) activeStaff.push(bk);
+
+          const onlineStaff = ["MT", "DD", "VK", "XA", "TS"].filter(s => !activeStaff.includes(s));
+          onlineHistory.push(onlineStaff);
+
+          if (i > 0) {
+            const prevOnline = onlineHistory[i - 1];
+            onlineStaff.forEach(s => {
+              if (prevOnline.includes(s)) consecutiveWfh++;
+            });
+          }
+
+          trialSchedule[item.day] = {
+            ws1: item.ws1,
+            ws2: item.ws2,
+            ws2d: item.ws2d,
+            backup: bk,
+            online: onlineStaff,
+            tc: bk !== null
+          };
+        }
+
+        const counts4 = [activeCounts.DD, activeCounts.VK, activeCounts.XA, activeCounts.TS];
+        const diff4 = Math.max(...counts4) - Math.min(...counts4);
+        const score = consecutiveWfh * 100 + diff4 * 10;
+
+        if (score < bestScore) {
+          bestScore = score;
+          bestSchedule = trialSchedule;
+          if (consecutiveWfh === 0 && diff4 <= 2) break;
+        }
+      }
+
+      if (bestSchedule) {
+        SCHEDULE_STORE[monthKey] = bestSchedule;
+        saveData();
+        renderAll();
+        alert(currentLang === 'vi' 
+          ? `Đã tự động tạo lịch trực thành công cho tháng ${monthKey}!\n\n` +
+            `• Seat 1A: 3 ngày M.Trung, xen giữa là D.Duy.\n` +
+            `• Seat 2A: D.Duy ngồi cách ngày 1A, X.Anh trước/sau, Khiêm vị trí còn lại.\n` +
+            `• Seat 2D: Khiêm ngồi cùng lúc D.Duy, còn lại là T.Sang (trừ thứ 6).\n` +
+            `• Vị trí trống 2D & 8 ca Backup chia đều 4 người (mỗi người 2 ca, trừ MT).\n` +
+            `• M.Trung Active nhiều hơn mọi người 1-2 ngày; các thành viên khác bình quân 13-14 ngày.\n` +
+            `• Tuyệt đối không ai WFH 2 ngày liên tiếp!`
+          : `Successfully generated roster for ${monthKey}!`);
+      } else {
+        alert("Không tìm được phương án tối ưu, vui lòng bấm thử lại!");
+      }
     }
 
-    // -------------------------------------------------------------
-    // ĐỒNG BỘ TRẠNG THÁI NGÀY HIỆN HÀNH & LỊCH THIẾT LẬP TRƯỚC
-    // -------------------------------------------------------------
     function syncRealTodayLiveStatus() {
       const formattedDate = `${String(REAL_TODAY_DAY).padStart(2, '0')}/${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}/${REAL_TODAY_YEAR}`;
       document.getElementById('current-active-date-badge').innerText = formattedDate;
@@ -1915,32 +1685,20 @@
 
       employees.forEach(emp => {
         emp.status = "Active";
-
         if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
           emp.status = LEAVE_PRESETS[emp.id][todayStr];
         }
       });
 
       if (sched) {
-        const mobileStaffMapping = {
-          [sched.ws1]: "Active",
-          [sched.ws2]: "Active",
-          [sched.ws2d]: "Active",
-          [sched.backup]: "Active"
-        };
-        if (sched.online) {
-          sched.online.forEach(k => { mobileStaffMapping[k] = "WFH"; });
-        }
+        const mobileStaffMapping = { [sched.ws1]: "Active", [sched.ws2]: "Active", [sched.ws2d]: "Active", [sched.backup]: "Active" };
+        if (sched.online) sched.online.forEach(k => { mobileStaffMapping[k] = "WFH"; });
 
         Object.entries(mobileStaffMapping).forEach(([k, dutyStatus]) => {
           if (!k) return;
           const emp = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
           if (emp) {
-            if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
-              emp.status = LEAVE_PRESETS[emp.id][todayStr];
-            } else {
-              emp.status = dutyStatus;
-            }
+            emp.status = (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) ? LEAVE_PRESETS[emp.id][todayStr] : dutyStatus;
           }
         });
       }
@@ -1952,49 +1710,27 @@
     function formatNameForDisplay(fullName) {
       if (!fullName) return "";
       if (activeDeviceMode !== 'mobile') return fullName;
-
       const shortMap = {
-        "TRAN HOANG DUY": "T.H.Duy",
-        "VU KHIEM": "Khiem",
-        "DANG DUY": "Dang Duy",
-        "NGUYEN MINH TRUNG": "M.Trung",
-        "NGUYEN XUAN ANH": "Xuan Anh",
-        "VU VAN HIEU": "V.Hieu",
-        "NGUYEN CONG SON": "C.Son",
-        "NGUYEN THANH DAO": "T.Dao",
-        "NGUYEN HUU LONG": "Huu Long",
-        "HUYNH NHAN TRI": "N.Tri",
-        "NGUYEN TIEN SANG": "T.Sang",
-        "NGUYEN HOANG MANH": "H.Manh",
-        "NGUYEN THI LIEN": "T.Lien",
-        "THAI BAO LONG": "Bao Long"
+        "TRAN HOANG DUY": "T.H.Duy", "VU KHIEM": "Khiem", "DANG DUY": "Dang Duy", "NGUYEN MINH TRUNG": "M.Trung",
+        "NGUYEN XUAN ANH": "Xuan Anh", "VU VAN HIEU": "V.Hieu", "NGUYEN CONG SON": "C.Son", "NGUYEN THANH DAO": "T.Dao",
+        "NGUYEN HUU LONG": "Huu Long", "HUYNH NHAN TRI": "N.Tri", "NGUYEN TIEN SANG": "T.Sang", "NGUYEN HOANG MANH": "H.Manh",
+        "NGUYEN THI LIEN": "T.Lien", "THAI BAO LONG": "Bao Long"
       };
-
       if (shortMap[fullName]) return shortMap[fullName];
-
       const words = fullName.trim().split(/\s+/);
-      if (words.length <= 1) return fullName;
-      const firstName = words[words.length - 1];
-      const initial = words[0][0];
-      return `${initial}.${firstName}`;
+      return words.length > 1 ? `${words[0][0]}.${words[words.length - 1]}` : fullName;
     }
 
     function handleFloorBannerClick() {
       const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
-      if (thdUser) {
-        openStatusModal(thdUser.id);
-      }
+      if (thdUser) openStatusModal(thdUser.id);
     }
 
-    // -------------------------------------------------------------
-    // RENDER SƠ ĐỒ CHỖ NGỒI (FLOOR PLAN) - HỖ TRỢ 1A, 2A, 2D LÀ MOBILE
-    // -------------------------------------------------------------
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
       const row2El = document.getElementById('row-2-grid');
       const row3El = document.getElementById('row-3-grid');
       const row4El = document.getElementById('row-4-grid');
-
       row1El.innerHTML = ''; row2El.innerHTML = ''; row3El.innerHTML = ''; row4El.innerHTML = '';
 
       const todayStr = getActiveDateStr();
@@ -2002,24 +1738,17 @@
       const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
       const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, ws2d: null, backup: null };
 
-      // 1. Kiểm tra trạng thái của TRAN HOANG DUY
       const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
       const thdBanner = document.getElementById('thd-status-banner');
       const thdMsg = document.getElementById('thd-status-msg');
 
       if (thdUser && thdUser.status !== "Active") {
         thdBanner.classList.remove('hidden');
-        let statusText = thdUser.status;
-        if (thdUser.status === 'WFH') statusText = 'Làm việc từ xa (WFH)';
-        else if (thdUser.status === 'On Site') statusText = 'Đi công tác / On Site';
-        else if (thdUser.status === 'Day Off') statusText = 'Nghỉ phép / Day Off';
-        else if (thdUser.status === 'In Meeting') statusText = 'Họp ngoài (Full-day Meeting)';
-        thdMsg.innerHTML = `Anh <strong>${formatNameForDisplay(thdUser.fullName)}</strong> hôm nay: <span class="font-bold text-sky-900">${statusText}</span>.`;
+        thdMsg.innerHTML = `Anh <strong>${formatNameForDisplay(thdUser.fullName)}</strong> hôm nay: <span class="font-bold text-sky-900">${thdUser.status}</span>.`;
       } else {
         thdBanner.classList.add('hidden');
       }
 
-      // 2. Lấy danh sách bàn vắng mặt: Bàn Fixed + Bàn Mobile (1A / 2A / 2D) khi nhân sự chuyển trạng thái khác Active (LOẠI TRỪ TRAN HOANG DUY)
       const absentDesks = [];
       SEAT_LAYOUT.forEach(seat => {
         if (seat.type === "fixed") {
@@ -2028,11 +1757,7 @@
             absentDesks.push({ seatCode: seat.code, occupant });
           }
         } else if (seat.type === "mobile") {
-          let dutyKey = null;
-          if (seat.code === "1A") dutyKey = daySched.ws1;
-          else if (seat.code === "2A") dutyKey = daySched.ws2;
-          else if (seat.code === "2D") dutyKey = daySched.ws2d;
-
+          let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
           const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
           if (mobileEmp && mobileEmp.status !== "Active") {
@@ -2058,23 +1783,14 @@
 
       SEAT_LAYOUT.forEach(seat => {
         let cardHTML = '';
-
         if (seat.type === "unused") {
           cardHTML = `
             <div class="p-1 sm:p-2.5 rounded-lg border border-dashed border-slate-300 bg-slate-100/50 flex flex-col justify-between seat-card-box text-slate-400">
-              <div class="flex justify-between items-center text-[8px] sm:text-[9.5px] font-mono font-bold">
-                <span>${seat.code}</span>
-                <span class="text-[7px] bg-slate-200 px-1 rounded font-heading ${isMobile ? 'hidden' : 'inline'}">LOCK</span>
-              </div>
+              <div class="flex justify-between items-center text-[8px] sm:text-[9.5px] font-mono font-bold"><span>${seat.code}</span><span class="text-[7px] bg-slate-200 px-1 rounded font-heading ${isMobile ? 'hidden' : 'inline'}">LOCK</span></div>
               <div class="text-center my-auto text-[9px] sm:text-[10px] font-medium font-heading">${t('locked')}</div>
-            </div>
-          `;
+            </div>`;
         } else if (seat.type === "mobile") {
-          let dutyKey = null;
-          if (seat.code === "1A") dutyKey = daySched.ws1;
-          else if (seat.code === "2A") dutyKey = daySched.ws2;
-          else if (seat.code === "2D") dutyKey = daySched.ws2d;
-
+          let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
           const displayMobileName = staffObj ? (isMobile ? formatNameForDisplay(staffObj.fullName) : staffObj.fullName) : "Empty";
           const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
@@ -2084,8 +1800,7 @@
               <div class="p-1.5 sm:p-2.5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/40 flex flex-col justify-between seat-card-box text-slate-400">
                 <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seat.code}</div>
                 <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty (Mobile)</div>
-              </div>
-            `;
+              </div>`;
           } else {
             const isAbsent = (mobileEmp.status !== "Active");
             const claimedMobileKey = todayClaims[seat.code];
@@ -2093,7 +1808,6 @@
             if (isAbsent && claimedMobileKey) {
               const claimingStaff = STAFF_DUTY[claimedMobileKey];
               const claimingDisplayName = claimingStaff ? (isMobile ? claimingStaff.name : claimingStaff.fullName) : claimedMobileKey;
-
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
@@ -2101,133 +1815,82 @@
                     <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
                   </div>
                   <div class="my-auto truncate text-center sm:text-left py-0.5">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950" title="${claimingDisplayName}">
-                      ⚡ ${claimingDisplayName}
-                    </div>
-                    <div onclick="openStatusModal('${mobileEmp.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:text-slate-800 hover:underline" title="Chỉnh sửa trạng thái ${mobileEmp.fullName}">
-                      Thế chỗ: ${formatNameForDisplay(mobileEmp.fullName)} (${mobileEmp.status}) <i class="fa-solid fa-pen text-[7.5px] ml-0.5 text-slate-400"></i>
-                    </div>
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${claimingDisplayName}</div>
+                    <div onclick="openStatusModal('${mobileEmp.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:underline">Thế chỗ: ${formatNameForDisplay(mobileEmp.fullName)} (${mobileEmp.status})</div>
                   </div>
-                  <div class="pt-0.5 flex justify-end">
-                    <button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">
-                      Huỷ nhận chỗ
-                    </button>
-                  </div>
-                </div>
-              `;
-            } else if (isAbsent) {
-              cardHTML = `
-                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <div class="flex items-center gap-1">
-                      <span class="bg-white px-1.5 rounded border border-red-300 text-red-600 font-bold font-mono">${seat.code}</span>
-                      <span class="bg-indigo-600 text-white px-1 py-0.2 rounded text-[7px] font-heading ${isMobile ? 'hidden' : 'inline'}">Mobile</span>
-                    </div>
-                    <span onclick="openStatusModal('${mobileEmp.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer hover:bg-red-200 font-heading" title="Bấm để chỉnh trạng thái">${mobileEmp.status} <i class="fa-solid fa-pen text-[6.5px] ml-0.5"></i></span>
-                  </div>
-                  <div onclick="openStatusModal('${mobileEmp.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer" title="Bấm để chỉnh trạng thái cho ${mobileEmp.fullName}">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700 hover:text-slate-900" title="${mobileEmp.fullName}">
-                      ${formatNameForDisplay(mobileEmp.fullName)}
-                    </div>
-                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
-                  </div>
-                  <button onclick="openClaimSeatModal('${seat.code}', '${mobileEmp.fullName}')" 
-                          class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
-                    <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
-                  </button>
-                </div>
-              `;
-            } else {
-              cardHTML = `
-                <div onclick="openStatusModal('${mobileEmp.id}')" title="Cập nhật trạng thái cho ${mobileEmp.fullName}" 
-                     class="p-1.5 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-indigo-600 hover:shadow-md transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="text-indigo-800 font-extrabold">${seat.code}</span>
-                    <span class="bg-indigo-600 text-white px-1.5 py-0.2 rounded text-[7px] sm:text-[8.5px] font-heading">Mobile</span>
-                  </div>
-                  <div class="my-auto truncate text-center sm:text-left">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] text-indigo-950 truncate seat-card-title font-heading" title="${mobileEmp.fullName}">
-                      ${displayMobileName}
-                    </div>
-                  </div>
-                </div>
-              `;
-            }
-          }
-        } else {
-          // BÀN CỐ ĐỊNH (FIXED SEAT)
-          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
-          if (occupant) {
-            const isAbsent = (occupant.status !== "Active");
-            const claimedMobileKey = todayClaims[seat.code];
-
-            if (isAbsent && claimedMobileKey) {
-              const mobileStaff = STAFF_DUTY[claimedMobileKey];
-              const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
-
-              cardHTML = `
-                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
-                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
-                  </div>
-                  <div class="my-auto truncate text-center sm:text-left py-0.5">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950" title="${mobileDisplayName}">
-                      ⚡ ${mobileDisplayName}
-                    </div>
-                    <div onclick="openStatusModal('${occupant.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:text-slate-800 hover:underline" title="Chỉnh sửa trạng thái ${occupant.fullName}">
-                      Thế chỗ: ${formatNameForDisplay(occupant.fullName)} (${occupant.status}) <i class="fa-solid fa-pen text-[7.5px] ml-0.5 text-slate-400"></i>
-                    </div>
-                  </div>
-                  <div class="pt-0.5 flex justify-end">
-                    <button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">
-                      Huỷ nhận chỗ
-                    </button>
-                  </div>
-                </div>
-              `;
+                  <div class="pt-0.5 flex justify-end"><button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">Huỷ nhận chỗ</button></div>
+                </div>`;
             } else if (isAbsent) {
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
                     <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
-                    <span onclick="openStatusModal('${occupant.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer hover:bg-red-200 font-heading" title="Bấm để chỉnh trạng thái">${occupant.status} <i class="fa-solid fa-pen text-[6.5px] ml-0.5"></i></span>
+                    <span onclick="openStatusModal('${mobileEmp.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer">${mobileEmp.status}</span>
                   </div>
-                  <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer" title="Bấm để chỉnh trạng thái cho ${occupant.fullName}">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700 hover:text-slate-900" title="${occupant.fullName}">
-                      ${formatNameForDisplay(occupant.fullName)}
-                    </div>
+                  <div onclick="openStatusModal('${mobileEmp.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(mobileEmp.fullName)}</div>
                     <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
                   </div>
-                  <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" 
-                          class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
+                  <button onclick="openClaimSeatModal('${seat.code}', '${mobileEmp.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
                     <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
                   </button>
-                </div>
-              `;
+                </div>`;
             } else {
               cardHTML = `
-                <div onclick="openStatusModal('${occupant.id}')" title="Cập nhật trạng thái cho ${occupant.fullName}" 
-                     class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 hover:shadow-md transition relative">
+                <div onclick="openStatusModal('${mobileEmp.id}')" class="p-1.5 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-indigo-600 transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="text-indigo-800 font-extrabold">${seat.code}</span><span class="bg-indigo-600 text-white px-1.5 py-0.2 rounded text-[7px] sm:text-[8.5px] font-heading">Mobile</span></div>
+                  <div class="my-auto truncate text-center sm:text-left"><div class="font-extrabold text-[11px] sm:text-[13px] text-indigo-950 truncate seat-card-title font-heading">${displayMobileName}</div></div>
+                </div>`;
+            }
+          }
+        } else {
+          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
+          if (occupant) {
+            const isAbsent = (occupant.status !== "Active");
+            const claimedMobileKey = todayClaims[seat.code];
+            if (isAbsent && claimedMobileKey) {
+              const mobileStaff = STAFF_DUTY[claimedMobileKey];
+              const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white/90 px-1.5 rounded border border-slate-200">${seat.code}</span>
-                    <span class="text-[7.5px] sm:text-[8px] font-semibold text-emerald-600 truncate font-heading">Active</span>
+                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
+                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
                   </div>
-                  <div class="my-auto truncate text-center sm:text-left">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-900" title="${occupant.fullName}">
-                      ${formatNameForDisplay(occupant.fullName)}
-                    </div>
+                  <div class="my-auto truncate text-center sm:text-left py-0.5">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${mobileDisplayName}</div>
+                    <div onclick="openStatusModal('${occupant.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:underline">Thế chỗ: ${formatNameForDisplay(occupant.fullName)} (${occupant.status})</div>
                   </div>
-                </div>
-              `;
+                  <div class="pt-0.5 flex justify-end"><button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">Huỷ nhận chỗ</button></div>
+                </div>`;
+            } else if (isAbsent) {
+              cardHTML = `
+                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                    <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
+                    <span onclick="openStatusModal('${occupant.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer">${occupant.status}</span>
+                  </div>
+                  <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(occupant.fullName)}</div>
+                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                  </div>
+                  <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
+                    <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
+                  </button>
+                </div>`;
+            } else {
+              cardHTML = `
+                <div onclick="openStatusModal('${occupant.id}')" class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 transition relative">
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="bg-white/90 px-1.5 rounded border border-slate-200">${seat.code}</span><span class="text-[7.5px] sm:text-[8px] font-semibold text-emerald-600 truncate font-heading">Active</span></div>
+                  <div class="my-auto truncate text-center sm:text-left"><div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-900">${formatNameForDisplay(occupant.fullName)}</div></div>
+                </div>`;
             }
           } else {
             cardHTML = `
               <div class="p-1 sm:p-2 rounded-lg border border-dashed border-slate-300 bg-white flex flex-col justify-between seat-card-box text-slate-400">
                 <div class="font-mono text-[8px] sm:text-[9.5px] font-bold">${seat.code}</div>
                 <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty</div>
-              </div>
-            `;
+              </div>`;
           }
         }
 
@@ -2238,134 +1901,70 @@
       });
     }
 
-    // -------------------------------------------------------------
-    // LOGIC NHẬN CHỖ BACKUP CHO TẤT CẢ THÀNH VIÊN MOBILE
-    // -------------------------------------------------------------
     function getTodayMobileCandidates(targetSeatCode = null) {
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
-
       const activelySeatedMobileKeys = [];
       if (sched) {
-        if (sched.ws1 && targetSeatCode !== "1A") {
-          const emp1 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName);
-          if (emp1 && emp1.status === "Active") activelySeatedMobileKeys.push(sched.ws1);
-        }
-        if (sched.ws2 && targetSeatCode !== "2A") {
-          const emp2 = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName);
-          if (emp2 && emp2.status === "Active") activelySeatedMobileKeys.push(sched.ws2);
-        }
-        if (sched.ws2d && targetSeatCode !== "2D") {
-          const emp2d = employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2d]?.fullName);
-          if (emp2d && emp2d.status === "Active") activelySeatedMobileKeys.push(sched.ws2d);
-        }
+        if (sched.ws1 && targetSeatCode !== "1A" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws1);
+        if (sched.ws2 && targetSeatCode !== "2A" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2);
+        if (sched.ws2d && targetSeatCode !== "2D" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2d]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2d);
       }
-
-      const mobileEmployees = employees.filter(e => !e.isHidden && e.seating === 'Mobile');
-      const candidateKeys = [];
-
-      mobileEmployees.forEach(emp => {
-        const k = Object.keys(STAFF_DUTY).find(key => STAFF_DUTY[key].fullName === emp.fullName);
-        if (k) {
-          if (activelySeatedMobileKeys.includes(k)) return;
-          if (sched && targetSeatCode === "1A" && sched.ws1 === k) return;
-          if (sched && targetSeatCode === "2A" && sched.ws2 === k) return;
-          if (sched && targetSeatCode === "2D" && sched.ws2d === k) return;
-          candidateKeys.push(k);
-        }
-      });
-
-      return candidateKeys;
+      return employees.filter(e => !e.isHidden && e.seating === 'Mobile')
+        .map(emp => Object.keys(STAFF_DUTY).find(key => STAFF_DUTY[key].fullName === emp.fullName))
+        .filter(k => k && !activelySeatedMobileKeys.includes(k) && !(sched && ((targetSeatCode === "1A" && sched.ws1 === k) || (targetSeatCode === "2A" && sched.ws2 === k) || (targetSeatCode === "2D" && sched.ws2d === k))));
     }
 
     function openClaimSeatModal(seatCode, occupantName) {
       document.getElementById('claim-seat-code-hidden').value = seatCode;
       document.getElementById('claim-modal-seat-title').innerText = seatCode;
-      document.getElementById('claim-modal-desc').innerHTML = `Bàn <strong>${seatCode}</strong> của <strong>${occupantName}</strong> đang vắng mặt. Chọn 1 nhân sự Mobile để xác nhận thế chỗ:`;
-
-      const todayStr = getActiveDateStr();
-      const todayClaims = SEAT_CLAIMS[todayStr] || {};
+      document.getElementById('claim-modal-desc').innerHTML = `Bàn <strong>${seatCode}</strong> của <strong>${occupantName}</strong> đang vắng. Chọn 1 nhân sự Mobile để thế chỗ:`;
+      const todayClaims = SEAT_CLAIMS[getActiveDateStr()] || {};
       const claimedStaffKeys = Object.values(todayClaims);
-
-      const candidateKeys = getTodayMobileCandidates(seatCode);
       const container = document.getElementById('claim-candidates-container');
       container.innerHTML = '';
 
-      const isMobile = (activeDeviceMode === 'mobile');
-
-      candidateKeys.forEach(k => {
+      getTodayMobileCandidates(seatCode).forEach(k => {
         const staff = STAFF_DUTY[k];
-        const isAlreadyClaimedAnotherSeat = claimedStaffKeys.includes(k);
-        const staffDisplayName = isMobile ? staff.name : staff.fullName;
-
-        if (isAlreadyClaimedAnotherSeat) {
-          container.innerHTML += `
-            <div class="p-2.5 rounded-xl border border-slate-200 bg-slate-100/70 flex justify-between items-center opacity-60">
-              <div>
-                <strong class="font-heading font-bold text-slate-700">${staffDisplayName}</strong>
-                <p class="text-[10px] text-amber-700">Đã nhận bàn khác hôm nay</p>
-              </div>
-              <span class="text-[10px] font-bold text-slate-400 bg-slate-200 px-2 py-0.5 rounded font-heading">Đã nhận chỗ</span>
-            </div>
-          `;
+        const isClaimed = claimedStaffKeys.includes(k);
+        const name = (activeDeviceMode === 'mobile') ? staff.name : staff.fullName;
+        if (isClaimed) {
+          container.innerHTML += `<div class="p-2.5 rounded-xl border border-slate-200 bg-slate-100 flex justify-between items-center opacity-60"><div><strong class="font-bold text-slate-700">${name}</strong><p class="text-[10px] text-amber-700">Đã nhận bàn khác</p></div><span class="text-[10px] bg-slate-200 px-2 py-0.5 rounded">Đã nhận chỗ</span></div>`;
         } else {
-          container.innerHTML += `
-            <div class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/80 flex justify-between items-center hover:bg-emerald-100/70 transition">
-              <div>
-                <strong class="font-heading font-bold text-emerald-950">${staffDisplayName}</strong>
-                <p class="text-[10px] text-emerald-700">Sẵn sàng nhận chỗ backup</p>
-              </div>
-              <button onclick="confirmClaimSeat('${seatCode}', '${k}')" 
-                      class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-heading font-bold text-[11px] shadow-xs transition">
-                Xác nhận ngồi
-              </button>
-            </div>
-          `;
+          container.innerHTML += `<div class="p-2.5 rounded-xl border border-emerald-300 bg-emerald-50 flex justify-between items-center"><div><strong class="font-bold text-emerald-950">${name}</strong><p class="text-[10px] text-emerald-700">Sẵn sàng nhận chỗ</p></div><button onclick="confirmClaimSeat('${seatCode}', '${k}')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-[11px]">Xác nhận ngồi</button></div>`;
         }
       });
-
       document.getElementById('claim-seat-modal').classList.remove('hidden');
     }
 
     function confirmClaimSeat(seatCode, staffKey) {
       const todayStr = getActiveDateStr();
       if (!SEAT_CLAIMS[todayStr]) SEAT_CLAIMS[todayStr] = {};
-
       SEAT_CLAIMS[todayStr][seatCode] = staffKey;
       saveData();
       closeModal('claim-seat-modal');
       renderAll();
-      alert(`Đã xác nhận ${STAFF_DUTY[staffKey].fullName} ngồi vào bàn ${seatCode}! Ghế đã chuyển sang trạng thái xanh bình thường.`);
+      alert(`Đã xác nhận ${STAFF_DUTY[staffKey].fullName} ngồi bàn ${seatCode}!`);
     }
 
     function unclaimSeat(seatCode) {
-      if (confirm(`Hủy nhận chỗ cho bàn ${seatCode}? Bàn sẽ quay về trạng thái vắng mặt nhấp nháy đỏ.`)) {
+      if (confirm(`Hủy nhận chỗ bàn ${seatCode}?`)) {
         const todayStr = getActiveDateStr();
-        if (SEAT_CLAIMS[todayStr]) {
-          delete SEAT_CLAIMS[todayStr][seatCode];
-          saveData();
-          renderAll();
-        }
+        if (SEAT_CLAIMS[todayStr]) { delete SEAT_CLAIMS[todayStr][seatCode]; saveData(); renderAll(); }
       }
     }
 
-    // -------------------------------------------------------------
-    // LOGIC THIẾT LẬP LỊCH NGHỈ TRƯỚC (TUẦN NÀY & TUẦN TỚI)
-    // -------------------------------------------------------------
     function switchStatusModalTab(tab) {
       const pToday = document.getElementById('status-panel-today');
       const pAdvance = document.getElementById('status-panel-advance');
       const bToday = document.getElementById('btn-tab-status-today');
       const bAdvance = document.getElementById('btn-tab-status-advance');
-
       if (tab === 'today') {
-        pToday.classList.remove('hidden');
-        pAdvance.classList.add('hidden');
+        pToday.classList.remove('hidden'); pAdvance.classList.add('hidden');
         bToday.className = "flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center";
         bAdvance.className = "flex-1 py-1.5 rounded-lg text-slate-600 hover:bg-white/60 text-center";
       } else {
-        pToday.classList.add('hidden');
-        pAdvance.classList.remove('hidden');
+        pToday.classList.add('hidden'); pAdvance.classList.remove('hidden');
         bAdvance.className = "flex-1 py-1.5 rounded-lg bg-white shadow-2xs text-[#ee2f26] font-bold text-center";
         bToday.className = "flex-1 py-1.5 rounded-lg text-slate-600 hover:bg-white/60 text-center";
         loadUserAdvanceSchedule();
@@ -2377,7 +1976,6 @@
       const dow = (d.getDay() + 6) % 7;
       const mon = new Date(d);
       mon.setDate(d.getDate() - dow + (weekOffset * 7));
-
       const days = [];
       for (let i = 0; i < 5; i++) {
         const item = new Date(mon);
@@ -2398,36 +1996,29 @@
 
       const thisWeekContainer = document.getElementById('advance-this-week-list');
       const nextWeekContainer = document.getElementById('advance-next-week-list');
-
-      thisWeekContainer.innerHTML = '';
-      nextWeekContainer.innerHTML = '';
-
-      const thisWeekDays = getWeekWorkingDays(todayNow, 0);
-      const nextWeekDays = getWeekWorkingDays(todayNow, 1);
+      thisWeekContainer.innerHTML = ''; nextWeekContainer.innerHTML = '';
 
       const renderRow = (d, container) => {
         const dateKey = formatDateKey(d);
         const dayName = (currentLang === 'vi') ? `Thứ ${((d.getDay() + 6) % 7) + 2}` : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][(d.getDay() + 6) % 7];
         const dateDisplay = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
-
         const savedStatus = (LEAVE_PRESETS[userId] && LEAVE_PRESETS[userId][dateKey]) ? LEAVE_PRESETS[userId][dateKey] : "Active";
 
         container.innerHTML += `
           <div class="flex items-center justify-between py-1 px-2 rounded-lg bg-white border border-slate-200">
             <span class="font-mono text-slate-700 font-semibold text-[11px]">${dayName}, ${dateDisplay}</span>
             <select data-advance-date="${dateKey}" class="advance-status-input p-1 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium">
-              <option value="Active" ${savedStatus === 'Active' ? 'selected' : ''}>🟢 In-Office (Mặc định)</option>
+              <option value="Active" ${savedStatus === 'Active' ? 'selected' : ''}>🟢 In-Office</option>
               <option value="WFH" ${savedStatus === 'WFH' ? 'selected' : ''}>🏠 WFH</option>
-              <option value="Day Off" ${savedStatus === 'Day Off' ? 'selected' : ''}>🔴 Day Off (Nghỉ)</option>
+              <option value="Day Off" ${savedStatus === 'Day Off' ? 'selected' : ''}>🔴 Day Off</option>
               <option value="On Site" ${savedStatus === 'On Site' ? 'selected' : ''}>🚗 On Site</option>
               <option value="In Meeting" ${savedStatus === 'In Meeting' ? 'selected' : ''}>🤝 Meeting</option>
             </select>
-          </div>
-        `;
+          </div>`;
       };
 
-      thisWeekDays.forEach(d => renderRow(d, thisWeekContainer));
-      nextWeekDays.forEach(d => renderRow(d, nextWeekContainer));
+      getWeekWorkingDays(todayNow, 0).forEach(d => renderRow(d, thisWeekContainer));
+      getWeekWorkingDays(todayNow, 1).forEach(d => renderRow(d, nextWeekContainer));
     }
 
     function onStatusUserSelectChange() {
@@ -2436,34 +2027,20 @@
       if (!emp) return;
       document.getElementById('status-action-select').value = emp.status || "Active";
       const pAdvance = document.getElementById('status-panel-advance');
-      if (pAdvance && !pAdvance.classList.contains('hidden')) {
-        loadUserAdvanceSchedule(selectedId);
-      }
+      if (pAdvance && !pAdvance.classList.contains('hidden')) loadUserAdvanceSchedule(selectedId);
     }
 
-    // -------------------------------------------------------------
-    // OPEN STATUS MODAL (CHO PHÉP ADMIN & MANAGER CHỈNH SỬA TRỰC TIẾP)
-    // -------------------------------------------------------------
     function openStatusModal(targetUserId = null) {
-      if (!currentLoggedInUser) {
-        alert("Vui lòng đăng nhập để cập nhật trạng thái làm việc!");
-        return;
-      }
-
+      if (!currentLoggedInUser) { alert("Vui lòng đăng nhập!"); return; }
       const isAdminOrManager = (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
-
       if (targetUserId && targetUserId !== currentLoggedInUser.id && !isAdminOrManager) {
-        const targetEmp = employees.find(e => e.id === targetUserId);
-        const targetName = targetEmp ? targetEmp.fullName : "nhân sự khác";
-        alert(`Bạn chỉ có thể tự cập nhật trạng thái cho chính mình (${currentLoggedInUser.fullName}).\n\nChỉ Admin và Manager mới có quyền điều chỉnh trực tiếp trạng thái cho ${targetName}.`);
+        alert("Chỉ Admin và Manager mới có quyền cập nhật trạng thái cho người khác!");
         return;
       }
 
       const activeUserId = targetUserId || currentLoggedInUser.id;
       const activeUser = employees.find(e => e.id === activeUserId) || currentLoggedInUser;
-
       const select = document.getElementById('status-user-select');
-      const hint = document.getElementById('txt-status-user-hint');
 
       if (isAdminOrManager) {
         select.disabled = false;
@@ -2471,20 +2048,13 @@
         select.innerHTML = employees.filter(e => !e.isHidden).map(e => 
           `<option value="${e.id}" ${e.id === activeUser.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Mobile'}) - [${e.role}]</option>`
         ).join('');
-        if (hint) {
-          hint.innerHTML = `* Quyền <strong>${currentLoggedInUser.role}</strong>: Bạn có thể cập nhật trạng thái trực tiếp cho bất kỳ nhân sự nào.`;
-        }
       } else {
         select.disabled = true;
         select.className = "w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-semibold text-slate-800 text-xs";
-        select.innerHTML = `<option value="${activeUser.id}" selected>${activeUser.fullName} (${activeUser.seating || 'Mobile/Không cố định'}) - [Tài khoản của bạn]</option>`;
-        if (hint) {
-          hint.innerHTML = `* Chỉ thiết lập trạng thái cho tài khoản của bạn.`;
-        }
+        select.innerHTML = `<option value="${activeUser.id}" selected>${activeUser.fullName} (${activeUser.seating || 'Mobile'})</option>`;
       }
 
       document.getElementById('status-action-select').value = activeUser.status || "Active";
-
       switchStatusModalTab('today');
       document.getElementById('status-modal').classList.remove('hidden');
     }
@@ -2498,55 +2068,35 @@
 
       const todayStatus = document.getElementById('status-action-select').value;
       const todayStr = getActiveDateStr();
-
       targetEmp.status = todayStatus;
-      if (currentLoggedInUser.id === userId) {
-        currentLoggedInUser.status = todayStatus;
-      }
+      if (currentLoggedInUser.id === userId) currentLoggedInUser.status = todayStatus;
 
       if (!LEAVE_PRESETS[userId]) LEAVE_PRESETS[userId] = {};
       LEAVE_PRESETS[userId][todayStr] = todayStatus;
 
-      const advanceSelects = document.querySelectorAll('.advance-status-input');
-      advanceSelects.forEach(sel => {
-        const dKey = sel.getAttribute('data-advance-date');
-        const st = sel.value;
-        LEAVE_PRESETS[userId][dKey] = st;
+      document.querySelectorAll('.advance-status-input').forEach(sel => {
+        LEAVE_PRESETS[userId][sel.getAttribute('data-advance-date')] = sel.value;
       });
 
       saveData();
       renderAll();
       closeModal('status-modal');
-      alert(currentLang === 'vi' 
-        ? `Đã lưu trạng thái thành công cho ${targetEmp.fullName}!` 
-        : `Status updated successfully for ${targetEmp.fullName}!`);
+      alert(`Đã lưu trạng thái cho ${targetEmp.fullName}!`);
     }
 
-    // -------------------------------------------------------------
-    // RENDER LỊCH DUTY ROSTER & THỐNG KÊ (HIỂN THỊ CẢ 1A, 2A, 2D)
-    // -------------------------------------------------------------
     function renderDutyBoard() {
       const monthKey = getMonthKey(currentYear, currentMonth);
       const isConfigured = !!SCHEDULE_STORE[monthKey];
-
       document.getElementById('duty-month-display').innerText = `${new Date(currentYear, currentMonth).toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}`;
       document.getElementById('duty-status-badge').innerText = isConfigured ? (currentLang === 'vi' ? "Đã có lịch" : "Configured") : (currentLang === 'vi' ? "Chưa tạo" : "Unset");
       document.getElementById('duty-status-badge').className = isConfigured ? "text-[8px] sm:text-[10px] text-emerald-600 font-bold font-heading" : "text-[8px] sm:text-[10px] text-amber-600 font-bold font-heading";
 
       const unconfigContainer = document.getElementById('duty-unconfigured-container');
       const configContainer = document.getElementById('duty-configured-container');
-
       const isFutureMonth = (currentYear > REAL_TODAY_YEAR) || (currentYear === REAL_TODAY_YEAR && currentMonth > REAL_TODAY_MONTH);
       const isAdmin = currentLoggedInUser && currentLoggedInUser.role === 'Admin';
       const btnDelFuture = document.getElementById('btn-delete-future-roster');
-      
-      if (btnDelFuture) {
-        if (isFutureMonth && isConfigured && isAdmin) {
-          btnDelFuture.classList.remove('hidden');
-        } else {
-          btnDelFuture.classList.add('hidden');
-        }
-      }
+      if (btnDelFuture) btnDelFuture.classList.toggle('hidden', !(isFutureMonth && isConfigured && isAdmin && (currentYear > 2026 || currentMonth >= 10)));
 
       if (!isConfigured) {
         unconfigContainer.classList.remove('hidden');
@@ -2564,7 +2114,6 @@
       const isoDow = (firstOfMonth.getDay() + 6) % 7;
       const gridStart = new Date(firstOfMonth);
       gridStart.setDate(1 - isoDow);
-
       const isMobile = (activeDeviceMode === 'mobile');
 
       let cells = "";
@@ -2583,15 +2132,13 @@
         }
 
         const holidayObj = getHolidayForDate(currentYear, currentMonth, dateNum);
-
         if (isWeekend) {
           cells += `
             <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
               <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
               <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
               ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 font-heading ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
-            </div>
-          `;
+            </div>`;
           continue;
         }
 
@@ -2600,143 +2147,79 @@
           cells += `
             <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
               <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
-              ${holidayObj ? `<span class="text-[8.5px] sm:text-[10px] font-bold text-rose-700 mt-1 font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
               ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1 font-heading">+ Setup</button>` : `<span class="text-[8px] text-slate-400 font-heading">Empty</span>`}
-            </div>
-          `;
+            </div>`;
           continue;
         }
 
-        let adminActionButtons = '';
-        if (isAdmin) {
-          adminActionButtons = `
-            <div class="flex items-center gap-0.5 sm:gap-1">
-              <button onclick="openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-800 p-0.5" title="Edit Shift">
-                <i class="fa-solid fa-pen text-[7.5px] sm:text-xs"></i>
-              </button>
-              <button onclick="deleteDutyShift(${dateNum})" class="text-red-400 hover:text-red-700 p-0.5" title="Delete Shift">
-                <i class="fa-solid fa-trash-can text-[7.5px] sm:text-xs"></i>
-              </button>
-            </div>
-          `;
-        }
+        let adminActionButtons = isAdmin ? `
+          <div class="flex items-center gap-0.5 sm:gap-1">
+            <button onclick="openDutyEditModal(${dateNum})" class="text-slate-400 hover:text-slate-800 p-0.5"><i class="fa-solid fa-pen text-[7.5px] sm:text-xs"></i></button>
+            <button onclick="deleteDutyShift(${dateNum})" class="text-red-400 hover:text-red-700 p-0.5"><i class="fa-solid fa-trash-can text-[7.5px] sm:text-xs"></i></button>
+          </div>` : '';
 
         const holidayHighlightClass = holidayObj ? "bg-rose-50/70 border-rose-300" : "bg-white border-slate-200";
 
         if (isMobile) {
           const badgeSpanMob = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-1.5 py-0.2 rounded font-mono font-bold text-[8px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-[8px]">—</span>`;
-
           cells += `
             <div class="${holidayHighlightClass} border ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : ''} rounded-lg p-1.5 shadow-xs justify-between flex flex-col min-h-[88px] transition">
               <div class="flex justify-between items-center border-b border-slate-100 pb-0.5">
                 <span class="font-extrabold text-xs ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono">${dateNum}</span>
-                <div class="flex items-center gap-1">
-                  ${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px] font-heading">🎉 Lễ</span>` : ''}
-                  ${adminActionButtons}
-                </div>
+                <div class="flex items-center gap-1">${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px] font-heading">🎉 Lễ</span>` : ''}${adminActionButtons}</div>
               </div>
               <div class="space-y-0.5 text-[8px]">
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-400 font-mono font-semibold">1A:</span>
-                  <div>${badgeSpanMob(s.ws1)}</div>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-400 font-mono font-semibold">2A:</span>
-                  <div>${badgeSpanMob(s.ws2)}</div>
-                </div>
-                <div class="flex justify-between items-center">
-                  <span class="text-slate-400 font-mono font-semibold">2D:</span>
-                  <div>${badgeSpanMob(s.ws2d)}</div>
-                </div>
-                <div class="flex justify-between items-center border-t border-slate-50 pt-0.5">
-                  <span class="text-red-600 font-bold font-mono">BK:</span>
-                  <div>${badgeSpanMob(s.backup)}</div>
-                </div>
+                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">1A:</span><div>${badgeSpanMob(s.ws1)}</div></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">2A:</span><div>${badgeSpanMob(s.ws2)}</div></div>
+                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">2D:</span><div>${badgeSpanMob(s.ws2d)}</div></div>
+                <div class="flex justify-between items-center border-t border-slate-50 pt-0.5"><span class="text-red-600 font-bold font-mono">BK:</span><div>${badgeSpanMob(s.backup)}</div></div>
               </div>
-            </div>
-          `;
+            </div>`;
         } else {
-          const badgeSpanDesk = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[12px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
-          const badgesSpanDesk = (arr) => arr ? arr.filter(k => STAFF_DUTY[k]).map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs sm:text-[11px] badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
-
+          const badgeSpanDesk = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
+          const badgesSpanDesk = (arr) => arr ? arr.filter(k => STAFF_DUTY[k]).map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
           cells += `
             <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-2.5 sm:p-3 shadow-xs justify-between flex flex-col min-h-[160px] transition">
-              
               <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                 <div class="flex items-center gap-1.5">
                   <span class="font-extrabold text-base sm:text-lg ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono leading-none">${dateNum}</span>
                   <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">T${dow+2}</span>
                   ${holidayObj ? `<span class="text-[9.5px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md truncate max-w-[130px] font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
                 </div>
-                <div class="flex items-center gap-1.5">
-                  ${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-heading">⚡ Backup</span>` : ''}
-                  ${adminActionButtons}
-                </div>
+                <div class="flex items-center gap-1.5">${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-heading">⚡ Backup</span>` : ''}${adminActionButtons}</div>
               </div>
-
-              <div class="space-y-1 my-auto text-xs sm:text-[12.5px] font-mono pt-1">
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-500 font-bold text-xs">1A:</span>
-                  <div>${badgeSpanDesk(s.ws1)}</div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-500 font-bold text-xs">2A:</span>
-                  <div>${badgeSpanDesk(s.ws2)}</div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-500 font-bold text-xs">2D:</span>
-                  <div>${badgeSpanDesk(s.ws2d)}</div>
-                </div>
-                <div class="flex items-center justify-between border-t border-slate-100 pt-1">
-                  <span class="text-red-600 font-bold text-xs">⚡ BK:</span>
-                  <div>${badgeSpanDesk(s.backup)}</div>
-                </div>
-                <div class="flex items-center justify-between">
-                  <span class="text-slate-400 font-medium text-[11px]">WFH:</span>
-                  <div class="flex gap-1">${badgesSpanDesk(s.online)}</div>
-                </div>
+              <div class="space-y-1 my-auto text-xs font-mono pt-1">
+                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">1A:</span><div>${badgeSpanDesk(s.ws1)}</div></div>
+                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">2A:</span><div>${badgeSpanDesk(s.ws2)}</div></div>
+                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">2D:</span><div>${badgeSpanDesk(s.ws2d)}</div></div>
+                <div class="flex items-center justify-between border-t border-slate-100 pt-1"><span class="text-red-600 font-bold text-xs">⚡ BK:</span><div>${badgeSpanDesk(s.backup)}</div></div>
+                <div class="flex items-center justify-between"><span class="text-slate-400 font-medium text-[11px]">WFH:</span><div class="flex gap-1">${badgesSpanDesk(s.online)}</div></div>
               </div>
-
-            </div>
-          `;
+            </div>`;
         }
       }
       grid.innerHTML = cells;
-
       renderDutyStats(currentMonthSched);
     }
 
     function deleteFutureMonthRoster() {
-      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin can delete month rosters!");
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') return;
+      if (currentYear < 2026 || (currentYear === 2026 && currentMonth < 10)) {
+        alert("Tháng 9 và 10/2026 là lịch cố định, không được phép xóa!");
         return;
       }
-
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const confirmMsg = (currentLang === 'vi')
-        ? `Xác nhận XÓA TOÀN BỘ lịch của tháng tương lai ${monthKey}?\n\nTháng này sẽ quay về trạng thái chưa thiết lập kèm nút khởi tạo lại!`
-        : `Are you sure you want to DELETE the entire roster for ${monthKey}?\n\nThis month will revert to unconfigured state!`;
-
-      if (confirm(confirmMsg)) {
+      if (confirm(`Xác nhận XÓA TOÀN BỘ lịch tháng ${monthKey}?`)) {
         delete SCHEDULE_STORE[monthKey];
         saveData();
         renderDutyBoard();
-        alert((currentLang === 'vi') ? `Đã xóa lịch tháng ${monthKey} thành công!` : `Deleted roster for ${monthKey} successfully!`);
       }
     }
 
     function deleteDutyShift(dayNum) {
-      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin accounts can delete shift assignments!");
-        return;
-      }
-
+      if (!currentLoggedInUser || currentLoggedInUser.role !== 'Admin') return;
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const confirmMsg = (currentLang === 'vi')
-        ? `Xác nhận xóa ca trực ngày ${dayNum}/${currentMonth + 1}/${currentYear}?`
-        : `Delete shift for ${dayNum}/${currentMonth + 1}/${currentYear}?`;
-
-      if (confirm(confirmMsg)) {
+      if (confirm(`Xóa ca trực ngày ${dayNum}/${currentMonth + 1}/${currentYear}?`)) {
         if (SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum]) {
           delete SCHEDULE_STORE[monthKey][dayNum];
           saveData();
@@ -2745,11 +2228,10 @@
       }
     }
 
+    /* RENDER BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG (SIÊU GỌN TRÊN MOBILE: CHỈ TÊN VIẾT TẮT, ICON VÀ SỐ) */
     function renderDutyStats(sched) {
       const statsObj = {};
-      Object.keys(STAFF_DUTY).forEach(k => {
-        statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 };
-      });
+      Object.keys(STAFF_DUTY).forEach(k => { statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 }; });
 
       const days = Object.keys(sched);
       days.forEach(d => {
@@ -2758,41 +2240,76 @@
         if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
         if (item.ws2d && statsObj[item.ws2d]) { statsObj[item.ws2d].basic++; statsObj[item.ws2d].on++; }
         if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
-        if (item.online) {
-          item.online.forEach(k => { if(statsObj[k]) statsObj[k].off++; });
-        }
+        if (item.online) item.online.forEach(k => { if(statsObj[k]) statsObj[k].off++; });
       });
 
       const totalDays = days.length;
       document.getElementById('duty-total-workdays-badge').innerText = `${totalDays} ${t('workingDays')}`;
-
       const statsRowsEl = document.getElementById("duty-stats-rows");
-      statsRowsEl.innerHTML = Object.entries(statsObj).map(([k, stat]) => {
-        const s = STAFF_DUTY[k];
-        return `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 sm:p-3 text-center">
-            <div class="flex justify-center items-center gap-1.5 font-bold text-slate-800 text-xs sm:text-sm font-heading">
-              <span class="w-2 h-2 rounded-full dot-${s.cls}"></span>${s.name} (${s.defaultDesk})
-            </div>
-            <div class="font-mono font-extrabold text-sm sm:text-lg text-slate-900 mt-1">${stat.on} Days</div>
-            <div class="text-[10px] sm:text-xs text-slate-500 font-mono mt-0.5">Desk: ${stat.basic}d • BK: +${stat.backup}d • WFH: ${stat.off}d</div>
-          </div>
-        `;
-      }).join("");
+      const isMobile = (activeDeviceMode === 'mobile');
+
+      if (isMobile) {
+        statsRowsEl.innerHTML = Object.entries(statsObj).map(([k, stat]) => {
+          const s = STAFF_DUTY[k];
+          return `
+            <div class="px-2.5 py-1.5 flex items-center justify-between hover:bg-slate-50 transition text-xs font-mono">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="w-2 h-2 rounded-full dot-${s.cls}"></span>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold badge-${s.cls}">${s.name}</span>
+              </div>
+              <div class="flex items-center gap-3 text-[11px] font-bold">
+                <span title="Active In-Office" class="text-slate-900">🏢 ${stat.on}</span>
+                <span title="Bàn chính" class="text-slate-600">🪑 ${stat.basic}</span>
+                <span title="Dự phòng Backup" class="text-red-600">⚡ ${stat.backup}</span>
+                <span title="Làm từ xa WFH" class="text-slate-400">🏠 ${stat.off}</span>
+              </div>
+            </div>`;
+        }).join("");
+      } else {
+        statsRowsEl.innerHTML = Object.entries(statsObj).map(([k, stat]) => {
+          const s = STAFF_DUTY[k];
+          const pct = totalDays > 0 ? Math.round((stat.on / totalDays) * 100) : 0;
+          return `
+            <div class="px-3.5 py-2.5 sm:px-4 sm:py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 hover:bg-slate-50/80 transition">
+              <div class="flex items-center gap-2.5 min-w-[200px]">
+                <span class="w-3 h-3 rounded-full dot-${s.cls} shrink-0"></span>
+                <div>
+                  <div class="font-heading font-bold text-slate-800 text-xs sm:text-[13px] flex items-center gap-1.5">
+                    <span>${s.fullName}</span>
+                    <span class="px-1.5 py-0.2 rounded text-[9.5px] font-mono font-bold badge-${s.cls}">${s.name}</span>
+                  </div>
+                  <div class="text-[10px] text-slate-500 font-medium">Ghế chính: <strong class="text-slate-700 font-mono">${s.defaultDesk}</strong></div>
+                </div>
+              </div>
+              <div class="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end text-xs font-mono">
+                <div class="text-left sm:text-right">
+                  <span class="text-[10px] text-slate-400 block font-heading uppercase font-semibold">Active In-Office</span>
+                  <strong class="text-sm font-extrabold text-slate-900">${stat.on} <span class="text-[10px] text-slate-500 font-normal">ngày</span></strong>
+                </div>
+                <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
+                <div class="flex items-center gap-2 text-[11px] bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
+                  <span title="Ghế chính">🪑 Bàn: <strong class="text-slate-800">${stat.basic}d</strong></span>
+                  <span class="text-slate-300">•</span>
+                  <span title="Ghế dự phòng" class="text-red-700">⚡ BK: <strong class="text-red-700">+${stat.backup}d</strong></span>
+                  <span class="text-slate-300">•</span>
+                  <span title="Làm việc từ xa" class="text-slate-500">🏠 WFH: <strong class="text-slate-600">${stat.off}d</strong></span>
+                </div>
+                <div class="w-20 hidden md:block">
+                  <div class="flex justify-between text-[9px] text-slate-400 font-heading font-semibold mb-0.5"><span>Tỷ lệ</span><span>${pct}%</span></div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="bg-[#ee2f26] h-full rounded-full" style="width: ${pct}%"></div></div>
+                </div>
+              </div>
+            </div>`;
+        }).join("");
+      }
     }
 
-    // -------------------------------------------------------------
-    // PUBLIC HOLIDAYS
-    // -------------------------------------------------------------
     function getHolidayForDate(year, monthIndex, dayNum) {
       const cur = new Date(year, monthIndex, dayNum);
       cur.setHours(0, 0, 0, 0);
-
       return HOLIDAYS_STORE.find(h => {
-        const s = new Date(h.startDate || h.solarDate);
-        s.setHours(0, 0, 0, 0);
-        const e = new Date(h.endDate || h.startDate || h.solarDate);
-        e.setHours(23, 59, 59, 999);
+        const s = new Date(h.startDate || h.solarDate); s.setHours(0, 0, 0, 0);
+        const e = new Date(h.endDate || h.startDate || h.solarDate); e.setHours(23, 59, 59, 999);
         return cur >= s && cur <= e;
       });
     }
@@ -2800,53 +2317,31 @@
     function renderHolidaysTab() {
       const tbody = document.getElementById('holiday-table-body');
       tbody.innerHTML = '';
-
       const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
 
       HOLIDAYS_STORE.forEach((h, index) => {
-        let actionButtons = '';
-        if (isPrivileged) {
-          actionButtons = `
-            <td class="py-2 px-3 text-center whitespace-nowrap">
-              <button onclick="openHolidayModal('${h.id}')" class="text-indigo-600 hover:text-indigo-800 p-1 mr-1" title="Edit Holiday"><i class="fa-solid fa-pen-to-square"></i></button>
-              <button onclick="deleteHoliday('${h.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete Holiday"><i class="fa-solid fa-trash-can"></i></button>
-            </td>
-          `;
-        }
-
-        const typeBadge = (h.type === 'solar') 
-          ? `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200 font-heading">Dương Lịch</span>`
-          : `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-50 text-purple-700 border border-purple-200 font-heading">Âm Lịch</span>`;
-
         const sDate = h.startDate || h.solarDate || "";
         const eDate = h.endDate || sDate;
-        const dateRangeDisplay = (sDate === eDate) ? sDate : `${sDate} → ${eDate}`;
-
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition";
         tr.innerHTML = `
-          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px] font-mono">${index + 1}</td>
+          <td class="py-2.5 px-3 text-center text-slate-400 text-[10px] font-mono">${index + 1}</td>
           <td class="py-2.5 px-3 font-bold text-slate-800 text-xs font-heading">${h.name}</td>
-          <td class="py-2.5 px-3">${typeBadge}</td>
+          <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${h.type === 'solar' ? 'bg-blue-50 text-blue-700 border border-blue-200' : 'bg-purple-50 text-purple-700 border border-purple-200'} font-heading">${h.type === 'solar' ? 'Dương Lịch' : 'Âm Lịch'}</span></td>
           <td class="py-2.5 px-3 font-mono font-bold text-slate-700">${h.detail}</td>
-          <td class="py-2.5 px-3 font-mono font-bold text-[#ee2f26]">${dateRangeDisplay}</td>
+          <td class="py-2.5 px-3 font-mono font-bold text-[#ee2f26]">${sDate === eDate ? sDate : `${sDate} → ${eDate}`}</td>
           <td class="py-2.5 px-3 text-center font-bold text-emerald-700 font-mono">${h.daysOff} d</td>
           <td class="py-2.5 px-3 text-slate-500 text-[11px]">${h.desc || '—'}</td>
-          ${actionButtons}
+          ${isPrivileged ? `<td class="py-2 px-3 text-center whitespace-nowrap"><button onclick="openHolidayModal('${h.id}')" class="text-indigo-600 p-1 mr-1"><i class="fa-solid fa-pen-to-square"></i></button><button onclick="deleteHoliday('${h.id}')" class="text-red-600 p-1"><i class="fa-solid fa-trash-can"></i></button></td>` : ''}
         `;
         tbody.appendChild(tr);
       });
     }
 
     function openHolidayModal(holidayId = null) {
-      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
-        alert("Only Admin and Manager can edit holidays!");
-        return;
-      }
-
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) return;
       const form = document.getElementById('holiday-form');
       form.reset();
-
       if (holidayId) {
         const item = HOLIDAYS_STORE.find(h => h.id === holidayId);
         if (item) {
@@ -2855,11 +2350,9 @@
           document.getElementById('form-holiday-name').value = item.name;
           document.getElementById('form-holiday-type').value = item.type;
           document.getElementById('form-holiday-datedetail').value = item.detail;
-          
           const sDate = item.startDate || item.solarDate || "";
-          const eDate = item.endDate || sDate;
           document.getElementById('form-holiday-startdate').value = sDate;
-          document.getElementById('form-holiday-enddate').value = eDate;
+          document.getElementById('form-holiday-enddate').value = item.endDate || sDate;
           document.getElementById('form-holiday-daysoff').value = item.daysOff || 1;
           document.getElementById('calc-daysoff-preview').innerText = `${item.daysOff || 1} Ngày`;
           document.getElementById('form-holiday-desc').value = item.desc || '';
@@ -2869,23 +2362,18 @@
         document.getElementById('form-holiday-id').value = "";
         document.getElementById('calc-daysoff-preview').innerText = "1 Ngày";
       }
-
       document.getElementById('holiday-modal').classList.remove('hidden');
     }
 
     function autoCalcDaysOff() {
       const sVal = document.getElementById('form-holiday-startdate').value;
       const eVal = document.getElementById('form-holiday-enddate').value;
-
       if (sVal && eVal) {
-        const s = new Date(sVal);
-        const e = new Date(eVal);
-        if (e >= s) {
-          const diffDays = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
-          document.getElementById('form-holiday-daysoff').value = diffDays;
-          document.getElementById('calc-daysoff-preview').innerText = `${diffDays} Ngày`;
-          return;
-        }
+        const diff = Math.round((new Date(eVal) - new Date(sVal)) / (1000 * 60 * 60 * 24)) + 1;
+        const days = diff > 0 ? diff : 1;
+        document.getElementById('form-holiday-daysoff').value = days;
+        document.getElementById('calc-daysoff-preview').innerText = `${days} Ngày`;
+        return;
       }
       document.getElementById('form-holiday-daysoff').value = 1;
       document.getElementById('calc-daysoff-preview').innerText = `1 Ngày`;
@@ -2898,42 +2386,27 @@
       const type = document.getElementById('form-holiday-type').value;
       const detail = document.getElementById('form-holiday-datedetail').value.trim();
       const startDate = document.getElementById('form-holiday-startdate').value;
-      let endDate = document.getElementById('form-holiday-enddate').value;
-
-      if (!endDate || new Date(endDate) < new Date(startDate)) {
-        endDate = startDate;
-      }
-
-      const diffDays = Math.round((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
-      const daysOff = diffDays > 0 ? diffDays : 1;
+      let endDate = document.getElementById('form-holiday-enddate').value || startDate;
+      if (new Date(endDate) < new Date(startDate)) endDate = startDate;
+      const diff = Math.round((new Date(endDate) - new Date(startDate)) / (1000 * 60 * 60 * 24)) + 1;
+      const daysOff = diff > 0 ? diff : 1;
       const desc = document.getElementById('form-holiday-desc').value.trim();
 
       if (id) {
         const item = HOLIDAYS_STORE.find(h => h.id === id);
-        if (item) {
-          item.name = name; item.type = type; item.detail = detail;
-          item.startDate = startDate; item.endDate = endDate;
-          item.solarDate = startDate; item.daysOff = daysOff; item.desc = desc;
-        }
+        if (item) Object.assign(item, { name, type, detail, startDate, endDate, solarDate: startDate, daysOff, desc });
       } else {
-        const newId = "H_" + Date.now();
-        HOLIDAYS_STORE.push({ id: newId, name, type, detail, startDate, endDate, solarDate: startDate, daysOff, desc });
+        HOLIDAYS_STORE.push({ id: "H_" + Date.now(), name, type, detail, startDate, endDate, solarDate: startDate, daysOff, desc });
       }
-
       saveData();
       closeModal('holiday-modal');
       renderHolidaysTab();
       renderDutyBoard();
-      alert("Saved holiday successfully!");
     }
 
     function deleteHoliday(holidayId) {
-      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
-        alert("Only Admin and Manager can delete holidays!");
-        return;
-      }
-
-      if (confirm("Delete this holiday from the list?")) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) return;
+      if (confirm("Delete this holiday?")) {
         HOLIDAYS_STORE = HOLIDAYS_STORE.filter(h => h.id !== holidayId);
         saveData();
         renderHolidaysTab();
@@ -2942,18 +2415,12 @@
     }
 
     function syncHolidayDatesForYear(targetYear) {
-      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
-        alert("Only Admin and Manager can sync holiday dates!");
-        return;
-      }
-
-      if (confirm(`Auto-sync solar holiday dates for year ${targetYear}?`)) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) return;
+      if (confirm(`Auto-sync holidays for year ${targetYear}?`)) {
         HOLIDAYS_STORE.forEach(h => {
-          if (h.type === 'solar') {
-            if (h.startDate) {
-              const sp = h.startDate.split('-');
-              if (sp.length === 3) h.startDate = `${targetYear}-${sp[1]}-${sp[2]}`;
-            }
+          if (h.type === 'solar' && h.startDate) {
+            const sp = h.startDate.split('-');
+            if (sp.length === 3) h.startDate = `${targetYear}-${sp[1]}-${sp[2]}`;
             if (h.endDate) {
               const ep = h.endDate.split('-');
               if (ep.length === 3) h.endDate = `${targetYear}-${ep[1]}-${ep[2]}`;
@@ -2964,126 +2431,64 @@
         saveData();
         renderHolidaysTab();
         renderDutyBoard();
-        alert(`Successfully synchronized holidays for ${targetYear}!`);
       }
     }
 
-    // -------------------------------------------------------------
-    // RENDER STAFF LIST
-    // -------------------------------------------------------------
     function renderDashboard() {
-      if (currentLoggedInUser && currentLoggedInUser.role === 'User') {
-        return;
-      }
-
-      const filtered = getFilteredData();
-      const sorted = sortEmployees(filtered);
-
-      const activeHeadcount = employees.filter(e => !e.isHidden);
-      const fixedCount = employees.filter(e => !e.isHidden && e.seating && e.seating !== 'Mobile').length;
-      const mobileCount = employees.filter(e => !e.isHidden && e.seating === 'Mobile').length;
-
-      document.getElementById('stat-total-headcount').innerText = activeHeadcount.length;
-      document.getElementById('stat-fixed-seats').innerHTML = `${fixedCount} <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span>`;
-      document.getElementById('stat-mobile-pool').innerHTML = `${mobileCount} <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span>`;
+      if (currentLoggedInUser && currentLoggedInUser.role === 'User') return;
+      const sorted = sortEmployees(employees.filter(e => !e.isHidden));
+      document.getElementById('stat-total-headcount').innerText = sorted.length;
+      document.getElementById('stat-fixed-seats').innerHTML = `${employees.filter(e => !e.isHidden && e.seating && e.seating !== 'Mobile').length} <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span>`;
+      document.getElementById('stat-mobile-pool').innerHTML = `${employees.filter(e => !e.isHidden && e.seating === 'Mobile').length} <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span>`;
       document.getElementById('table-count').innerText = `${sorted.length} ${t('members')}`;
 
       const isAdmin = currentLoggedInUser && currentLoggedInUser.role === 'Admin';
-      const showActions = isAdmin;
-
       const thAction = document.getElementById('th-action-col');
-      if (thAction) {
-        thAction.style.display = showActions ? '' : 'none';
-      }
+      if (thAction) thAction.style.display = isAdmin ? '' : 'none';
 
       const tbody = document.getElementById('employee-table-body');
       tbody.innerHTML = '';
-
       if (sorted.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="${showActions ? 8 : 7}" class="py-4 text-center text-slate-400 font-heading">No records found</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="${isAdmin ? 8 : 7}" class="py-4 text-center text-slate-400">No records found</td></tr>`;
         return;
       }
 
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
-      const currentMonthSched = SCHEDULE_STORE[realMonthKey];
-      const daySched = (currentMonthSched && currentMonthSched[REAL_TODAY_DAY]) ? currentMonthSched[REAL_TODAY_DAY] : null;
+      const daySched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
 
       sorted.forEach((emp, index) => {
         let seatDisplay = '';
-        let liveStatus = emp.status;
-
-        const isMobileSeat = emp.seating && emp.seating.trim().toLowerCase() === 'mobile';
-
-        if (isMobileSeat) {
-          let assignedCode = "";
-          let staffKey = null;
-
-          if (emp.fullName.includes("DANG DUY")) staffKey = "DD";
-          else if (emp.fullName.includes("MINH TRUNG")) staffKey = "MT";
-          else if (emp.fullName.includes("XUAN ANH")) staffKey = "XA";
-          else if (emp.fullName.includes("KHIEM")) staffKey = "VK";
-          else if (emp.fullName.includes("TIEN SANG")) staffKey = "TS";
-
+        if (emp.seating === 'Mobile') {
+          let code = "";
+          let staffKey = Object.keys(STAFF_DUTY).find(k => STAFF_DUTY[k].fullName === emp.fullName);
           if (daySched && staffKey) {
-            if (daySched.ws1 === staffKey) {
-              assignedCode = "1A";
-            } else if (daySched.ws2 === staffKey) {
-              assignedCode = "2A";
-            } else if (daySched.ws2d === staffKey) {
-              assignedCode = "2D";
-            } else if (daySched.backup === staffKey) {
-              assignedCode = "Backup";
-            } else if (daySched.online && daySched.online.includes(staffKey)) {
-              assignedCode = "WFH";
-            }
+            if (daySched.ws1 === staffKey) code = "1A";
+            else if (daySched.ws2 === staffKey) code = "2A";
+            else if (daySched.ws2d === staffKey) code = "2D";
+            else if (daySched.backup === staffKey) code = "Backup";
+            else if (daySched.online && daySched.online.includes(staffKey)) code = "WFH";
           }
-
-          const badgeText = assignedCode ? `Mobile (${assignedCode})` : 'Mobile';
-          seatDisplay = `<span class="inline-block font-heading font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${badgeText}</span>`;
+          seatDisplay = `<span class="inline-block font-heading font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px]">${code ? `Mobile (${code})` : 'Mobile'}</span>`;
         } else if (!emp.seating) {
-          seatDisplay = `<span class="text-slate-400 italic text-[10px] sm:text-[11px] font-heading font-semibold">Unassigned</span>`;
+          seatDisplay = `<span class="text-slate-400 italic text-[10px] sm:text-[11px] font-heading">Unassigned</span>`;
         } else {
-          seatDisplay = `<span class="inline-block font-heading font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded text-[10px] sm:text-[11px] shadow-2xs">${emp.seating}</span>`;
+          seatDisplay = `<span class="inline-block font-heading font-bold text-slate-800 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded text-[10px] sm:text-[11px]">${emp.seating}</span>`;
         }
 
-        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 font-heading">Active</span>`;
-        if (liveStatus === 'WFH') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 font-heading">WFH</span>`;
-        else if (liveStatus === 'On Site') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200 font-heading">Site</span>`;
-        else if (liveStatus === 'Day Off') statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-rose-50 text-rose-700 border border-rose-200 font-heading">Off</span>`;
-        else if (liveStatus.includes('Backup')) statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-purple-50 text-purple-700 border border-purple-200 font-heading">Backup</span>`;
-
-        let roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-slate-100 text-slate-600 border border-slate-200">User</span>`;
-        if (emp.role === 'Admin') {
-          roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-red-50 text-[#ee2f26] border border-red-200">Admin</span>`;
-        } else if (emp.role === 'Manager') {
-          roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading bg-indigo-50 text-indigo-700 border border-indigo-200">Manager</span>`;
-        }
+        let roleBadge = `<span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-bold font-heading ${emp.role === 'Admin' ? 'bg-red-50 text-[#ee2f26] border border-red-200' : (emp.role === 'Manager' ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' : 'bg-slate-100 text-slate-600 border border-slate-200')}">${emp.role}</span>`;
+        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${emp.status === 'Active' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : (emp.status === 'WFH' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 'bg-rose-50 text-rose-700 border border-rose-200')} font-heading">${emp.status}</span>`;
 
         const tr = document.createElement('tr');
         tr.className = `hover:bg-slate-50 transition ${emp.isHidden ? 'bg-slate-100/60 opacity-60' : ''}`;
-        
-        let actionsTd = '';
-        if (showActions) {
-          actionsTd = `
-            <td class="py-2.5 px-3 text-center whitespace-nowrap">
-              <button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 hover:text-amber-900 px-1.5 py-0.5 mr-1 text-[9px] font-bold bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 transition font-heading" title="Reset default password">
-                <i class="fa-solid fa-key text-[7.5px]"></i> Reset
-              </button>
-              <button onclick="openModal('${emp.id}')" class="text-slate-600 hover:text-slate-900 p-1 mr-1" title="Chỉnh sửa thông tin"><i class="fa-solid fa-pen-to-square text-[10px]"></i></button>
-              <button onclick="deleteEmployee('${emp.id}')" class="text-red-600 hover:text-red-800 p-1" title="Delete"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
-            </td>
-          `;
-        }
-
         tr.innerHTML = `
-          <td class="py-2.5 px-3 text-center font-medium text-slate-400 text-[10px] font-mono">${index + 1}</td>
+          <td class="py-2.5 px-3 text-center text-slate-400 text-[10px] font-mono">${index + 1}</td>
           <td class="py-2.5 px-3 font-bold text-slate-800 text-xs font-heading">${formatNameForDisplay(emp.fullName)}</td>
           <td class="py-2.5 px-3 desktop-only text-center">${roleBadge}</td>
-          <td class="py-2.5 px-3 desktop-only text-slate-600 text-xs font-medium">${emp.emailCompany}</td>
-          <td class="py-2.5 px-3 desktop-only text-slate-400 text-xs font-medium">${emp.emailPersonal || '—'}</td>
+          <td class="py-2.5 px-3 desktop-only text-slate-600 text-xs">${emp.emailCompany}</td>
+          <td class="py-2.5 px-3 desktop-only text-slate-400 text-xs">${emp.emailPersonal || '—'}</td>
           <td class="py-2.5 px-3 desktop-only text-center">${seatDisplay}</td>
           <td class="py-2.5 px-3 text-center">${statusBadge}</td>
-          ${actionsTd}
+          ${isAdmin ? `<td class="py-2.5 px-3 text-center whitespace-nowrap"><button onclick="resetEmployeePassword('${emp.id}')" class="text-amber-700 px-1.5 py-0.5 mr-1 text-[9px] font-bold bg-amber-50 rounded border border-amber-200"><i class="fa-solid fa-key text-[7.5px]"></i> Reset</button><button onclick="openModal('${emp.id}')" class="text-slate-600 p-1 mr-1"><i class="fa-solid fa-pen-to-square text-[10px]"></i></button><button onclick="deleteEmployee('${emp.id}')" class="text-red-600 p-1"><i class="fa-solid fa-trash-can text-[10px]"></i></button></td>` : ''}
         `;
         tbody.appendChild(tr);
       });
@@ -3100,26 +2505,13 @@
     function renderMiniSeatPicker(currentSelectedSeat, editingUserId) {
       const grid = document.getElementById('mini-seat-picker-grid');
       grid.innerHTML = '';
-
       SEAT_LAYOUT.forEach(s => {
         if (s.type === 'unused') {
-          grid.innerHTML += `
-            <div class="p-1 rounded border border-dashed border-slate-200 bg-slate-100 text-center opacity-40">
-              <div class="font-mono text-[8px] font-bold text-slate-400">${s.code}</div>
-            </div>
-          `;
+          grid.innerHTML += `<div class="p-1 rounded border border-dashed border-slate-200 bg-slate-100 text-center opacity-40"><span class="font-mono text-[8px] font-bold text-slate-400">${s.code}</span></div>`;
         } else {
-          const occupied = employees.find(e => !e.isHidden && e.seating === s.code && e.id !== editingUserId);
           const isSelected = currentSelectedSeat === s.code;
-
-          let btnClass = isSelected ? "border-2 border-[#ee2f26] bg-red-50 text-red-950 font-bold" : (occupied ? "bg-rose-50 border border-rose-200 text-rose-800" : "bg-white border border-slate-200 text-slate-700");
-
-          grid.innerHTML += `
-            <button type="button" onclick="selectSeatPicker('${s.code}')" 
-                    class="p-1 rounded text-center transition flex flex-col items-center justify-center ${btnClass}">
-              <span class="font-mono text-[9px] font-bold">${s.code}</span>
-            </button>
-          `;
+          const occupied = employees.find(e => !e.isHidden && e.seating === s.code && e.id !== editingUserId);
+          grid.innerHTML += `<button type="button" onclick="selectSeatPicker('${s.code}')" class="p-1 rounded text-center transition flex flex-col items-center justify-center ${isSelected ? 'border-2 border-[#ee2f26] bg-red-50 text-red-950 font-bold' : (occupied ? 'bg-rose-50 border border-rose-200 text-rose-800' : 'bg-white border border-slate-200 text-slate-700')}"><span class="font-mono text-[9px] font-bold">${s.code}</span></button>`;
         }
       });
     }
@@ -3127,46 +2519,29 @@
     function selectSeatPicker(seatCode) {
       document.getElementById('form-seating').value = seatCode;
       document.getElementById('form-seating-display').value = seatCode ? (seatCode.toLowerCase() === 'mobile' ? 'Mobile' : `Desk ${seatCode}`) : 'Unassigned';
-      const editingId = document.getElementById('form-id').value;
-      renderMiniSeatPicker(seatCode, editingId);
+      renderMiniSeatPicker(seatCode, document.getElementById('form-id').value);
     }
 
     function openDutyEditModal(dayNum) {
-      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin can edit roster assignments!");
-        return;
-      }
-
+      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') return;
       document.getElementById('duty-edit-day-num').value = dayNum;
       document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}`;
-
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "DD", ws2: "XA", ws2d: "TS", backup: "VK" };
-
-      const ws1Sel = document.getElementById('duty-edit-ws1');
-      const ws2Sel = document.getElementById('duty-edit-ws2');
-      const ws2dSel = document.getElementById('duty-edit-ws2d');
-      const backupSel = document.getElementById('duty-edit-backup');
+      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "MT", ws2: "XA", ws2d: "TS", backup: "VK" };
 
       const allOptions = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
+      ['duty-edit-ws1', 'duty-edit-ws2', 'duty-edit-ws2d'].forEach(id => { document.getElementById(id).innerHTML = allOptions; });
+      document.getElementById('duty-edit-backup').innerHTML = `<option value="">-- No Backup Assigned --</option>` + allOptions;
 
-      ws1Sel.innerHTML = allOptions;
-      ws2Sel.innerHTML = allOptions;
-      ws2dSel.innerHTML = allOptions;
-      backupSel.innerHTML = `<option value="">-- No Backup Assigned --</option>` + allOptions;
-
-      ws1Sel.value = sched.ws1 || "DD";
-      ws2Sel.value = sched.ws2 || "XA";
-      ws2dSel.value = sched.ws2d || "TS";
-      backupSel.value = sched.backup || "";
+      document.getElementById('duty-edit-ws1').value = sched.ws1 || "MT";
+      document.getElementById('duty-edit-ws2').value = sched.ws2 || "XA";
+      document.getElementById('duty-edit-ws2d').value = sched.ws2d || "TS";
+      document.getElementById('duty-edit-backup').value = sched.backup || "";
 
       updateOnlineChipsPreview();
-
-      ws1Sel.onchange = updateOnlineChipsPreview;
-      ws2Sel.onchange = updateOnlineChipsPreview;
-      ws2dSel.onchange = updateOnlineChipsPreview;
-      backupSel.onchange = updateOnlineChipsPreview;
-
+      ['duty-edit-ws1', 'duty-edit-ws2', 'duty-edit-ws2d', 'duty-edit-backup'].forEach(id => {
+        document.getElementById(id).onchange = updateOnlineChipsPreview;
+      });
       document.getElementById('duty-edit-modal').classList.remove('hidden');
     }
 
@@ -3175,12 +2550,8 @@
       const ws2 = document.getElementById('duty-edit-ws2').value;
       const ws2d = document.getElementById('duty-edit-ws2d').value;
       const backup = document.getElementById('duty-edit-backup').value;
-
-      const allKeys = Object.keys(STAFF_DUTY);
-      const onlineKeys = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
-
-      const chipsEl = document.getElementById('duty-edit-online-chips');
-      chipsEl.innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold font-mono">${STAFF_DUTY[k].name}</span>`).join(' ');
+      const onlineKeys = Object.keys(STAFF_DUTY).filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
+      document.getElementById('duty-edit-online-chips').innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold font-mono">${STAFF_DUTY[k].name}</span>`).join(' ');
     }
 
     function saveDutyEdit() {
@@ -3189,22 +2560,11 @@
       const ws2 = document.getElementById('duty-edit-ws2').value;
       const ws2d = document.getElementById('duty-edit-ws2d').value;
       const backup = document.getElementById('duty-edit-backup').value || null;
-
-      const allKeys = Object.keys(STAFF_DUTY);
-      const online = allKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
+      const online = Object.keys(STAFF_DUTY).filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
 
       const monthKey = getMonthKey(currentYear, currentMonth);
       if (!SCHEDULE_STORE[monthKey]) SCHEDULE_STORE[monthKey] = {};
-
-      SCHEDULE_STORE[monthKey][dayNum] = {
-        ws1,
-        ws2,
-        ws2d,
-        backup,
-        online,
-        tc: backup !== null
-      };
-
+      SCHEDULE_STORE[monthKey][dayNum] = { ws1, ws2, ws2d, backup, online, tc: backup !== null };
       saveData();
       closeModal('duty-edit-modal');
       renderDutyBoard();
@@ -3218,45 +2578,30 @@
     }
 
     function exportScheduleJSON() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SCHEDULE_STORE, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `DLS_Duty_Schedule_AllMonths.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+      const a = document.createElement('a');
+      a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SCHEDULE_STORE, null, 2));
+      a.download = `DLS_Duty_Schedule_AllMonths.json`;
+      document.body.appendChild(a); a.click(); a.remove();
     }
 
     function importScheduleJSON(event) {
       const file = event.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = (e) => {
         try {
-          const importedData = JSON.parse(e.target.result);
-          if (typeof importedData === 'object') {
-            SCHEDULE_STORE = importedData;
-            saveData();
-            renderAll();
-            alert("Roster data imported successfully!");
-          }
-        } catch(err) {
-          alert("Invalid JSON file!");
-        }
+          SCHEDULE_STORE = JSON.parse(e.target.result);
+          SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+          saveData(); renderAll(); alert("Import thành công!");
+        } catch(err) { alert("File JSON không hợp lệ!"); }
       };
       reader.readAsText(file);
     }
 
     function openModal(empId = null) {
-      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') {
-        alert("Only Admin can add or edit staff members!");
-        return;
-      }
-
-      const modal = document.getElementById('employee-modal');
+      if (currentLoggedInUser && currentLoggedInUser.role !== 'Admin') return;
       const form = document.getElementById('employee-form');
       form.reset();
-
       if (empId) {
         const emp = employees.find(e => e.id === empId);
         if (emp) {
@@ -3268,7 +2613,6 @@
           document.getElementById('form-email-personal').value = emp.emailPersonal || '';
           document.getElementById('form-status').value = emp.status;
           document.getElementById('form-is-hidden').checked = emp.isHidden;
-
           selectSeatPicker(emp.seating || '');
         }
       } else {
@@ -3276,8 +2620,7 @@
         document.getElementById('form-id').value = "";
         selectSeatPicker('');
       }
-
-      modal.classList.remove('hidden');
+      document.getElementById('employee-modal').classList.remove('hidden');
     }
 
     function handleSaveEmployee(e) {
@@ -3291,23 +2634,12 @@
       const status = document.getElementById('form-status').value;
       const isHidden = document.getElementById('form-is-hidden').checked;
 
-      if (seating.toLowerCase() === 'mobile') {
-        seating = 'Mobile';
-      } else {
-        seating = seating.toUpperCase();
-      }
-
-      if (emailCompany && !emailCompany.includes('@')) {
-        emailCompany += '@dlsconsultant.com';
-      }
+      if (seating.toLowerCase() === 'mobile') seating = 'Mobile'; else seating = seating.toUpperCase();
+      if (emailCompany && !emailCompany.includes('@')) emailCompany += '@dlsconsultant.com';
 
       if (id) {
         const emp = employees.find(e => e.id === id);
-        if (emp) {
-          emp.fullName = fullName; emp.role = role; emp.seating = seating;
-          emp.emailCompany = emailCompany; emp.emailPersonal = emailPersonal;
-          emp.status = status; emp.isHidden = isHidden;
-        }
+        if (emp) Object.assign(emp, { fullName, role, seating, emailCompany, emailPersonal, status, isHidden });
       } else {
         const newId = "NV" + String(employees.length + 1).padStart(3, '0');
         const defaultPassword = generateDefaultPassword(fullName);
@@ -3337,22 +2669,12 @@
       });
     }
 
-    function getFilteredData() {
-      return employees.filter(e => !e.isHidden);
-    }
-
-    function applyFilters() { renderDashboard(); }
-
     function switchTab(tab) {
-      if (tab === 'dashboard' && currentLoggedInUser && currentLoggedInUser.role === 'User') {
-        tab = 'floorplan';
-      }
-
+      if (tab === 'dashboard' && currentLoggedInUser && currentLoggedInUser.role === 'User') tab = 'floorplan';
       const viewDuty = document.getElementById('view-duty');
       const viewFloor = document.getElementById('view-floorplan');
       const viewDash = document.getElementById('view-dashboard');
       const viewHoliday = document.getElementById('view-holiday');
-
       const btnDuty = document.getElementById('tab-duty-btn');
       const btnFloor = document.getElementById('tab-floorplan-btn');
       const btnDash = document.getElementById('tab-dashboard-btn');
