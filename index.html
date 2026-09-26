@@ -111,7 +111,7 @@
     }
 
     @media print {
-      header, .no-print, #login-modal-overlay, #top-device-switcher { display: none !important; }
+      header, .no-print, #login-modal-overlay, #top-device-switcher, #monthly-matrix-modal { display: none !important; }
       #view-duty { display: block !important; }
       body { background: #ffffff !important; }
     }
@@ -232,7 +232,7 @@
             <span class="desktop-inline" id="btn-ooo-text">Status / Leave</span>
           </button>
 
-          <!-- KHỐI PROFILE: HIỂN THỊ ĐẦY ĐỦ TRÊN DESKTOP -->
+          <!-- KHỐI PROFILE -->
           <div class="relative border-l border-slate-200 pl-1 sm:pl-2">
             <button onclick="toggleUserDropdown()" class="flex items-center gap-1.5 p-1 rounded-lg hover:bg-slate-100 transition">
               <div id="header-avatar" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-200 text-slate-700 font-bold font-heading flex items-center justify-center text-[10px] sm:text-xs border border-slate-300 shrink-0">
@@ -302,7 +302,6 @@
       <!-- TAB 1: FLOOR MAP -->
       <div id="view-floorplan" class="space-y-2 sm:space-y-3">
         
-        <!-- THÔNG BÁO RIÊNG CHO TRAN HOANG DUY NẾU BÁO OFF -->
         <div id="thd-status-banner" onclick="handleFloorBannerClick()" class="hidden p-2.5 sm:p-3 rounded-xl bg-sky-50 border border-sky-200 text-sky-950 flex items-center justify-between shadow-2xs cursor-pointer hover:bg-sky-100 transition" title="Bấm để cập nhật trạng thái nhân sự này">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-circle-info text-sky-600 text-base"></i>
@@ -316,7 +315,6 @@
           </span>
         </div>
 
-        <!-- ALERT BANNER CHO BACKUP CÁC VỊ TRÍ TRỐNG -->
         <div id="backup-active-banner" class="hidden p-2.5 sm:p-3 rounded-xl bg-red-50 border-2 border-[#ee2f26] text-red-950 flex flex-wrap justify-between items-center gap-2 animate-pulse">
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
@@ -459,13 +457,19 @@
               </div>
             </div>
 
-            <!-- BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG -->
+            <!-- BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG & NÚT MỞ BẢNG CHI TIẾT THÁNG -->
             <div class="pt-3 border-t border-slate-100 space-y-2.5">
-              <div class="flex justify-between items-center text-xs sm:text-sm">
+              <div class="flex flex-wrap justify-between items-center gap-2 text-xs sm:text-sm">
                 <h3 class="font-heading font-bold text-slate-800 flex items-center gap-1.5" id="txt-breakdown-title">
                   <i class="fa-solid fa-chart-column text-[#ee2f26]"></i> Monthly Working-Day Breakdown
                 </h3>
-                <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2.5 py-1 rounded-md text-[10px] sm:text-xs border border-red-200">20 Working Days</span>
+                <div class="flex items-center gap-1.5">
+                  <button onclick="openMonthlyMatrixModal()" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-heading font-bold text-xs flex items-center gap-1.5 shadow-2xs transition" title="Bảng ma trận phân bổ chỗ ngồi trong tháng & hiệu chỉnh nhanh">
+                    <i class="fa-solid fa-table-cells text-xs"></i>
+                    <span id="btn-matrix-text">Bảng Chi Tiết Phân Bổ</span>
+                  </button>
+                  <span id="duty-total-workdays-badge" class="font-mono font-bold bg-red-50 text-[#ee2f26] px-2.5 py-1 rounded-md text-[10px] sm:text-xs border border-red-200">20 Working Days</span>
+                </div>
               </div>
               <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
                 <div id="duty-stats-rows" class="divide-y divide-slate-100 bg-white"></div>
@@ -592,6 +596,60 @@
 
     </main>
 
+  </div>
+
+  <!-- MODAL: BẢNG MA TRẬN CHỖ NGỒI TRONG THÁNG & HIỆU CHỈNH NHANH -->
+  <div id="monthly-matrix-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden text-xs">
+      
+      <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center shrink-0">
+        <div>
+          <h3 class="font-heading font-bold text-slate-800 text-sm flex items-center gap-2">
+            <i class="fa-solid fa-table-cells text-[#ee2f26]"></i>
+            <span>Bảng Phân Bổ Chỗ Ngồi Tháng <strong id="matrix-month-title" class="text-[#ee2f26] font-mono">--</strong></span>
+          </h3>
+          <p class="text-[10.5px] text-slate-500 mt-0.5" id="matrix-modal-sub">
+            Hiển thị danh sách chỗ ngồi 1A, 2A, 2D, Backup và WFH theo ngày. Admin/Manager có thể đổi người trực tiếp tại từng ô.
+          </p>
+        </div>
+        <button onclick="closeModal('monthly-matrix-modal')" class="text-slate-400 hover:text-slate-600 p-1.5"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <div class="p-3 bg-amber-50/70 border-b border-amber-200 text-amber-900 text-[10.5px] flex items-center justify-between gap-2 shrink-0">
+        <div class="flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-info text-amber-600"></i>
+          <span>Khi thay đổi nhân sự tại 1A, 2A, 2D hoặc Backup, hệ thống sẽ tự động tính lại danh sách <strong>WFH</strong> và cập nhật tức thì.</span>
+        </div>
+        <span class="text-[9.5px] font-bold text-slate-500 font-mono" id="matrix-edit-permission-badge"></span>
+      </div>
+
+      <div class="flex-1 overflow-y-auto custom-scrollbar p-3">
+        <div class="border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-100/90 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px] tracking-wider text-center">
+                <th class="py-2.5 px-2 w-12 font-heading">Ngày</th>
+                <th class="py-2.5 px-2 w-12 font-heading">Thứ</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 1A</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 2A</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 2D</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">⚡ Backup</th>
+                <th class="py-2.5 px-3 min-w-[160px] font-heading">🏠 WFH</th>
+              </tr>
+            </thead>
+            <tbody id="matrix-table-body" class="divide-y divide-slate-100 bg-white font-mono"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="p-3 border-t border-slate-200 bg-slate-50 flex justify-between items-center shrink-0">
+        <span class="text-[10px] text-slate-500 italic">* Dữ liệu được đồng bộ trực tiếp với Lịch Trực và Sơ Đồ Pod.</span>
+        <button type="button" onclick="closeModal('monthly-matrix-modal')" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-900 text-white rounded-lg font-heading font-bold text-xs transition">
+          Đóng
+        </button>
+      </div>
+
+    </div>
   </div>
 
   <!-- MODAL: QUẢN LÝ MOBILE POOL (ADMIN/MANAGER) -->
@@ -774,8 +832,15 @@
           </div>
         </div>
 
-        <div id="status-panel-advance" class="hidden space-y-3.5">
-          <p class="text-[11px] text-slate-500">Mặc định các ngày là <strong>🟢 In-Office</strong>. Bạn có thể chọn trước ngày <strong>Off/WFH</strong> bên dưới:</p>
+        <div id="status-panel-advance" class="hidden space-y-3">
+          <div class="flex items-center justify-between gap-1 bg-amber-50/70 p-2 rounded-lg border border-amber-200">
+            <p class="text-[10.5px] text-amber-900 leading-tight">
+              * Hệ thống đã <strong>tự động tải theo Lịch trực</strong> (Ghế 1A/2A/2D, Backup, WFH) của bạn để dễ cân nhắc báo nghỉ/WFH:
+            </p>
+            <button type="button" onclick="resetAdvanceToRoster()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold font-heading whitespace-nowrap bg-white hover:bg-indigo-50 border border-indigo-200 px-2 py-1 rounded-md transition shrink-0 shadow-2xs">
+              <i class="fa-solid fa-arrows-rotate text-[9px]"></i> Tải lại lịch
+            </button>
+          </div>
           
           <div class="border border-slate-200 rounded-xl p-2.5 bg-slate-50/70 space-y-2">
             <h4 class="font-heading font-bold text-slate-800 text-[11px] flex items-center gap-1">
@@ -829,7 +894,7 @@
     </div>
   </div>
 
-  <!-- MODAL: ADMIN EDIT DAILY ROSTER (1A, 2A, 2D) -->
+  <!-- MODAL: ADMIN EDIT DAILY ROSTER -->
   <div id="duty-edit-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
     <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden">
       <div class="px-4 py-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
@@ -1101,7 +1166,7 @@
 
     let HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
 
-    /* LỊCH THÁNG 10/2026 CHUẨN XÁC ĐÃ CHỐT */
+    /* LỊCH THÁNG 10/2026 ĐÃ CHỐT */
     const OCTOBER_2026_SCHEDULE = {
       1:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"VK", online:["DD"], tc:true },
       2:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"XA", online:["TS"], tc:true },
@@ -1513,9 +1578,14 @@
     }
 
     /* =========================================================================
-       THUẬT TOÁN TỰ ĐỘNG PHÂN BỔ: CHỈ ÁP DỤNG TỪ THÁNG 11/2026 TRỞ ĐI
+       THUẬT TOÁN TỰ ĐỘNG PHÂN BỔ: CHỈ ADMIN/MANAGER VÀ CHỈ TỪ THÁNG 11/2026
        ========================================================================= */
     function generateScheduleByRule(force = false) {
+      if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
+        alert(currentLang === 'vi' ? "Chỉ Admin và Manager mới có quyền khởi tạo lịch tự động!" : "Only Admin and Manager can run Auto Generate Roster!");
+        return;
+      }
+
       const monthKey = getMonthKey(currentYear, currentMonth);
 
       // KHÓA HOÀN TOÀN: Tháng 9 và Tháng 10/2026 không được đụng đến
@@ -1547,25 +1617,21 @@
       let bestSchedule = null;
       let bestScore = Infinity;
 
-      // Mô phỏng tối ưu hóa với 500 lần thử để tìm phương án không bị trùng WFH và cân bằng số ngày công
       for (let iter = 0; iter < 500; iter++) {
         const dayData = [];
         const activeCounts = { MT: 0, DD: 0, VK: 0, XA: 0, TS: 0 };
 
-        // 1. Phân bổ Seat 1A, 2A, 2D theo chu kỳ và thứ Sáu
+        // 1. Phân bổ Seat 1A, 2A, 2D theo chu kỳ
         for (let i = 0; i < N; i++) {
           const { day, dow } = workDays[i];
           const c = i % 4;
 
-          // Seat 1A: 3 ngày M.Trung, xen giữa là D.Duy (c=3)
           const ws1 = (c === 3) ? "DD" : "MT";
 
-          // Seat 2A: D.Duy ngồi cách ngày 1A (c=1). Trước (c=0) và sau (c=2) là X.Anh. Còn lại là Khiem (c=3).
           let ws2 = "XA";
           if (c === 1) ws2 = "DD";
           else if (c === 3) ws2 = "VK";
 
-          // Seat 2D: Khiem ngồi cùng thời điểm D.Duy (c=1). Toàn bộ chỗ trống còn lại ngoại trừ thứ 6 sẽ là T.Sang.
           let ws2d = null;
           if (c === 1) {
             ws2d = "VK";
@@ -1600,7 +1666,7 @@
             if (backupPlan[i] !== null) continue;
             const item = dayData[i];
             if (item.ws1 === staff || item.ws2 === staff || item.ws2d === staff) continue;
-            if (staff === "TS" && item.dow === 4) continue; // TS không trực backup thứ Sáu
+            if (staff === "TS" && item.dow === 4) continue;
             candidates.push(i);
           }
 
@@ -1614,7 +1680,7 @@
 
         if (!backupSuccess) continue;
 
-        // 4. Kiểm tra ràng buộc: KHÔNG AI WFH 2 NGÀY LIÊN TIẾP (Active liên tiếp được phép)
+        // 4. Kiểm tra ràng buộc: KHÔNG AI WFH 2 NGÀY LIÊN TIẾP
         let consecutiveWfh = 0;
         const onlineHistory = [];
         const trialSchedule = {};
@@ -1674,6 +1740,7 @@
       }
     }
 
+    /* ĐỒNG BỘ TRẠNG THÁI HÔM NAY: CUỐI TUẦN & NGÀY LỄ KHÔNG KÍCH HOẠT TRIGGER */
     function syncRealTodayLiveStatus() {
       const formattedDate = `${String(REAL_TODAY_DAY).padStart(2, '0')}/${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}/${REAL_TODAY_YEAR}`;
       document.getElementById('current-active-date-badge').innerText = formattedDate;
@@ -1683,14 +1750,20 @@
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
 
+      const todayD = new Date(REAL_TODAY_YEAR, REAL_TODAY_MONTH, REAL_TODAY_DAY);
+      const todayDow = (todayD.getDay() + 6) % 7;
+      const isTodayWeekend = todayDow >= 5;
+      const todayHoliday = getHolidayForDate(REAL_TODAY_YEAR, REAL_TODAY_MONTH, REAL_TODAY_DAY);
+      const isTodayOffDay = isTodayWeekend || !!todayHoliday;
+
       employees.forEach(emp => {
-        emp.status = "Active";
+        emp.status = isTodayOffDay ? "Day Off" : "Active";
         if (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) {
           emp.status = LEAVE_PRESETS[emp.id][todayStr];
         }
       });
 
-      if (sched) {
+      if (sched && !isTodayOffDay) {
         const mobileStaffMapping = { [sched.ws1]: "Active", [sched.ws2]: "Active", [sched.ws2d]: "Active", [sched.backup]: "Active" };
         if (sched.online) sched.online.forEach(k => { mobileStaffMapping[k] = "WFH"; });
 
@@ -1726,6 +1799,7 @@
       if (thdUser) openStatusModal(thdUser.id);
     }
 
+    /* RENDER FLOOR PLAN: CUỐI TUẦN & NGÀY LỄ CỐ ĐỊNH LÀ MÀU VÀNG NHẠT, KHÔNG TRIGGER */
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
       const row2El = document.getElementById('row-2-grid');
@@ -1738,11 +1812,17 @@
       const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
       const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, ws2d: null, backup: null };
 
+      const todayD = new Date(REAL_TODAY_YEAR, REAL_TODAY_MONTH, REAL_TODAY_DAY);
+      const todayDow = (todayD.getDay() + 6) % 7;
+      const isTodayWeekend = todayDow >= 5;
+      const todayHoliday = getHolidayForDate(REAL_TODAY_YEAR, REAL_TODAY_MONTH, REAL_TODAY_DAY);
+      const isTodayOffDay = isTodayWeekend || !!todayHoliday;
+
       const thdUser = employees.find(e => e.fullName.includes("TRAN HOANG DUY") && !e.isHidden);
       const thdBanner = document.getElementById('thd-status-banner');
       const thdMsg = document.getElementById('thd-status-msg');
 
-      if (thdUser && thdUser.status !== "Active") {
+      if (thdUser && thdUser.status !== "Active" && !isTodayOffDay) {
         thdBanner.classList.remove('hidden');
         thdMsg.innerHTML = `Anh <strong>${formatNameForDisplay(thdUser.fullName)}</strong> hôm nay: <span class="font-bold text-sky-900">${thdUser.status}</span>.`;
       } else {
@@ -1750,28 +1830,30 @@
       }
 
       const absentDesks = [];
-      SEAT_LAYOUT.forEach(seat => {
-        if (seat.type === "fixed") {
-          const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
-          if (occupant && occupant.status !== "Active" && !occupant.fullName.includes("TRAN HOANG DUY")) {
-            absentDesks.push({ seatCode: seat.code, occupant });
+      if (!isTodayOffDay) {
+        SEAT_LAYOUT.forEach(seat => {
+          if (seat.type === "fixed") {
+            const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
+            if (occupant && occupant.status !== "Active" && !occupant.fullName.includes("TRAN HOANG DUY")) {
+              absentDesks.push({ seatCode: seat.code, occupant });
+            }
+          } else if (seat.type === "mobile") {
+            let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
+            const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
+            const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
+            if (mobileEmp && mobileEmp.status !== "Active") {
+              absentDesks.push({ seatCode: seat.code, occupant: mobileEmp });
+            }
           }
-        } else if (seat.type === "mobile") {
-          let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
-          const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
-          const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
-          if (mobileEmp && mobileEmp.status !== "Active") {
-            absentDesks.push({ seatCode: seat.code, occupant: mobileEmp });
-          }
-        }
-      });
+        });
+      }
 
       const todayClaims = SEAT_CLAIMS[todayStr] || {};
       const unclaimedAbsentDesks = absentDesks.filter(d => !todayClaims[d.seatCode]);
       const banner = document.getElementById('backup-active-banner');
       const msg = document.getElementById('backup-active-msg');
 
-      if (unclaimedAbsentDesks.length > 0) {
+      if (unclaimedAbsentDesks.length > 0 && !isTodayOffDay) {
         banner.classList.remove('hidden');
         const descNames = unclaimedAbsentDesks.map(u => `${u.seatCode} (${formatNameForDisplay(u.occupant.fullName)} - ${u.occupant.status})`).join(', ');
         msg.innerHTML = `Vị trí trống: <strong>${descNames}</strong>. Vui lòng nhân sự Mobile nhấn vào bàn để xác nhận chỗ ngồi!`;
@@ -1800,6 +1882,21 @@
               <div class="p-1.5 sm:p-2.5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/40 flex flex-col justify-between seat-card-box text-slate-400">
                 <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seat.code}</div>
                 <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty (Mobile)</div>
+              </div>`;
+          } else if (isTodayOffDay) {
+            cardHTML = `
+              <div onclick="openStatusModal('${mobileEmp.id}')" title="Trạng thái nghỉ: ${mobileEmp.fullName}"
+                   class="p-1.5 sm:p-2.5 rounded-lg border border-amber-300 bg-amber-50/80 text-amber-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-amber-400 transition relative">
+                <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                  <span class="bg-white px-1.5 rounded border border-amber-200 text-indigo-700 font-extrabold">${seat.code}</span>
+                  <span class="text-[7.5px] sm:text-[8px] font-bold text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-heading">Day-Off</span>
+                </div>
+                <div class="my-auto truncate text-center sm:text-left">
+                  <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-800" title="${mobileEmp.fullName}">
+                    ${displayMobileName}
+                  </div>
+                  <div class="text-[8px] sm:text-[9px] text-amber-700 font-semibold truncate font-heading">${todayHoliday ? todayHoliday.name.split('(')[0].trim() : 'Cuối tuần'}</div>
+                </div>
               </div>`;
           } else {
             const isAbsent = (mobileEmp.status !== "Active");
@@ -1846,44 +1943,62 @@
         } else {
           const occupant = employees.find(e => !e.isHidden && e.seating === seat.code);
           if (occupant) {
-            const isAbsent = (occupant.status !== "Active");
-            const claimedMobileKey = todayClaims[seat.code];
-            if (isAbsent && claimedMobileKey) {
-              const mobileStaff = STAFF_DUTY[claimedMobileKey];
-              const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
+            if (isTodayOffDay) {
               cardHTML = `
-                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                <div onclick="openStatusModal('${occupant.id}')" title="Trạng thái nghỉ: ${occupant.fullName}"
+                     class="p-1.5 sm:p-2.5 rounded-lg border border-amber-300 bg-amber-50/80 text-amber-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-amber-400 transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
-                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                    <span class="bg-white/90 px-1.5 rounded border border-amber-200">${seat.code}</span>
+                    <span class="text-[7.5px] sm:text-[8px] font-bold text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-heading">Day-Off</span>
                   </div>
-                  <div class="my-auto truncate text-center sm:text-left py-0.5">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${mobileDisplayName}</div>
-                    <div onclick="openStatusModal('${occupant.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:underline">Thế chỗ: ${formatNameForDisplay(occupant.fullName)} (${occupant.status})</div>
+                  <div class="my-auto truncate text-center sm:text-left">
+                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-800" title="${occupant.fullName}">
+                      ${formatNameForDisplay(occupant.fullName)}
+                    </div>
+                    <div class="text-[8px] sm:text-[9px] text-amber-700 font-semibold truncate font-heading">${todayHoliday ? todayHoliday.name.split('(')[0].trim() : 'Cuối tuần'}</div>
                   </div>
-                  <div class="pt-0.5 flex justify-end"><button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">Huỷ nhận chỗ</button></div>
-                </div>`;
-            } else if (isAbsent) {
-              cardHTML = `
-                <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
-                    <span onclick="openStatusModal('${occupant.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer">${occupant.status}</span>
-                  </div>
-                  <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
-                    <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(occupant.fullName)}</div>
-                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
-                  </div>
-                  <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
-                    <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
-                  </button>
-                </div>`;
+                </div>
+              `;
             } else {
-              cardHTML = `
-                <div onclick="openStatusModal('${occupant.id}')" class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="bg-white/90 px-1.5 rounded border border-slate-200">${seat.code}</span><span class="text-[7.5px] sm:text-[8px] font-semibold text-emerald-600 truncate font-heading">Active</span></div>
-                  <div class="my-auto truncate text-center sm:text-left"><div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-900">${formatNameForDisplay(occupant.fullName)}</div></div>
-                </div>`;
+              const isAbsent = (occupant.status !== "Active");
+              const claimedMobileKey = todayClaims[seat.code];
+              if (isAbsent && claimedMobileKey) {
+                const mobileStaff = STAFF_DUTY[claimedMobileKey];
+                const mobileDisplayName = mobileStaff ? (isMobile ? mobileStaff.name : mobileStaff.fullName) : claimedMobileKey;
+                cardHTML = `
+                  <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                    <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                      <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
+                      <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                    </div>
+                    <div class="my-auto truncate text-center sm:text-left py-0.5">
+                      <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${mobileDisplayName}</div>
+                      <div onclick="openStatusModal('${occupant.id}')" class="text-[8.5px] sm:text-[9.5px] text-slate-500 truncate cursor-pointer hover:underline">Thế chỗ: ${formatNameForDisplay(occupant.fullName)} (${occupant.status})</div>
+                    </div>
+                    <div class="pt-0.5 flex justify-end"><button onclick="unclaimSeat('${seat.code}')" class="text-[8px] text-slate-500 hover:text-red-600 underline font-mono">Huỷ nhận chỗ</button></div>
+                  </div>`;
+              } else if (isAbsent) {
+                cardHTML = `
+                  <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
+                    <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
+                      <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
+                      <span onclick="openStatusModal('${occupant.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer">${occupant.status}</span>
+                    </div>
+                    <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
+                      <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(occupant.fullName)}</div>
+                      <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                    </div>
+                    <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
+                      <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
+                    </button>
+                  </div>`;
+              } else {
+                cardHTML = `
+                  <div onclick="openStatusModal('${occupant.id}')" class="p-1.5 sm:p-2.5 rounded-lg border border-emerald-300 bg-emerald-50/80 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-emerald-500 transition relative">
+                    <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="bg-white/90 px-1.5 rounded border border-slate-200">${seat.code}</span><span class="text-[7.5px] sm:text-[8px] font-semibold text-emerald-600 truncate font-heading">Active</span></div>
+                    <div class="my-auto truncate text-center sm:text-left"><div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-900">${formatNameForDisplay(occupant.fullName)}</div></div>
+                  </div>`;
+              }
             }
           } else {
             cardHTML = `
@@ -1989,6 +2104,42 @@
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     }
 
+    function getRosterDutyInfo(userId, d) {
+      const emp = employees.find(e => e.id === userId);
+      if (!emp) return null;
+
+      const mKey = getMonthKey(d.getFullYear(), d.getMonth());
+      const dayNum = d.getDate();
+      const sched = (SCHEDULE_STORE[mKey] && SCHEDULE_STORE[mKey][dayNum]) ? SCHEDULE_STORE[mKey][dayNum] : null;
+
+      const isMobile = (emp.seating === 'Mobile');
+      let staffKey = isMobile ? Object.keys(STAFF_DUTY).find(k => STAFF_DUTY[k].fullName === emp.fullName) : null;
+
+      if (isMobile && staffKey && sched) {
+        if (sched.ws1 === staffKey) {
+          return { type: "desk", desk: "1A", status: "Active", badgeText: "🪑 Bàn 1A", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+        }
+        if (sched.ws2 === staffKey) {
+          return { type: "desk", desk: "2A", status: "Active", badgeText: "🪑 Bàn 2A", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+        }
+        if (sched.ws2d === staffKey) {
+          return { type: "desk", desk: "2D", status: "Active", badgeText: "🪑 Bàn 2D", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+        }
+        if (sched.backup === staffKey) {
+          return { type: "backup", status: "Active", badgeText: "⚡ Backup", badgeClass: "bg-purple-50 text-purple-700 border-purple-200" };
+        }
+        if (sched.online && sched.online.includes(staffKey)) {
+          return { type: "wfh", status: "WFH", badgeText: "🏠 Lịch WFH", badgeClass: "bg-amber-50 text-amber-800 border-amber-200" };
+        }
+      }
+
+      if (!isMobile && emp.seating) {
+        return { type: "fixed", desk: emp.seating, status: "Active", badgeText: `🪑 Bàn ${emp.seating}`, badgeClass: "bg-slate-100 text-slate-700 border-slate-200" };
+      }
+
+      return null;
+    }
+
     function loadUserAdvanceSchedule(targetUserId = null) {
       const select = document.getElementById('status-user-select');
       const userId = targetUserId || (select ? select.value : null) || (currentLoggedInUser ? currentLoggedInUser.id : null);
@@ -1996,29 +2147,70 @@
 
       const thisWeekContainer = document.getElementById('advance-this-week-list');
       const nextWeekContainer = document.getElementById('advance-next-week-list');
-      thisWeekContainer.innerHTML = ''; nextWeekContainer.innerHTML = '';
+      thisWeekContainer.innerHTML = ''; 
+      nextWeekContainer.innerHTML = '';
+
+      const thisWeekDays = getWeekWorkingDays(todayNow, 0);
+      const nextWeekDays = getWeekWorkingDays(todayNow, 1);
 
       const renderRow = (d, container) => {
         const dateKey = formatDateKey(d);
         const dayName = (currentLang === 'vi') ? `Thứ ${((d.getDay() + 6) % 7) + 2}` : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][(d.getDay() + 6) % 7];
         const dateDisplay = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}`;
-        const savedStatus = (LEAVE_PRESETS[userId] && LEAVE_PRESETS[userId][dateKey]) ? LEAVE_PRESETS[userId][dateKey] : "Active";
+
+        const dutyInfo = getRosterDutyInfo(userId, d);
+        const holidayObj = getHolidayForDate(d.getFullYear(), d.getMonth(), d.getDate());
+
+        let currentStatus = "Active";
+        if (LEAVE_PRESETS[userId] && LEAVE_PRESETS[userId][dateKey]) {
+          currentStatus = LEAVE_PRESETS[userId][dateKey];
+        } else if (dutyInfo && dutyInfo.status) {
+          currentStatus = dutyInfo.status;
+        }
+
+        let badgeHTML = '';
+        if (holidayObj) {
+          badgeHTML += `<span class="px-1.5 py-0.5 rounded text-[9.5px] font-mono font-bold bg-rose-50 text-rose-700 border border-rose-200">🎉 ${holidayObj.name.split('(')[0].trim()}</span>`;
+        }
+        if (dutyInfo) {
+          badgeHTML += `<span class="px-1.5 py-0.5 rounded text-[9.5px] font-mono font-bold ${dutyInfo.badgeClass} border">${dutyInfo.badgeText}</span>`;
+        }
 
         container.innerHTML += `
-          <div class="flex items-center justify-between py-1 px-2 rounded-lg bg-white border border-slate-200">
-            <span class="font-mono text-slate-700 font-semibold text-[11px]">${dayName}, ${dateDisplay}</span>
-            <select data-advance-date="${dateKey}" class="advance-status-input p-1 border border-slate-300 rounded text-[11px] bg-slate-50 font-medium">
-              <option value="Active" ${savedStatus === 'Active' ? 'selected' : ''}>🟢 In-Office</option>
-              <option value="WFH" ${savedStatus === 'WFH' ? 'selected' : ''}>🏠 WFH</option>
-              <option value="Day Off" ${savedStatus === 'Day Off' ? 'selected' : ''}>🔴 Day Off</option>
-              <option value="On Site" ${savedStatus === 'On Site' ? 'selected' : ''}>🚗 On Site</option>
-              <option value="In Meeting" ${savedStatus === 'In Meeting' ? 'selected' : ''}>🤝 Meeting</option>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between py-1.5 px-2.5 rounded-lg bg-white border border-slate-200 gap-1.5 hover:border-slate-300 transition shadow-2xs">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="font-mono text-slate-800 font-bold text-[11px]">${dayName}, ${dateDisplay}</span>
+              ${badgeHTML}
+            </div>
+            <select data-advance-date="${dateKey}" class="advance-status-input p-1 border border-slate-300 rounded-lg text-[11px] bg-slate-50 font-medium text-slate-800 focus:ring-1 focus:ring-red-500">
+              <option value="Active" ${currentStatus === 'Active' ? 'selected' : ''}>🟢 In-Office (Tại VP)</option>
+              <option value="WFH" ${currentStatus === 'WFH' ? 'selected' : ''}>🏠 WFH (Làm từ xa)</option>
+              <option value="Day Off" ${currentStatus === 'Day Off' ? 'selected' : ''}>🔴 Day Off (Nghỉ phép)</option>
+              <option value="On Site" ${currentStatus === 'On Site' ? 'selected' : ''}>🚗 On Site (Công tác)</option>
+              <option value="In Meeting" ${currentStatus === 'In Meeting' ? 'selected' : ''}>🤝 Meeting (Họp)</option>
             </select>
           </div>`;
       };
 
-      getWeekWorkingDays(todayNow, 0).forEach(d => renderRow(d, thisWeekContainer));
-      getWeekWorkingDays(todayNow, 1).forEach(d => renderRow(d, nextWeekContainer));
+      thisWeekDays.forEach(d => renderRow(d, thisWeekContainer));
+      nextWeekDays.forEach(d => renderRow(d, nextWeekContainer));
+    }
+
+    function resetAdvanceToRoster() {
+      const select = document.getElementById('status-user-select');
+      const userId = (select && select.value) ? select.value : (currentLoggedInUser ? currentLoggedInUser.id : null);
+      if (!userId) return;
+
+      const thisWeekDays = getWeekWorkingDays(todayNow, 0);
+      const nextWeekDays = getWeekWorkingDays(todayNow, 1);
+      const allDays = [...thisWeekDays, ...nextWeekDays];
+
+      if (LEAVE_PRESETS[userId]) {
+        allDays.forEach(d => {
+          delete LEAVE_PRESETS[userId][formatDateKey(d)];
+        });
+      }
+      loadUserAdvanceSchedule(userId);
     }
 
     function onStatusUserSelectChange() {
@@ -2304,6 +2496,101 @@
       }
     }
 
+    /* =========================================================================
+       BẢNG MA TRẬN CHỖ NGỒI TRONG THÁNG & HIỆU CHỈNH NHANH (MONTHLY MATRIX)
+       ========================================================================= */
+    function openMonthlyMatrixModal() {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      document.getElementById('matrix-month-title').innerText = `${new Date(currentYear, currentMonth).toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}`;
+
+      const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+      const permBadge = document.getElementById('matrix-edit-permission-badge');
+      if (permBadge) {
+        permBadge.innerHTML = isPrivileged 
+          ? `<span class="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">🟢 Quyền sửa: ${currentLoggedInUser.role}</span>`
+          : `<span class="text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">🔒 Chế độ xem</span>`;
+      }
+
+      renderMonthlyMatrix();
+      document.getElementById('monthly-matrix-modal').classList.remove('hidden');
+    }
+
+    function renderMonthlyMatrix() {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const sched = SCHEDULE_STORE[monthKey] || {};
+      const tbody = document.getElementById('matrix-table-body');
+      tbody.innerHTML = '';
+
+      const days = Object.keys(sched).map(Number).sort((a, b) => a - b);
+      if (days.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 font-heading">Chưa có dữ liệu phân bổ ca trực cho tháng này!</td></tr>`;
+        return;
+      }
+
+      const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
+      const mobileKeys = ["MT", "DD", "XA", "VK", "TS"];
+
+      days.forEach(day => {
+        const item = sched[day];
+        const d = new Date(currentYear, currentMonth, day);
+        const dow = (d.getDay() + 6) % 7;
+        const dayName = (currentLang === 'vi') ? `Thứ ${dow + 2}` : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][dow];
+
+        const makeSelect = (seatType, val, allowEmpty = false) => {
+          if (!isPrivileged) {
+            return (val && STAFF_DUTY[val]) 
+              ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold badge-${STAFF_DUTY[val].cls}">${STAFF_DUTY[val].name}</span>`
+              : `<span class="text-slate-300">—</span>`;
+          }
+
+          let options = allowEmpty ? `<option value="">-- Trống --</option>` : '';
+          mobileKeys.forEach(k => {
+            options += `<option value="${k}" ${val === k ? 'selected' : ''}>${STAFF_DUTY[k].name}</option>`;
+          });
+
+          return `<select onchange="updateMatrixCell(${day}, '${seatType}', this.value)" class="p-1 border border-slate-300 rounded text-[11px] font-bold bg-slate-50 focus:ring-1 focus:ring-red-500 font-mono text-center">${options}</select>`;
+        };
+
+        const wfhBadges = (item.online && item.online.length > 0)
+          ? item.online.map(k => STAFF_DUTY[k] ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold badge-${STAFF_DUTY[k].cls} mr-1">${STAFF_DUTY[k].name}</span>` : '').join('')
+          : `<span class="text-slate-300">—</span>`;
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 text-center transition";
+        tr.innerHTML = `
+          <td class="py-2 px-2 font-extrabold text-slate-800">${String(day).padStart(2, '0')}</td>
+          <td class="py-2 px-2 text-slate-500 font-semibold text-[11px]">${dayName}</td>
+          <td class="py-2 px-2">${makeSelect('ws1', item.ws1, false)}</td>
+          <td class="py-2 px-2">${makeSelect('ws2', item.ws2, false)}</td>
+          <td class="py-2 px-2">${makeSelect('ws2d', item.ws2d, false)}</td>
+          <td class="py-2 px-2">${makeSelect('backup', item.backup, true)}</td>
+          <td class="py-2 px-2 text-left">${wfhBadges}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateMatrixCell(day, seatType, newValue) {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      if (!SCHEDULE_STORE[monthKey] || !SCHEDULE_STORE[monthKey][day]) return;
+
+      const item = SCHEDULE_STORE[monthKey][day];
+      item[seatType] = newValue || null;
+
+      // Tự động tính toán lại danh sách WFH từ 5 nhân sự Mobile
+      const allMobile = ["MT", "DD", "XA", "VK", "TS"];
+      const active = [item.ws1, item.ws2, item.ws2d];
+      if (item.backup) active.push(item.backup);
+
+      item.online = allMobile.filter(k => !active.includes(k));
+      item.tc = !!item.backup;
+
+      saveData();
+      renderMonthlyMatrix();
+      renderDutyBoard();
+      renderFloorplan();
+    }
+
     function getHolidayForDate(year, monthIndex, dayNum) {
       const cur = new Date(year, monthIndex, dayNum);
       cur.setHours(0, 0, 0, 0);
@@ -2568,6 +2855,7 @@
       saveData();
       closeModal('duty-edit-modal');
       renderDutyBoard();
+      renderFloorplan();
     }
 
     function changeMonth(delta) {
