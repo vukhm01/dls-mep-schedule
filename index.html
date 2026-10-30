@@ -1518,7 +1518,7 @@
 
         employees = storedEmp ? JSON.parse(storedEmp) : [...INITIAL_EMPLOYEES];
         if (storedStore) SCHEDULE_STORE = JSON.parse(storedStore);
-        SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+        // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
         HOLIDAYS_STORE = storedHolidays ? JSON.parse(storedHolidays) : [...DEFAULT_VN_HOLIDAYS];
         LEAVE_PRESETS = storedPresets ? JSON.parse(storedPresets) : {};
         SEAT_CLAIMS = storedClaims ? JSON.parse(storedClaims) : {};
@@ -1541,7 +1541,7 @@
           if (onlineData && onlineData.employees && onlineData.schedule) {
             employees = onlineData.employees;
             SCHEDULE_STORE = onlineData.schedule;
-            SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+            // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
             if (onlineData.holidays) HOLIDAYS_STORE = onlineData.holidays;
             if (onlineData.leavePresets) LEAVE_PRESETS = onlineData.leavePresets;
             if (onlineData.seatClaims) SEAT_CLAIMS = onlineData.seatClaims;
@@ -2879,7 +2879,7 @@
       reader.onload = (e) => {
         try {
           SCHEDULE_STORE = JSON.parse(e.target.result);
-          SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
+          // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
           saveData(); renderAll(); alert("Import thành công!");
         } catch(err) { alert("File JSON không hợp lệ!"); }
       };
