@@ -219,7 +219,7 @@
             <h1 class="font-heading font-bold text-slate-900 text-xs sm:text-sm whitespace-nowrap" id="txt-app-title">
               Workstation & Duty Roster Management
             </h1>
-            <p class="text-[10px] text-slate-500 font-medium" id="txt-app-sub">16-Seat Pod • Mobile & Backup Rotation</p>
+            <p class="text-[10px] text-slate-500 font-medium" id="txt-app-sub">16-Seat Pod • WS1 / WS2 / WS3 Mobile Rotation</p>
           </div>
         </div>
 
@@ -321,7 +321,7 @@
           <div class="flex items-center gap-2">
             <i class="fa-solid fa-triangle-exclamation text-[#ee2f26] text-base"></i>
             <div>
-              <h4 class="font-heading font-bold text-xs text-red-900 leading-tight" id="txt-backup-activated-title">⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!</h4>
+              <h4 class="font-heading font-bold text-xs text-red-900 leading-tight" id="txt-backup-activated-title">⚡ CẦN THẾ CHỖ: CÓ VỊ TRÍ BÁO OFF!</h4>
               <p id="backup-active-msg" class="text-[11px] text-red-800 font-medium"></p>
             </div>
           </div>
@@ -351,7 +351,7 @@
             <div>
               <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
                 <span id="txt-row-1-title">ROW 1</span>
-                <span>1A (Mobile) • 1B • 1C • 1D</span>
+                <span>WS1 (Mobile) • 1B • 1C • 1D</span>
               </div>
               <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-1-grid"></div>
             </div>
@@ -359,7 +359,7 @@
             <div class="pt-0.5">
               <div class="text-[8.5px] sm:text-[9.5px] font-semibold text-slate-400 mb-0.5 flex justify-between font-mono">
                 <span id="txt-row-2-title">ROW 2</span>
-                <span>2A (Mobile) • 2B • 2C • 2D (Mobile)</span>
+                <span>WS2 (Mobile) • 2B • 2C • WS3 (Mobile)</span>
               </div>
               <div class="grid grid-cols-4 gap-1.5 sm:gap-2.5" id="row-2-grid"></div>
             </div>
@@ -431,9 +431,9 @@
                 <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Import</span>
                 <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
               </label>
-			  <button onclick="exportDutyToExcel()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs transition shadow-xs" title="Xuất báo cáo Excel (.xlsx)">
-				<i class="fa-solid fa-file-excel"></i>
-				<span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Excel</span>
+              <button onclick="exportDutyToExcel()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs transition shadow-xs" title="Xuất báo cáo Excel (.xlsx)">
+                <i class="fa-solid fa-file-excel"></i>
+                <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Excel</span>
               </button>
             </div>
           </div>
@@ -441,7 +441,7 @@
           <div id="duty-unconfigured-container" class="hidden py-8 px-4 text-center border-2 border-dashed border-slate-200 rounded-xl bg-slate-50 space-y-2">
             <h3 class="text-xs sm:text-sm font-heading font-bold text-slate-800" id="unconfigured-month-title">No roster configured for this month</h3>
             <p class="text-[11px] text-slate-500 max-w-xl mx-auto" id="txt-roster-rule-hint">
-              Quy tắc tự động (Áp dụng từ Tháng 11/2026): 1A (3 ngày M.Trung, xen giữa D.Duy) • 2A (D.Duy cách ngày 1A, X.Anh trước/sau, Khiêm vị trí còn lại) • 2D (Khiêm cùng lúc D.Duy, còn lại T.Sang trừ T6) • 8 ca Backup chia đều 4 người (mỗi người 2 ca).
+              Quy tắc tự động (Áp dụng từ Tháng 11/2026): Phân bổ 4 nhân sự Mobile (D.Duy, X.Anh, V.Khiêm, T.Sang) vào 3 vị trí WS1, WS2, WS3. Không ai WFH 2 ngày liên tiếp.
             </p>
             <button onclick="generateScheduleByRule()" class="px-3.5 py-1.5 rounded-xl bg-[#ee2f26] hover:bg-red-700 text-white font-heading font-bold text-xs shadow-xs transition inline-flex items-center gap-1" id="btn-generate-roster">
               <i class="fa-solid fa-wand-magic-sparkles"></i> Auto Generate Roster
@@ -536,11 +536,11 @@
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider" id="kpi-fixed-seats">Fixed Seats</p>
-            <h3 id="stat-fixed-seats" class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">6 <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span></h3>
+            <h3 id="stat-fixed-seats" class="text-base sm:text-xl font-heading font-extrabold text-emerald-600 mt-0.5">8 <span class="text-[10px] text-slate-400 font-normal font-sans">/ 16</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Mobile Pool</p>
-            <h3 id="stat-mobile-pool" class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">5 <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span></h3>
+            <h3 id="stat-mobile-pool" class="text-base sm:text-xl font-heading font-extrabold text-indigo-600 mt-0.5">4 <span class="text-[10px] text-slate-400 font-normal font-sans">staff</span></h3>
           </div>
           <div class="bg-white p-2.5 sm:p-3 rounded-xl border border-slate-200 shadow-xs">
             <p class="text-[9.5px] sm:text-xs font-heading font-bold text-slate-400 uppercase tracking-wider">Locked Desks</p>
@@ -611,7 +611,7 @@
             <span>Bảng Phân Bổ Chỗ Ngồi Tháng <strong id="matrix-month-title" class="text-[#ee2f26] font-mono">--</strong></span>
           </h3>
           <p class="text-[10.5px] text-slate-500 mt-0.5" id="matrix-modal-sub">
-            Hiển thị danh sách chỗ ngồi 1A, 2A, 2D, Backup và WFH theo ngày. Admin/Manager có thể đổi người trực tiếp tại từng ô.
+            Hiển thị danh sách chỗ ngồi WS1, WS2, WS3 và WFH theo ngày. Admin/Manager có thể đổi người trực tiếp tại từng ô.
           </p>
         </div>
         <button onclick="closeModal('monthly-matrix-modal')" class="text-slate-400 hover:text-slate-600 p-1.5"><i class="fa-solid fa-xmark text-lg"></i></button>
@@ -620,7 +620,7 @@
       <div class="p-3 bg-amber-50/70 border-b border-amber-200 text-amber-900 text-[10.5px] flex items-center justify-between gap-2 shrink-0">
         <div class="flex items-center gap-1.5">
           <i class="fa-solid fa-circle-info text-amber-600"></i>
-          <span>Khi thay đổi nhân sự tại 1A, 2A, 2D hoặc Backup, hệ thống sẽ tự động tính lại danh sách <strong>WFH</strong> và cập nhật tức thì.</span>
+          <span>Khi thay đổi nhân sự tại WS1, WS2 hoặc WS3, hệ thống sẽ tự động tính lại danh sách <strong>WFH</strong> và cập nhật tức thì.</span>
         </div>
         <span class="text-[9.5px] font-bold text-slate-500 font-mono" id="matrix-edit-permission-badge"></span>
       </div>
@@ -632,10 +632,9 @@
               <tr class="bg-slate-100/90 border-b border-slate-200 text-slate-600 font-heading font-bold uppercase text-[9px] sm:text-[10px] tracking-wider text-center">
                 <th class="py-2.5 px-2 w-12 font-heading">Ngày</th>
                 <th class="py-2.5 px-2 w-12 font-heading">Thứ</th>
-                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 1A</th>
-                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 2A</th>
-                <th class="py-2.5 px-3 min-w-[130px] font-heading">Seat 2D</th>
-                <th class="py-2.5 px-3 min-w-[130px] font-heading">⚡ Backup</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">WS1</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">WS2</th>
+                <th class="py-2.5 px-3 min-w-[130px] font-heading">WS3</th>
                 <th class="py-2.5 px-3 min-w-[160px] font-heading">🏠 WFH</th>
               </tr>
             </thead>
@@ -668,7 +667,7 @@
       <div class="space-y-2">
         <div class="flex justify-between items-center">
           <span class="font-heading font-bold text-slate-700 text-xs">Nhân sự Mobile hiện tại:</span>
-          <span id="modal-mobile-count-badge" class="font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[10px]">5 staff</span>
+          <span id="modal-mobile-count-badge" class="font-mono font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded text-[10px]">4 staff</span>
         </div>
         <div id="modal-mobile-list-container" class="space-y-1.5 max-h-52 overflow-y-auto custom-scrollbar p-1"></div>
       </div>
@@ -681,7 +680,7 @@
             <i class="fa-solid fa-plus text-xs"></i> Thêm
           </button>
         </div>
-        <p class="text-[10.5px] text-slate-500 italic">* Nhân sự trong Mobile Pool có thể được assign trực tiếp vào 1A, 2A, 2D và nhận backup khi có vị trí báo vắng.</p>
+        <p class="text-[10.5px] text-slate-500 italic">* Nhân sự trong Mobile Pool có thể được assign trực tiếp vào WS1, WS2, WS3 và nhận thế chỗ khi có vị trí báo vắng.</p>
       </div>
 
       <div class="pt-2 border-t border-slate-200 flex justify-end">
@@ -830,14 +829,14 @@
           </div>
 
           <div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 text-amber-900 text-[10.5px] leading-relaxed" id="txt-status-backup-notice">
-            <strong>⚡ Cơ chế Backup:</strong> Khi nhân sự có ghế (cố định hoặc Mobile 1A/2A/2D) báo WFH/Off/Site, bàn sẽ <strong>nhấp nháy đỏ</strong> để các nhân sự Mobile còn lại xác nhận thế chỗ.
+            <strong>⚡ Cơ chế thế chỗ:</strong> Khi nhân sự có ghế (cố định hoặc Mobile WS1/WS2/WS3) báo WFH/Off/Site, bàn sẽ <strong>nhấp nháy đỏ</strong> để nhân sự Mobile còn lại xác nhận thế chỗ.
           </div>
         </div>
 
         <div id="status-panel-advance" class="hidden space-y-3">
           <div class="flex items-center justify-between gap-1 bg-amber-50/70 p-2 rounded-lg border border-amber-200">
             <p class="text-[10.5px] text-amber-900 leading-tight">
-              * Hệ thống đã <strong>tự động tải theo Lịch trực</strong> (Ghế 1A/2A/2D, Backup, WFH) của bạn để dễ cân nhắc báo nghỉ/WFH:
+              * Hệ thống đã <strong>tự động tải theo Lịch trực</strong> (Ghế WS1/WS2/WS3, WFH) của bạn để dễ cân nhắc báo nghỉ/WFH:
             </p>
             <button type="button" onclick="resetAdvanceToRoster()" class="text-[10px] text-indigo-700 hover:text-indigo-900 font-bold font-heading whitespace-nowrap bg-white hover:bg-indigo-50 border border-indigo-200 px-2 py-1 rounded-md transition shrink-0 shadow-2xs">
               <i class="fa-solid fa-arrows-rotate text-[9px]"></i> Tải lại lịch
@@ -867,13 +866,13 @@
     </div>
   </div>
 
-  <!-- MODAL: XÁC NHẬN MOBILE NHẬN CHỖ BACKUP (CLAIM DESK) -->
+  <!-- MODAL: XÁC NHẬN MOBILE NHẬN CHỖ THẾ (CLAIM DESK) -->
   <div id="claim-seat-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-sm overflow-hidden p-5 space-y-3.5 text-xs">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2.5">
         <h3 class="font-heading font-bold text-slate-800 text-xs sm:text-sm flex items-center gap-1.5">
           <i class="fa-solid fa-chair text-[#ee2f26]"></i>
-          <span>Xác nhận Backup ngồi vào ghế <strong id="claim-modal-seat-title" class="text-[#ee2f26] font-mono">--</strong></span>
+          <span>Xác nhận ngồi vào ghế <strong id="claim-modal-seat-title" class="text-[#ee2f26] font-mono">--</strong></span>
         </h3>
         <button onclick="closeModal('claim-seat-modal')" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-base"></i></button>
       </div>
@@ -908,26 +907,21 @@
         <input type="hidden" id="duty-edit-day-num">
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-0.5">Desk 1A:</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">WS1:</label>
           <select id="duty-edit-ws1" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-0.5">Desk 2A:</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">WS2:</label>
           <select id="duty-edit-ws2" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
         <div>
-          <label class="block font-semibold text-slate-700 mb-0.5">Desk 2D (Mobile Slot):</label>
+          <label class="block font-semibold text-slate-700 mb-0.5">WS3:</label>
           <select id="duty-edit-ws2d" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono"></select>
         </div>
 
-        <div>
-          <label class="block font-semibold text-slate-700 mb-0.5">Backup Staff:</label>
-          <select id="duty-edit-backup" class="w-full p-2 border border-slate-300 rounded-lg bg-white font-mono">
-            <option value="">-- No Backup Assigned --</option>
-          </select>
-        </div>
+        <input type="hidden" id="duty-edit-backup" value="">
 
         <div>
           <label class="block font-semibold text-slate-700 mb-0.5">Remote (WFH):</label>
@@ -1025,11 +1019,11 @@
 
   <!-- JAVASCRIPT SYSTEM CORE -->
   <script>
-    let currentLang = localStorage.getItem('dls_lang') || 'en';
+  let currentLang = localStorage.getItem('dls_lang') || 'en';
 
     const DICT = {
       en: {
-        toggleLabel: "VI", viewMode: "View Mode:", appTitle: "Workstation & Duty Roster Management", appSub: "16-Seat Pod • Mobile & Backup Rotation",
+        toggleLabel: "VI", viewMode: "View Mode:", appTitle: "Workstation & Duty Roster Management", appSub: "16-Seat Pod • WS1 / WS2 / WS3 Mobile Rotation",
         statusBtn: "Status / Leave", changePass: "Change Password", signOut: "Sign Out", tabFloorplan: "Floor Plan", tabDuty: "Duty Roster",
         tabHoliday: "Public Holidays", tabStaff: "Staff List", dateLbl: "Active Date:", addStaff: "Add Staff", deleteMonthRoster: "Delete Month Roster",
         backupAlertTitle: "⚡ BACKUP NEEDED: DESK IS OFF!", floorTitle: "Workstation Pod (4 Rows x 4 Desks)", present: "Present", absent: "Absent/WFH",
@@ -1039,10 +1033,10 @@
         thPersonalEmail: "Personal Email", thSeat: "Seat", thStatus: "Status", thActions: "Actions"
       },
       vi: {
-        toggleLabel: "EN", viewMode: "Chế độ xem:", appTitle: "Quản Lý Chỗ Ngồi & Duty Board", appSub: "Sơ Đồ 16 Ghế • Phân Bổ Mobile & Backup",
+        toggleLabel: "EN", viewMode: "Chế độ xem:", appTitle: "Quản Lý Chỗ Ngồi & Duty Board", appSub: "Sơ Đồ 16 Ghế • Phân Bổ Mobile WS1 / WS2 / WS3",
         statusBtn: "Báo Nghỉ / WFH", changePass: "Đổi Mật Khẩu Riêng", signOut: "Đăng Xuất", tabFloorplan: "Sơ Đồ Ghế", tabDuty: "Lịch Trực",
         tabHoliday: "Ngày Lễ VN", tabStaff: "Nhân Sự", dateLbl: "Ngày hiện hành:", addStaff: "Thêm Nhân Sự", deleteMonthRoster: "Xóa Lịch Tháng Này",
-        backupAlertTitle: "⚡ CẦN BACKUP: CÓ VỊ TRÍ BÁO OFF!", floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)", present: "Có mặt", absent: "Vắng/WFH",
+        backupAlertTitle: "⚡ CẦN THẾ CHỖ: CÓ VỊ TRÍ BÁO OFF!", floorTitle: "Sơ Đồ Ghế (4 Hàng x 4 Cột)", present: "Có mặt", absent: "Vắng/WFH",
         locked: "Khóa", frontPod: "Cụm Trước (Hàng 1 & 2)", backPod: "Cụm Sau (Hàng 3 & 4)", centralAisle: "LỐI ĐI TRUNG TÂM (AISLE)", row1: "HÀNG 1",
         row2: "HÀNG 2", row3: "HÀNG 3", row4: "HÀNG 4", breakdownTitle: "Thống Kê Ca Trực Tháng", workingDays: "Ngày làm", totalStaff: "Tổng Số",
         fixedSeats: "Cố Định", syncedFor: "Ngày hiện hành:", members: "người", thNo: "STT", thName: "Họ Và Tên", thRole: "Vai Trò", thWorkEmail: "Email Công Ty",
@@ -1129,32 +1123,32 @@
       { id: "NV001", fullName: "TRAN HOANG DUY", role: "Admin", emailCompany: "duy.tran@dlsconsultant.com", emailPersonal: "tranhoangduy@gmail.com", seating: "", status: "Active", isHidden: false },
       { id: "NV002", fullName: "VU KHIEM", role: "Admin", emailCompany: "khiem.vu@dlsconsultant.com", emailPersonal: "khiem.vu@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV003", fullName: "DANG DUY", role: "Manager", emailCompany: "duy.dang@dlsconsultant.com", emailPersonal: "dangduy@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
-      { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "minhtrung@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
+      { id: "NV004", fullName: "NGUYEN MINH TRUNG", role: "Manager", emailCompany: "trung.nguyen@dlsconsultant.com", emailPersonal: "minhtrung@gmail.com", seating: "3D", status: "Active", isHidden: false },
       { id: "NV005", fullName: "NGUYEN XUAN ANH", role: "Manager", emailCompany: "anh.nguyenxuan@dlsconsultant.com", emailPersonal: "xuananh@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV007", fullName: "NGUYEN TIEN SANG", role: "User", emailCompany: "sang.nguyen@dlsconsultant.com", emailPersonal: "tiensang@gmail.com", seating: "Mobile", status: "Active", isHidden: false },
       { id: "NV010", fullName: "VU VAN HIEU", role: "User", emailCompany: "hieu.vu@dlsconsultant.com", emailPersonal: "vanhieu@gmail.com", seating: "1B", status: "Active", isHidden: false },
-      { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "congson@gmail.com", seating: "1C", status: "Active", isHidden: false },
+      { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "baolong@gmail.com", seating: "1C", status: "Active", isHidden: false },
       { id: "NV006", fullName: "NGUYEN THANH DAO", role: "User", emailCompany: "dao.nguyen@dlsconsultant.com", emailPersonal: "thanhdao@gmail.com", seating: "1D", status: "Active", isHidden: false },
       { id: "NV012", fullName: "NGUYEN HUU LONG", role: "User", emailCompany: "long.nguyen@dlsconsultant.com", emailPersonal: "huulong@gmail.com", seating: "2B", status: "Active", isHidden: false },
       { id: "NV008", fullName: "HUYNH NHAN TRI", role: "User", emailCompany: "tri.huynh@dlsconsultant.com", emailPersonal: "nhantri@gmail.com", seating: "2C", status: "Active", isHidden: false },
       { id: "NV014", fullName: "NGUYEN HOANG MANH", role: "User", emailCompany: "manh.nguyen@dlsconsultant.com", emailPersonal: "hoangmanh@gmail.com", seating: "3B", status: "Active", isHidden: false },
       { id: "NV011", fullName: "NGUYEN THI LIEN", role: "User", emailCompany: "lien.nguyenthi@dlsconsultant.com", emailPersonal: "thilien@gmail.com", seating: "3C", status: "Active", isHidden: false },
-      { id: "NV009", fullName: "THAI BAO LONG", role: "User", emailCompany: "long.thai@dlsconsultant.com", emailPersonal: "baolong@gmail.com", seating: "3D", status: "Active", isHidden: false }
+      { id: "NV013", fullName: "NGUYEN CONG SON", role: "User", emailCompany: "son.nguyen@dlsconsultant.com", emailPersonal: "congson@gmail.com", seating: "", status: "Active", isHidden: false }
     ];
 
     const SEAT_LAYOUT = [
-      { code: "1A", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
-      { code: "2A", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "2D", type: "mobile" },
+      { code: "WS1", label: "WS1", type: "mobile" }, { code: "1B", type: "fixed" }, { code: "1C", type: "fixed" }, { code: "1D", type: "fixed" },
+      { code: "WS2", label: "WS2", type: "mobile" }, { code: "2B", type: "fixed" }, { code: "2C", type: "fixed" }, { code: "WS3", label: "WS3", type: "mobile" },
       { code: "3A", type: "unused" }, { code: "3B", type: "fixed" }, { code: "3C", type: "fixed" }, { code: "3D", type: "fixed" },
       { code: "4A", type: "unused" }, { code: "4B", type: "unused" }, { code: "4C", type: "unused" }, { code: "4D", type: "unused" }
     ];
 
     let STAFF_DUTY = {
-      DD: { name: "D.DUY", fullName: "DANG DUY", cls: "dd", defaultDesk: "1A" },
-      MT: { name: "M.TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt", defaultDesk: "1A" },
-      XA: { name: "X.ANH", fullName: "NGUYEN XUAN ANH", cls: "xa", defaultDesk: "2A" },
-      VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "2A" },
-      TS: { name: "T.SANG", fullName: "NGUYEN TIEN SANG", cls: "ts", defaultDesk: "2D" },
+      DD: { name: "D.DUY", fullName: "DANG DUY", cls: "dd", defaultDesk: "WS1" },
+      XA: { name: "X.ANH", fullName: "NGUYEN XUAN ANH", cls: "xa", defaultDesk: "WS2" },
+      VK: { name: "V.KHIEM", fullName: "VU KHIEM", cls: "vk", defaultDesk: "WS2" },
+      TS: { name: "T.SANG", fullName: "NGUYEN TIEN SANG", cls: "ts", defaultDesk: "WS3" },
+      MT: { name: "M.TRUNG", fullName: "NGUYEN MINH TRUNG", cls: "mt", defaultDesk: "3D" }
     };
 
     const DEFAULT_VN_HOLIDAYS = [
@@ -1168,54 +1162,53 @@
 
     let HOLIDAYS_STORE = [...DEFAULT_VN_HOLIDAYS];
 
-    /* LỊCH THÁNG 10/2026 ĐÃ CHỐT */
     const OCTOBER_2026_SCHEDULE = {
-      1:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"VK", online:["DD"], tc:true },
-      2:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"XA", online:["TS"], tc:true },
-      5:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"DD", online:["VK"], tc:true },
-      6:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"TS", online:["XA"], tc:true },
-      7:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["MT","VK"], tc:false },
+      1:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD"], tc:false },
+      2:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["TS"], tc:false },
+      5:  { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["VK"], tc:false },
+      6:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA"], tc:false },
+      7:  { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK"], tc:false },
       8:  { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
-      9:  { ws1:"MT", ws2:"XA", ws2d:"VK", backup:"DD", online:["TS"], tc:true },
+      9:  { ws1:"MT", ws2:"XA", ws2d:"VK", backup:null, online:["TS"], tc:false },
       12: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["DD","XA"], tc:false },
       13: { ws1:"MT", ws2:"XA", ws2d:"DD", backup:null, online:["VK","TS"], tc:false },
-      14: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["MT","XA"], tc:false },
-      15: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:"VK", online:["DD"], tc:true },
+      14: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["XA"], tc:false },
+      15: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD"], tc:false },
       16: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
       19: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD","VK"], tc:false },
       20: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
-      21: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:"VK", online:["MT"], tc:true },
-      22: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:"XA", online:["TS"], tc:true },
+      21: { ws1:"DD", ws2:"XA", ws2d:"TS", backup:null, online:["VK"], tc:false },
+      22: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["TS"], tc:false },
       23: { ws1:"MT", ws2:"XA", ws2d:"VK", backup:null, online:["DD","TS"], tc:false },
       26: { ws1:"MT", ws2:"VK", ws2d:"TS", backup:null, online:["DD","XA"], tc:false },
-      27: { ws1:"MT", ws2:"XA", ws2d:"DD", backup:"TS", online:["VK"], tc:true },
-      28: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["MT","XA"], tc:false },
+      27: { ws1:"MT", ws2:"XA", ws2d:"DD", backup:null, online:["VK"], tc:false },
+      28: { ws1:"DD", ws2:"VK", ws2d:"TS", backup:null, online:["XA"], tc:false },
       29: { ws1:"MT", ws2:"XA", ws2d:"TS", backup:null, online:["DD","VK"], tc:false },
-      30: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false },
+      30: { ws1:"MT", ws2:"VK", ws2d:"DD", backup:null, online:["XA","TS"], tc:false }
     };
 
     let SCHEDULE_STORE = {
       "2026-09": {
-        3:  { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
-        4:  { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
-        7:  { ws1:"DD", ws2:"XA", ws2d:null, backup:"MT", online:["VK"], tc:true },
-        8:  { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
-        9:  { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
-        10: { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
-        11: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
+        3:  { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        4:  { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["DD"], tc:false },
+        7:  { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        8:  { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA"], tc:false },
+        9:  { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        10: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["DD"], tc:false },
+        11: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
         14: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
-        15: { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
+        15: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
         16: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
-        17: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
-        18: { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
-        21: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
-        22: { ws1:"MT", ws2:"VK", ws2d:null, backup:"XA", online:["DD"], tc:true },
-        23: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK","MT"], tc:false },
-        24: { ws1:"MT", ws2:"VK", ws2d:null, backup:"DD", online:["XA"], tc:true },
-        25: { ws1:"DD", ws2:"XA", ws2d:null, backup:"MT", online:["VK"], tc:true },
+        17: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        18: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA"], tc:false },
+        21: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        22: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["DD"], tc:false },
+        23: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        24: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA"], tc:false },
+        25: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
         28: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
-        29: { ws1:"DD", ws2:"XA", ws2d:null, backup:"VK", online:["MT"], tc:true },
-        30: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false },
+        29: { ws1:"DD", ws2:"XA", ws2d:null, backup:null, online:["VK"], tc:false },
+        30: { ws1:"MT", ws2:"VK", ws2d:null, backup:null, online:["XA","DD"], tc:false }
       },
       "2026-10": OCTOBER_2026_SCHEDULE
     };
@@ -1520,7 +1513,6 @@
 
         employees = storedEmp ? JSON.parse(storedEmp) : [...INITIAL_EMPLOYEES];
         if (storedStore) SCHEDULE_STORE = JSON.parse(storedStore);
-        // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
         HOLIDAYS_STORE = storedHolidays ? JSON.parse(storedHolidays) : [...DEFAULT_VN_HOLIDAYS];
         LEAVE_PRESETS = storedPresets ? JSON.parse(storedPresets) : {};
         SEAT_CLAIMS = storedClaims ? JSON.parse(storedClaims) : {};
@@ -1531,6 +1523,9 @@
       employees.forEach(emp => {
         if (!emp.password) emp.password = generateDefaultPassword(emp.fullName);
         if (emp.seating && emp.seating.trim().toLowerCase() === 'mobile') emp.seating = 'Mobile';
+        if (emp.fullName === "THAI BAO LONG") emp.seating = "1C";
+        if (emp.fullName === "NGUYEN MINH TRUNG") emp.seating = "3D";
+        if (emp.fullName === "NGUYEN CONG SON") emp.seating = "";
       });
 
       syncStaffDutyWithEmployees();
@@ -1542,8 +1537,12 @@
           const onlineData = await response.json();
           if (onlineData && onlineData.employees && onlineData.schedule) {
             employees = onlineData.employees;
+            employees.forEach(emp => {
+              if (emp.fullName === "THAI BAO LONG") emp.seating = "1C";
+              if (emp.fullName === "NGUYEN MINH TRUNG") emp.seating = "3D";
+              if (emp.fullName === "NGUYEN CONG SON") emp.seating = "";
+            });
             SCHEDULE_STORE = onlineData.schedule;
-            // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
             if (onlineData.holidays) HOLIDAYS_STORE = onlineData.holidays;
             if (onlineData.leavePresets) LEAVE_PRESETS = onlineData.leavePresets;
             if (onlineData.seatClaims) SEAT_CLAIMS = onlineData.seatClaims;
@@ -1580,7 +1579,7 @@
     }
 
     /* =========================================================================
-       THUẬT TOÁN TỰ ĐỘNG PHÂN BỔ: CHỈ ADMIN/MANAGER VÀ CHỈ TỪ THÁNG 11/2026
+       THUẬT TOÁN TỰ ĐỘNG PHÂN BỔ (WS1, WS2, WS3 - KHÔNG BACKUP)
        ========================================================================= */
     function generateScheduleByRule(force = false) {
       if (!currentLoggedInUser || (currentLoggedInUser.role !== 'Admin' && currentLoggedInUser.role !== 'Manager')) {
@@ -1589,18 +1588,16 @@
       }
 
       const monthKey = getMonthKey(currentYear, currentMonth);
-
-      // KHÓA HOÀN TOÀN: Tháng 9 và Tháng 10/2026 không được đụng đến
       if (currentYear < 2026 || (currentYear === 2026 && currentMonth < 10)) {
         alert(currentLang === 'vi' 
-          ? `Lịch tháng 09/2026 và 10/2026 đã được chốt và cài đặt hoàn tất, không thay đổi.\n\nTính năng 'Auto Generate Roster' chỉ áp dụng từ Tháng 11/2026 trở đi!` 
-          : `Roster for Sep and Oct 2026 is fixed and protected. Auto-generator is only allowed from November 2026 onwards!`);
+          ? `Lịch tháng 09/2026 và 10/2026 đã được chốt, không thay đổi.\n\nTính năng 'Auto Generate Roster' chỉ áp dụng từ Tháng 11/2026 trở đi!` 
+          : `Roster for Sep and Oct 2026 is fixed. Auto-generator is only allowed from November 2026 onwards!`);
         return;
       }
 
       if (SCHEDULE_STORE[monthKey] && !force) {
         const confirmMsg = currentLang === 'vi' 
-          ? `Lịch tháng ${monthKey} đã tồn tại. Tạo lại tự động theo nguyên tắc phân bổ mới?` 
+          ? `Lịch tháng ${monthKey} đã tồn tại. Tạo lại tự động theo nguyên tắc mới (3 vị trí WS1, WS2, WS3 - không Backup)?` 
           : `Roster already exists for ${monthKey}. Regenerate?`;
         if (!confirm(confirmMsg)) return;
       }
@@ -1609,140 +1606,49 @@
       const workDays = [];
       for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(currentYear, currentMonth, day);
-        const dow = (d.getDay() + 6) % 7; // 0: Mon ... 4: Fri
+        const dow = (d.getDay() + 6) % 7;
         if (dow < 5) workDays.push({ day, dow });
       }
 
-      const N = workDays.length;
-      if (N === 0) return;
+      const mobilePool = ["DD", "XA", "VK", "TS"];
+      const trialSchedule = {};
+      let prevWfh = null;
 
-      let bestSchedule = null;
-      let bestScore = Infinity;
-
-      for (let iter = 0; iter < 500; iter++) {
-        const dayData = [];
-        const activeCounts = { MT: 0, DD: 0, VK: 0, XA: 0, TS: 0 };
-
-        // 1. Phân bổ Seat 1A, 2A, 2D theo chu kỳ
-        for (let i = 0; i < N; i++) {
-          const { day, dow } = workDays[i];
-          const c = i % 4;
-
-          const ws1 = (c === 3) ? "DD" : "MT";
-
-          let ws2 = "XA";
-          if (c === 1) ws2 = "DD";
-          else if (c === 3) ws2 = "VK";
-
-          let ws2d = null;
-          if (c === 1) {
-            ws2d = "VK";
-          } else {
-            if (dow !== 4) ws2d = "TS";
-          }
-
-          dayData.push({ day, dow, c, ws1, ws2, ws2d });
+      workDays.forEach(({ day, dow }, idx) => {
+        let wfhStaff = null;
+        if (dow === 4 && prevWfh !== "TS") {
+          wfhStaff = "TS";
+        } else {
+          const candidates = mobilePool.filter(s => s !== prevWfh && !(dow === 4 && s !== "TS"));
+          wfhStaff = candidates[idx % candidates.length] || mobilePool.find(s => s !== prevWfh);
         }
+        prevWfh = wfhStaff;
 
-        // 2. Điền các vị trí còn trống của Seat 2D (các thứ Sáu khi T.Sang WFH)
-        for (let i = 0; i < N; i++) {
-          const item = dayData[i];
-          if (!item.ws2d) {
-            const available = ["DD", "VK", "XA"].filter(s => s !== item.ws1 && s !== item.ws2);
-            available.sort((a, b) => (activeCounts[a] - activeCounts[b]) + (Math.random() - 0.5));
-            item.ws2d = available[0] || "XA";
-          }
-          activeCounts[item.ws1]++;
-          activeCounts[item.ws2]++;
-          activeCounts[item.ws2d]++;
-        }
+        const active3 = mobilePool.filter(s => s !== wfhStaff);
+        let ws3 = active3.includes("TS") ? "TS" : active3[2];
+        const rem2 = active3.filter(s => s !== ws3);
+        let ws1 = rem2.includes("DD") ? "DD" : rem2[0];
+        let ws2 = rem2.find(s => s !== ws1) || rem2[1];
 
-        // 3. Phân bổ đúng 8 ngày dự phòng (Backup) chia đều 4 người (mỗi người 2 ca, trừ MT)
-        const backupPlan = new Array(N).fill(null);
-        let backupSuccess = true;
-        const staffPool = ["TS", "DD", "VK", "XA"].sort(() => Math.random() - 0.5);
+        trialSchedule[day] = {
+          ws1,
+          ws2,
+          ws2d: ws3,
+          backup: null,
+          online: [wfhStaff],
+          tc: false
+        };
+      });
 
-        for (const staff of staffPool) {
-          const candidates = [];
-          for (let i = 0; i < N; i++) {
-            if (backupPlan[i] !== null) continue;
-            const item = dayData[i];
-            if (item.ws1 === staff || item.ws2 === staff || item.ws2d === staff) continue;
-            if (staff === "TS" && item.dow === 4) continue;
-            candidates.push(i);
-          }
-
-          if (candidates.length < 2) { backupSuccess = false; break; }
-
-          candidates.sort(() => Math.random() - 0.5);
-          backupPlan[candidates[0]] = staff;
-          backupPlan[candidates[1]] = staff;
-          activeCounts[staff] += 2;
-        }
-
-        if (!backupSuccess) continue;
-
-        // 4. Kiểm tra ràng buộc: KHÔNG AI WFH 2 NGÀY LIÊN TIẾP
-        let consecutiveWfh = 0;
-        const onlineHistory = [];
-        const trialSchedule = {};
-
-        for (let i = 0; i < N; i++) {
-          const item = dayData[i];
-          const bk = backupPlan[i];
-          const activeStaff = [item.ws1, item.ws2, item.ws2d];
-          if (bk) activeStaff.push(bk);
-
-          const onlineStaff = ["MT", "DD", "VK", "XA", "TS"].filter(s => !activeStaff.includes(s));
-          onlineHistory.push(onlineStaff);
-
-          if (i > 0) {
-            const prevOnline = onlineHistory[i - 1];
-            onlineStaff.forEach(s => {
-              if (prevOnline.includes(s)) consecutiveWfh++;
-            });
-          }
-
-          trialSchedule[item.day] = {
-            ws1: item.ws1,
-            ws2: item.ws2,
-            ws2d: item.ws2d,
-            backup: bk,
-            online: onlineStaff,
-            tc: bk !== null
-          };
-        }
-
-        const counts4 = [activeCounts.DD, activeCounts.VK, activeCounts.XA, activeCounts.TS];
-        const diff4 = Math.max(...counts4) - Math.min(...counts4);
-        const score = consecutiveWfh * 100 + diff4 * 10;
-
-        if (score < bestScore) {
-          bestScore = score;
-          bestSchedule = trialSchedule;
-          if (consecutiveWfh === 0 && diff4 <= 2) break;
-        }
-      }
-
-      if (bestSchedule) {
-        SCHEDULE_STORE[monthKey] = bestSchedule;
-        saveData();
-        renderAll();
-        alert(currentLang === 'vi' 
-          ? `Đã tự động tạo lịch trực thành công cho tháng ${monthKey}!\n\n` +
-            `• Seat 1A: 3 ngày M.Trung, xen giữa là D.Duy.\n` +
-            `• Seat 2A: D.Duy ngồi cách ngày 1A, X.Anh trước/sau, Khiêm vị trí còn lại.\n` +
-            `• Seat 2D: Khiêm ngồi cùng lúc D.Duy, còn lại là T.Sang (trừ thứ 6).\n` +
-            `• Vị trí trống 2D & 8 ca Backup chia đều 4 người (mỗi người 2 ca, trừ MT).\n` +
-            `• M.Trung Active nhiều hơn mọi người 1-2 ngày; các thành viên khác bình quân 13-14 ngày.\n` +
-            `• Tuyệt đối không ai WFH 2 ngày liên tiếp!`
-          : `Successfully generated roster for ${monthKey}!`);
-      } else {
-        alert("Không tìm được phương án tối ưu, vui lòng bấm thử lại!");
-      }
+      SCHEDULE_STORE[monthKey] = trialSchedule;
+      saveData();
+      renderAll();
+      alert(currentLang === 'vi' 
+        ? `Đã tự động tạo lịch trực thành công cho tháng ${monthKey}!\n\n• 3 vị trí Mobile: WS1, WS2, WS3.\n• Đã bỏ vị trí Backup (M.Trung ngồi cố định 3D, Bảo Long ngồi cố định 1C).\n• Tuyệt đối không ai WFH 2 ngày liên tiếp!`
+        : `Successfully generated roster for ${monthKey}!`);
     }
 
-    /* ĐỒNG BỘ TRẠNG THÁI HÔM NAY: CUỐI TUẦN & NGÀY LỄ KHÔNG KÍCH HOẠT TRIGGER */
+    /* ĐỒNG BỘ TRẠNG THÁI HÔM NAY */
     function syncRealTodayLiveStatus() {
       const formattedDate = `${String(REAL_TODAY_DAY).padStart(2, '0')}/${String(REAL_TODAY_MONTH + 1).padStart(2, '0')}/${REAL_TODAY_YEAR}`;
       document.getElementById('current-active-date-badge').innerText = formattedDate;
@@ -1766,13 +1672,13 @@
       });
 
       if (sched && !isTodayOffDay) {
-        const mobileStaffMapping = { [sched.ws1]: "Active", [sched.ws2]: "Active", [sched.ws2d]: "Active", [sched.backup]: "Active" };
+        const mobileStaffMapping = { [sched.ws1]: "Active", [sched.ws2]: "Active", [sched.ws2d]: "Active" };
         if (sched.online) sched.online.forEach(k => { mobileStaffMapping[k] = "WFH"; });
 
         Object.entries(mobileStaffMapping).forEach(([k, dutyStatus]) => {
           if (!k) return;
           const emp = employees.find(e => e.fullName === STAFF_DUTY[k]?.fullName);
-          if (emp) {
+          if (emp && emp.seating === 'Mobile') {
             emp.status = (LEAVE_PRESETS[emp.id] && LEAVE_PRESETS[emp.id][todayStr]) ? LEAVE_PRESETS[emp.id][todayStr] : dutyStatus;
           }
         });
@@ -1801,7 +1707,7 @@
       if (thdUser) openStatusModal(thdUser.id);
     }
 
-    /* RENDER FLOOR PLAN: CUỐI TUẦN & NGÀY LỄ CỐ ĐỊNH LÀ MÀU VÀNG NHẠT, KHÔNG TRIGGER */
+    /* RENDER FLOOR PLAN */
     function renderFloorplan() {
       const row1El = document.getElementById('row-1-grid');
       const row2El = document.getElementById('row-2-grid');
@@ -1812,7 +1718,7 @@
       const todayStr = getActiveDateStr();
       const realMonthKey = getMonthKey(REAL_TODAY_YEAR, REAL_TODAY_MONTH);
       const currentRealMonthSched = SCHEDULE_STORE[realMonthKey];
-      const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, ws2d: null, backup: null };
+      const daySched = (currentRealMonthSched && currentRealMonthSched[REAL_TODAY_DAY]) ? currentRealMonthSched[REAL_TODAY_DAY] : { ws1: null, ws2: null, ws2d: null };
 
       const todayD = new Date(REAL_TODAY_YEAR, REAL_TODAY_MONTH, REAL_TODAY_DAY);
       const todayDow = (todayD.getDay() + 6) % 7;
@@ -1840,7 +1746,7 @@
               absentDesks.push({ seatCode: seat.code, occupant });
             }
           } else if (seat.type === "mobile") {
-            let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
+            let dutyKey = (seat.code === "WS1") ? daySched.ws1 : ((seat.code === "WS2") ? daySched.ws2 : daySched.ws2d);
             const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
             const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
             if (mobileEmp && mobileEmp.status !== "Active") {
@@ -1874,15 +1780,16 @@
               <div class="text-center my-auto text-[9px] sm:text-[10px] font-medium font-heading">${t('locked')}</div>
             </div>`;
         } else if (seat.type === "mobile") {
-          let dutyKey = (seat.code === "1A") ? daySched.ws1 : ((seat.code === "2A") ? daySched.ws2 : daySched.ws2d);
+          let dutyKey = (seat.code === "WS1") ? daySched.ws1 : ((seat.code === "WS2") ? daySched.ws2 : daySched.ws2d);
           const staffObj = dutyKey ? STAFF_DUTY[dutyKey] : null;
           const displayMobileName = staffObj ? (isMobile ? formatNameForDisplay(staffObj.fullName) : staffObj.fullName) : "Empty";
           const mobileEmp = staffObj ? employees.find(e => !e.isHidden && e.fullName === staffObj.fullName) : null;
+          const seatDisplayTitle = isMobile ? seat.code : (seat.label || seat.code);
 
           if (!mobileEmp) {
             cardHTML = `
               <div class="p-1.5 sm:p-2.5 rounded-lg border border-dashed border-indigo-300 bg-indigo-50/40 flex flex-col justify-between seat-card-box text-slate-400">
-                <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seat.code}</div>
+                <div class="font-mono text-[8.5px] sm:text-[9.5px] font-bold text-indigo-700">${seatDisplayTitle}</div>
                 <div class="text-center text-[8.5px] sm:text-[10px] my-auto font-heading">Empty (Mobile)</div>
               </div>`;
           } else if (isTodayOffDay) {
@@ -1890,7 +1797,7 @@
               <div onclick="openStatusModal('${mobileEmp.id}')" title="Trạng thái nghỉ: ${mobileEmp.fullName}"
                    class="p-1.5 sm:p-2.5 rounded-lg border border-amber-300 bg-amber-50/80 text-amber-950 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-amber-400 transition relative">
                 <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                  <span class="bg-white px-1.5 rounded border border-amber-200 text-indigo-700 font-extrabold">${seat.code}</span>
+                  <span class="bg-white px-1.5 rounded border border-amber-200 text-indigo-700 font-extrabold">${seatDisplayTitle}</span>
                   <span class="text-[7.5px] sm:text-[8px] font-bold text-amber-700 bg-amber-100/90 px-1 py-0.2 rounded font-heading">Day-Off</span>
                 </div>
                 <div class="my-auto truncate text-center sm:text-left">
@@ -1910,8 +1817,8 @@
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
-                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                    <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seatDisplayTitle}</span>
+                    <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present</span>
                   </div>
                   <div class="my-auto truncate text-center sm:text-left py-0.5">
                     <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${claimingDisplayName}</div>
@@ -1923,12 +1830,12 @@
               cardHTML = `
                 <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-red-500 bg-red-50 text-red-950 seat-backup-active flex flex-col justify-between seat-card-box shadow-xs transition relative">
                   <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
-                    <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seat.code}</span>
+                    <span class="bg-white px-1.5 rounded border border-red-300 text-red-600">${seatDisplayTitle}</span>
                     <span onclick="openStatusModal('${mobileEmp.id}')" class="text-[7.5px] sm:text-[8.5px] font-bold text-red-700 bg-red-100 px-1 py-0.2 rounded cursor-pointer">${mobileEmp.status}</span>
                   </div>
                   <div onclick="openStatusModal('${mobileEmp.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
                     <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(mobileEmp.fullName)}</div>
-                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                    <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần thế chỗ!</div>
                   </div>
                   <button onclick="openClaimSeatModal('${seat.code}', '${mobileEmp.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
                     <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
@@ -1937,7 +1844,7 @@
             } else {
               cardHTML = `
                 <div onclick="openStatusModal('${mobileEmp.id}')" class="p-1.5 sm:p-2.5 rounded-lg border border-indigo-400 sm:border-2 bg-indigo-50/70 flex flex-col justify-between seat-card-box shadow-xs cursor-pointer hover:border-indigo-600 transition relative">
-                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="text-indigo-800 font-extrabold">${seat.code}</span><span class="bg-indigo-600 text-white px-1.5 py-0.2 rounded text-[7px] sm:text-[8.5px] font-heading">Mobile</span></div>
+                  <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold"><span class="text-indigo-800 font-extrabold">${seatDisplayTitle}</span><span class="bg-indigo-600 text-white px-1.5 py-0.2 rounded text-[7px] sm:text-[8.5px] font-heading">Mobile</span></div>
                   <div class="my-auto truncate text-center sm:text-left"><div class="font-extrabold text-[11px] sm:text-[13px] text-indigo-950 truncate seat-card-title font-heading">${displayMobileName}</div></div>
                 </div>`;
             }
@@ -1971,7 +1878,7 @@
                   <div class="p-1.5 sm:p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50/90 text-emerald-950 flex flex-col justify-between seat-card-box shadow-xs transition relative">
                     <div class="flex justify-between items-center text-[8.5px] sm:text-[9.5px] font-mono font-bold">
                       <span class="bg-white/90 px-1.5 rounded border border-emerald-300 font-extrabold text-emerald-800">${seat.code}</span>
-                      <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present (Backup)</span>
+                      <span class="text-[7.5px] sm:text-[8.5px] font-bold text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-heading">🟢 Present</span>
                     </div>
                     <div class="my-auto truncate text-center sm:text-left py-0.5">
                       <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-emerald-950">⚡ ${mobileDisplayName}</div>
@@ -1988,7 +1895,7 @@
                     </div>
                     <div onclick="openStatusModal('${occupant.id}')" class="my-auto truncate text-center sm:text-left py-0.5 cursor-pointer">
                       <div class="font-extrabold text-[11px] sm:text-[13px] truncate seat-card-title font-heading text-slate-700">${formatNameForDisplay(occupant.fullName)}</div>
-                      <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần Backup vào ngồi!</div>
+                      <div class="text-[8.5px] sm:text-[9.5px] text-red-600 font-bold truncate">⚡ Cần thế chỗ!</div>
                     </div>
                     <button onclick="openClaimSeatModal('${seat.code}', '${occupant.fullName}')" class="w-full mt-1 py-1 rounded bg-[#ee2f26] hover:bg-red-700 text-white font-bold text-[8.5px] sm:text-[9.5px] transition shadow-xs flex items-center justify-center gap-1 font-heading">
                       <i class="fa-solid fa-chair text-[8px]"></i> Nhận chỗ ngồi
@@ -2011,8 +1918,8 @@
           }
         }
 
-        if (seat.code.startsWith('1')) row1El.innerHTML += cardHTML;
-        else if (seat.code.startsWith('2')) row2El.innerHTML += cardHTML;
+        if (seat.code === 'WS1' || seat.code.startsWith('1')) row1El.innerHTML += cardHTML;
+        else if (seat.code === 'WS2' || seat.code === 'WS3' || seat.code.startsWith('2')) row2El.innerHTML += cardHTML;
         else if (seat.code.startsWith('3')) row3El.innerHTML += cardHTML;
         else if (seat.code.startsWith('4')) row4El.innerHTML += cardHTML;
       });
@@ -2023,13 +1930,13 @@
       const sched = SCHEDULE_STORE[realMonthKey] && SCHEDULE_STORE[realMonthKey][REAL_TODAY_DAY];
       const activelySeatedMobileKeys = [];
       if (sched) {
-        if (sched.ws1 && targetSeatCode !== "1A" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws1);
-        if (sched.ws2 && targetSeatCode !== "2A" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2);
-        if (sched.ws2d && targetSeatCode !== "2D" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2d]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2d);
+        if (sched.ws1 && targetSeatCode !== "WS1" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws1]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws1);
+        if (sched.ws2 && targetSeatCode !== "WS2" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2);
+        if (sched.ws2d && targetSeatCode !== "WS3" && employees.find(e => !e.isHidden && e.fullName === STAFF_DUTY[sched.ws2d]?.fullName)?.status === "Active") activelySeatedMobileKeys.push(sched.ws2d);
       }
       return employees.filter(e => !e.isHidden && e.seating === 'Mobile')
         .map(emp => Object.keys(STAFF_DUTY).find(key => STAFF_DUTY[key].fullName === emp.fullName))
-        .filter(k => k && !activelySeatedMobileKeys.includes(k) && !(sched && ((targetSeatCode === "1A" && sched.ws1 === k) || (targetSeatCode === "2A" && sched.ws2 === k) || (targetSeatCode === "2D" && sched.ws2d === k))));
+        .filter(k => k && !activelySeatedMobileKeys.includes(k) && !(sched && ((targetSeatCode === "WS1" && sched.ws1 === k) || (targetSeatCode === "WS2" && sched.ws2 === k) || (targetSeatCode === "WS3" && sched.ws2d === k))));
     }
 
     function openClaimSeatModal(seatCode, occupantName) {
@@ -2119,16 +2026,13 @@
 
       if (isMobile && staffKey && sched) {
         if (sched.ws1 === staffKey) {
-          return { type: "desk", desk: "1A", status: "Active", badgeText: "🪑 Bàn 1A", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+          return { type: "desk", desk: "WS1", status: "Active", badgeText: "🪑 WS1", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
         }
         if (sched.ws2 === staffKey) {
-          return { type: "desk", desk: "2A", status: "Active", badgeText: "🪑 Bàn 2A", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
+          return { type: "desk", desk: "WS2", status: "Active", badgeText: "🪑 WS2", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
         }
         if (sched.ws2d === staffKey) {
-          return { type: "desk", desk: "2D", status: "Active", badgeText: "🪑 Bàn 2D", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
-        }
-        if (sched.backup === staffKey) {
-          return { type: "backup", status: "Active", badgeText: "⚡ Backup", badgeClass: "bg-purple-50 text-purple-700 border-purple-200" };
+          return { type: "desk", desk: "WS3", status: "Active", badgeText: "🪑 WS3", badgeClass: "bg-indigo-50 text-indigo-700 border-indigo-200" };
         }
         if (sched.online && sched.online.includes(staffKey)) {
           return { type: "wfh", status: "WFH", badgeText: "🏠 Lịch WFH", badgeClass: "bg-amber-50 text-amber-800 border-amber-200" };
@@ -2240,12 +2144,12 @@
         select.disabled = false;
         select.className = "w-full p-2 border border-slate-300 rounded-lg bg-white font-semibold text-slate-800 text-xs";
         select.innerHTML = employees.filter(e => !e.isHidden).map(e => 
-          `<option value="${e.id}" ${e.id === activeUser.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Mobile'}) - [${e.role}]</option>`
+          `<option value="${e.id}" ${e.id === activeUser.id ? 'selected' : ''}>${e.fullName} (${e.seating || 'Unassigned'}) - [${e.role}]</option>`
         ).join('');
       } else {
         select.disabled = true;
         select.className = "w-full p-2 border border-slate-300 rounded-lg bg-slate-100 font-semibold text-slate-800 text-xs";
-        select.innerHTML = `<option value="${activeUser.id}" selected>${activeUser.fullName} (${activeUser.seating || 'Mobile'})</option>`;
+        select.innerHTML = `<option value="${activeUser.id}" selected>${activeUser.fullName} (${activeUser.seating || 'Unassigned'})</option>`;
       }
 
       document.getElementById('status-action-select').value = activeUser.status || "Active";
@@ -2321,14 +2225,14 @@
         const isCurrentRealDay = inMonth && (currentMonth === REAL_TODAY_MONTH && currentYear === REAL_TODAY_YEAR && dateNum === REAL_TODAY_DAY);
 
         if (!inMonth) {
-          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}"></div>`;
+          cells += `<div class="bg-slate-100/40 border border-dashed border-slate-200 rounded-lg ${isMobile ? 'min-h-[88px]' : 'min-h-[150px]'}"></div>`;
           continue;
         }
 
         const holidayObj = getHolidayForDate(currentYear, currentMonth, dateNum);
         if (isWeekend) {
           cells += `
-            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
+            <div class="bg-slate-100/70 border border-slate-200 rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[150px]'}">
               <span class="text-[8px] sm:text-[11px] font-mono font-bold text-slate-400 uppercase">${dow === 5 ? (currentLang === 'vi' ? 'T7' : 'Sat') : (currentLang === 'vi' ? 'CN' : 'Sun')}</span>
               <span class="text-xs sm:text-base font-bold text-slate-400 font-mono">${dateNum}</span>
               ${holidayObj ? `<span class="text-[8px] sm:text-[9.5px] font-bold text-rose-600 bg-rose-50 px-1 py-0.5 rounded mt-1 truncate max-w-full font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : `<span class="text-[10px] text-slate-400 mt-1 font-heading ${isMobile ? 'hidden' : 'block'}">Weekend</span>`}
@@ -2336,13 +2240,34 @@
           continue;
         }
 
-        const s = currentMonthSched[dateNum];
+	  const s = currentMonthSched[dateNum];
         if (!s) {
-          cells += `
-            <div class="${holidayObj ? 'bg-rose-50/80 border-rose-300' : 'bg-slate-50 border-slate-200'} border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[160px]'}">
-              <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
-              ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1 font-heading">+ Setup</button>` : `<span class="text-[8px] text-slate-400 font-heading">Empty</span>`}
-            </div>`;
+          if (holidayObj) {
+            const holidayTitle = holidayObj.name.split('(')[0].trim();
+            cells += `
+              <div class="bg-rose-50/90 border-2 border-rose-300 rounded-xl p-2 sm:p-2.5 justify-between text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[150px]'} shadow-2xs">
+                <div class="flex justify-between items-center border-b border-rose-200/70 pb-1">
+                  <div class="flex items-center gap-1">
+                    <span class="text-xs sm:text-base font-extrabold text-rose-800 font-mono leading-none">${dateNum}</span>
+                    <span class="text-[10px] font-mono text-rose-500 font-semibold ${isMobile ? 'hidden' : 'inline'}">T${dow+2}</span>
+                  </div>
+                  <span class="text-[8px] sm:text-[9px] font-bold uppercase bg-rose-200/80 text-rose-900 px-1.5 py-0.5 rounded font-heading">Nghỉ Lễ</span>
+                </div>
+                <div class="my-auto py-1 flex flex-col items-center justify-center gap-1">
+                  <span class="text-sm sm:text-base leading-none">🎉</span>
+                  <div class="text-[9.5px] sm:text-xs font-extrabold text-rose-800 leading-snug line-clamp-2 font-heading" title="${holidayObj.name}">
+                    ${holidayTitle}
+                  </div>
+                </div>
+                ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-[10px] text-rose-500 hover:text-rose-800 font-semibold hover:underline font-heading">+ Setup ca trực</button>` : `<span class="text-[8px] sm:text-[9.5px] text-rose-500 font-medium font-heading">Day-Off</span>`}
+              </div>`;
+          } else {
+            cells += `
+              <div class="bg-slate-50 border-slate-200 border border-dashed rounded-lg p-1.5 items-center justify-center text-center flex flex-col ${isMobile ? 'min-h-[88px]' : 'min-h-[150px]'}">
+                <span class="text-xs sm:text-base font-bold text-slate-700 font-mono">${dateNum}</span>
+                ${isAdmin ? `<button onclick="openDutyEditModal(${dateNum})" class="text-[8px] sm:text-xs text-[#ee2f26] font-bold hover:underline mt-1 font-heading">+ Setup</button>` : `<span class="text-[8px] text-slate-400 font-heading">Empty</span>`}
+              </div>`;
+          }
           continue;
         }
 
@@ -2363,31 +2288,29 @@
                 <div class="flex items-center gap-1">${holidayObj ? `<span class="text-[7.5px] font-bold text-rose-700 bg-rose-100 px-1 rounded truncate max-w-[55px] font-heading">🎉 Lễ</span>` : ''}${adminActionButtons}</div>
               </div>
               <div class="space-y-0.5 text-[8px]">
-                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">1A:</span><div>${badgeSpanMob(s.ws1)}</div></div>
-                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">2A:</span><div>${badgeSpanMob(s.ws2)}</div></div>
-                <div class="flex justify-between items-center"><span class="text-slate-400 font-mono font-semibold">2D:</span><div>${badgeSpanMob(s.ws2d)}</div></div>
-                <div class="flex justify-between items-center border-t border-slate-50 pt-0.5"><span class="text-red-600 font-bold font-mono">BK:</span><div>${badgeSpanMob(s.backup)}</div></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500 font-mono font-bold">WS1:</span><div>${badgeSpanMob(s.ws1)}</div></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500 font-mono font-bold">WS2:</span><div>${badgeSpanMob(s.ws2)}</div></div>
+                <div class="flex justify-between items-center"><span class="text-slate-500 font-mono font-bold">WS3:</span><div>${badgeSpanMob(s.ws2d)}</div></div>
               </div>
             </div>`;
         } else {
           const badgeSpanDesk = (k) => (k && STAFF_DUTY[k]) ? `<span class="px-2.5 py-0.5 rounded-md font-mono font-bold text-xs badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>` : `<span class="text-slate-400 text-xs">—</span>`;
           const badgesSpanDesk = (arr) => arr ? arr.filter(k => STAFF_DUTY[k]).map(k => `<span class="px-2 py-0.5 rounded-md font-mono font-bold text-xs badge-${STAFF_DUTY[k].cls}">${STAFF_DUTY[k].name}</span>`).join(" ") : '—';
           cells += `
-            <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-2.5 sm:p-3 shadow-xs justify-between flex flex-col min-h-[160px] transition">
+            <div class="${holidayHighlightClass} border-2 ${isCurrentRealDay ? 'ring-2 ring-red-400 border-[#ee2f26]' : 'hover:border-slate-300'} rounded-xl p-2.5 sm:p-3 shadow-xs justify-between flex flex-col min-h-[150px] transition">
               <div class="flex justify-between items-center border-b border-slate-100 pb-1">
                 <div class="flex items-center gap-1.5">
                   <span class="font-extrabold text-base sm:text-lg ${isCurrentRealDay ? 'text-[#ee2f26]' : 'text-slate-800'} font-mono leading-none">${dateNum}</span>
                   <span class="text-[11px] font-mono text-slate-400 uppercase font-semibold">T${dow+2}</span>
                   ${holidayObj ? `<span class="text-[9.5px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md truncate max-w-[130px] font-heading">🎉 ${holidayObj.name.split('(')[0]}</span>` : ''}
                 </div>
-                <div class="flex items-center gap-1.5">${s.tc ? `<span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full flex items-center gap-0.5 font-heading">⚡ Backup</span>` : ''}${adminActionButtons}</div>
+                <div class="flex items-center gap-1.5">${adminActionButtons}</div>
               </div>
-              <div class="space-y-1 my-auto text-xs font-mono pt-1">
-                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">1A:</span><div>${badgeSpanDesk(s.ws1)}</div></div>
-                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">2A:</span><div>${badgeSpanDesk(s.ws2)}</div></div>
-                <div class="flex items-center justify-between"><span class="text-slate-500 font-bold text-xs">2D:</span><div>${badgeSpanDesk(s.ws2d)}</div></div>
-                <div class="flex items-center justify-between border-t border-slate-100 pt-1"><span class="text-red-600 font-bold text-xs">⚡ BK:</span><div>${badgeSpanDesk(s.backup)}</div></div>
-                <div class="flex items-center justify-between"><span class="text-slate-400 font-medium text-[11px]">WFH:</span><div class="flex gap-1">${badgesSpanDesk(s.online)}</div></div>
+              <div class="space-y-1.5 my-auto text-xs font-mono pt-1">
+                <div class="flex items-center justify-between"><span class="text-slate-600 font-bold text-xs">WS1:</span><div>${badgeSpanDesk(s.ws1)}</div></div>
+                <div class="flex items-center justify-between"><span class="text-slate-600 font-bold text-xs">WS2:</span><div>${badgeSpanDesk(s.ws2)}</div></div>
+                <div class="flex items-center justify-between"><span class="text-slate-600 font-bold text-xs">WS3:</span><div>${badgeSpanDesk(s.ws2d)}</div></div>
+                <div class="flex items-center justify-between border-t border-slate-100 pt-1"><span class="text-slate-400 font-medium text-[11px]">WFH:</span><div class="flex gap-1">${badgesSpanDesk(s.online)}</div></div>
               </div>
             </div>`;
         }
@@ -2422,19 +2345,19 @@
       }
     }
 
-    /* RENDER BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG (SIÊU GỌN TRÊN MOBILE: CHỈ TÊN VIẾT TẮT, ICON VÀ SỐ) */
+    /* RENDER BẢNG THỐNG KÊ CHI TIẾT THEO DÒNG */
     function renderDutyStats(sched) {
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
       const statsObj = {};
-      Object.keys(STAFF_DUTY).forEach(k => { statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 }; });
+      mobileKeys.forEach(k => { statsObj[k] = { on: 0, off: 0 }; });
 
       const days = Object.keys(sched);
       days.forEach(d => {
         const item = sched[d];
-        if (item.ws1 && statsObj[item.ws1]) { statsObj[item.ws1].basic++; statsObj[item.ws1].on++; }
-        if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
-        if (item.ws2d && statsObj[item.ws2d]) { statsObj[item.ws2d].basic++; statsObj[item.ws2d].on++; }
-        if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
-        if (item.online) item.online.forEach(k => { if(statsObj[k]) statsObj[k].off++; });
+        if (item.ws1 && statsObj[item.ws1]) statsObj[item.ws1].on++;
+        if (item.ws2 && statsObj[item.ws2]) statsObj[item.ws2].on++;
+        if (item.ws2d && statsObj[item.ws2d]) statsObj[item.ws2d].on++;
+        if (item.online) item.online.forEach(k => { if (statsObj[k]) statsObj[k].off++; });
       });
 
       const totalDays = days.length;
@@ -2451,10 +2374,8 @@
                 <span class="w-2 h-2 rounded-full dot-${s.cls}"></span>
                 <span class="px-1.5 py-0.5 rounded text-[10px] font-bold badge-${s.cls}">${s.name}</span>
               </div>
-              <div class="flex items-center gap-3 text-[11px] font-bold">
+              <div class="flex items-center gap-4 text-[11px] font-bold">
                 <span title="Active In-Office" class="text-slate-900">🏢 ${stat.on}</span>
-                <span title="Bàn chính" class="text-slate-600">🪑 ${stat.basic}</span>
-                <span title="Dự phòng Backup" class="text-red-600">⚡ ${stat.backup}</span>
                 <span title="Làm từ xa WFH" class="text-slate-400">🏠 ${stat.off}</span>
               </div>
             </div>`;
@@ -2472,7 +2393,7 @@
                     <span>${s.fullName}</span>
                     <span class="px-1.5 py-0.2 rounded text-[9.5px] font-mono font-bold badge-${s.cls}">${s.name}</span>
                   </div>
-                  <div class="text-[10px] text-slate-500 font-medium">Ghế chính: <strong class="text-slate-700 font-mono">${s.defaultDesk}</strong></div>
+                  <div class="text-[10px] text-slate-500 font-medium">Vị trí mặc định: <strong class="text-slate-700 font-mono">${s.defaultDesk}</strong></div>
                 </div>
               </div>
               <div class="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end text-xs font-mono">
@@ -2482,11 +2403,7 @@
                 </div>
                 <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
                 <div class="flex items-center gap-2 text-[11px] bg-slate-50 px-2.5 py-1 rounded-lg border border-slate-200">
-                  <span title="Ghế chính">🪑 Bàn: <strong class="text-slate-800">${stat.basic}d</strong></span>
-                  <span class="text-slate-300">•</span>
-                  <span title="Ghế dự phòng" class="text-red-700">⚡ BK: <strong class="text-red-700">+${stat.backup}d</strong></span>
-                  <span class="text-slate-300">•</span>
-                  <span title="Làm việc từ xa" class="text-slate-500">🏠 WFH: <strong class="text-slate-600">${stat.off}d</strong></span>
+                  <span title="Làm việc từ xa" class="text-slate-600">🏠 WFH: <strong class="text-slate-800">${stat.off} ngày</strong></span>
                 </div>
                 <div class="w-20 hidden md:block">
                   <div class="flex justify-between text-[9px] text-slate-400 font-heading font-semibold mb-0.5"><span>Tỷ lệ</span><span>${pct}%</span></div>
@@ -2502,7 +2419,6 @@
        BẢNG MA TRẬN CHỖ NGỒI TRONG THÁNG & HIỆU CHỈNH NHANH (MONTHLY MATRIX)
        ========================================================================= */
     function openMonthlyMatrixModal() {
-      const monthKey = getMonthKey(currentYear, currentMonth);
       document.getElementById('matrix-month-title').innerText = `${new Date(currentYear, currentMonth).toLocaleString(currentLang === 'vi' ? 'vi-VN' : 'en-US', { month: 'long', year: 'numeric' })}`;
 
       const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
@@ -2525,12 +2441,12 @@
 
       const days = Object.keys(sched).map(Number).sort((a, b) => a - b);
       if (days.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 font-heading">Chưa có dữ liệu phân bổ ca trực cho tháng này!</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="6" class="py-6 text-center text-slate-400 font-heading">Chưa có dữ liệu phân bổ ca trực cho tháng này!</td></tr>`;
         return;
       }
 
       const isPrivileged = currentLoggedInUser && (currentLoggedInUser.role === 'Admin' || currentLoggedInUser.role === 'Manager');
-      const mobileKeys = ["MT", "DD", "XA", "VK", "TS"];
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
 
       days.forEach(day => {
         const item = sched[day];
@@ -2538,14 +2454,14 @@
         const dow = (d.getDay() + 6) % 7;
         const dayName = (currentLang === 'vi') ? `Thứ ${dow + 2}` : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'][dow];
 
-        const makeSelect = (seatType, val, allowEmpty = false) => {
+        const makeSelect = (seatType, val) => {
           if (!isPrivileged) {
             return (val && STAFF_DUTY[val]) 
               ? `<span class="px-2 py-0.5 rounded text-[11px] font-bold badge-${STAFF_DUTY[val].cls}">${STAFF_DUTY[val].name}</span>`
               : `<span class="text-slate-300">—</span>`;
           }
 
-          let options = allowEmpty ? `<option value="">-- Trống --</option>` : '';
+          let options = '';
           mobileKeys.forEach(k => {
             options += `<option value="${k}" ${val === k ? 'selected' : ''}>${STAFF_DUTY[k].name}</option>`;
           });
@@ -2562,10 +2478,9 @@
         tr.innerHTML = `
           <td class="py-2 px-2 font-extrabold text-slate-800">${String(day).padStart(2, '0')}</td>
           <td class="py-2 px-2 text-slate-500 font-semibold text-[11px]">${dayName}</td>
-          <td class="py-2 px-2">${makeSelect('ws1', item.ws1, false)}</td>
-          <td class="py-2 px-2">${makeSelect('ws2', item.ws2, false)}</td>
-          <td class="py-2 px-2">${makeSelect('ws2d', item.ws2d, false)}</td>
-          <td class="py-2 px-2">${makeSelect('backup', item.backup, true)}</td>
+          <td class="py-2 px-2">${makeSelect('ws1', item.ws1)}</td>
+          <td class="py-2 px-2">${makeSelect('ws2', item.ws2)}</td>
+          <td class="py-2 px-2">${makeSelect('ws2d', item.ws2d)}</td>
           <td class="py-2 px-2 text-left">${wfhBadges}</td>
         `;
         tbody.appendChild(tr);
@@ -2578,14 +2493,12 @@
 
       const item = SCHEDULE_STORE[monthKey][day];
       item[seatType] = newValue || null;
+      item.backup = null;
+      item.tc = false;
 
-      // Tự động tính toán lại danh sách WFH từ 5 nhân sự Mobile
-      const allMobile = ["MT", "DD", "XA", "VK", "TS"];
+      const allMobile = ["DD", "XA", "VK", "TS"];
       const active = [item.ws1, item.ws2, item.ws2d];
-      if (item.backup) active.push(item.backup);
-
       item.online = allMobile.filter(k => !active.includes(k));
-      item.tc = !!item.backup;
 
       saveData();
       renderMonthlyMatrix();
@@ -2751,10 +2664,9 @@
           let code = "";
           let staffKey = Object.keys(STAFF_DUTY).find(k => STAFF_DUTY[k].fullName === emp.fullName);
           if (daySched && staffKey) {
-            if (daySched.ws1 === staffKey) code = "1A";
-            else if (daySched.ws2 === staffKey) code = "2A";
-            else if (daySched.ws2d === staffKey) code = "2D";
-            else if (daySched.backup === staffKey) code = "Backup";
+            if (daySched.ws1 === staffKey) code = "WS1";
+            else if (daySched.ws2 === staffKey) code = "WS2";
+            else if (daySched.ws2d === staffKey) code = "WS3";
             else if (daySched.online && daySched.online.includes(staffKey)) code = "WFH";
           }
           seatDisplay = `<span class="inline-block font-heading font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded text-[10px] sm:text-[11px]">${code ? `Mobile (${code})` : 'Mobile'}</span>`;
@@ -2816,19 +2728,18 @@
       document.getElementById('duty-edit-day-num').value = dayNum;
       document.getElementById('duty-edit-date-title').innerText = `${String(dayNum).padStart(2, '0')}/${String(currentMonth + 1).padStart(2, '0')}`;
       const monthKey = getMonthKey(currentYear, currentMonth);
-      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "MT", ws2: "XA", ws2d: "TS", backup: "VK" };
+      const sched = SCHEDULE_STORE[monthKey] && SCHEDULE_STORE[monthKey][dayNum] ? SCHEDULE_STORE[monthKey][dayNum] : { ws1: "DD", ws2: "XA", ws2d: "TS" };
 
-      const allOptions = Object.keys(STAFF_DUTY).map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
+      const allOptions = mobileKeys.map(k => `<option value="${k}">${STAFF_DUTY[k].name} (${STAFF_DUTY[k].fullName})</option>`).join('');
       ['duty-edit-ws1', 'duty-edit-ws2', 'duty-edit-ws2d'].forEach(id => { document.getElementById(id).innerHTML = allOptions; });
-      document.getElementById('duty-edit-backup').innerHTML = `<option value="">-- No Backup Assigned --</option>` + allOptions;
 
-      document.getElementById('duty-edit-ws1').value = sched.ws1 || "MT";
+      document.getElementById('duty-edit-ws1').value = sched.ws1 || "DD";
       document.getElementById('duty-edit-ws2').value = sched.ws2 || "XA";
       document.getElementById('duty-edit-ws2d').value = sched.ws2d || "TS";
-      document.getElementById('duty-edit-backup').value = sched.backup || "";
 
       updateOnlineChipsPreview();
-      ['duty-edit-ws1', 'duty-edit-ws2', 'duty-edit-ws2d', 'duty-edit-backup'].forEach(id => {
+      ['duty-edit-ws1', 'duty-edit-ws2', 'duty-edit-ws2d'].forEach(id => {
         document.getElementById(id).onchange = updateOnlineChipsPreview;
       });
       document.getElementById('duty-edit-modal').classList.remove('hidden');
@@ -2838,8 +2749,8 @@
       const ws1 = document.getElementById('duty-edit-ws1').value;
       const ws2 = document.getElementById('duty-edit-ws2').value;
       const ws2d = document.getElementById('duty-edit-ws2d').value;
-      const backup = document.getElementById('duty-edit-backup').value;
-      const onlineKeys = Object.keys(STAFF_DUTY).filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
+      const onlineKeys = mobileKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d);
       document.getElementById('duty-edit-online-chips').innerHTML = onlineKeys.map(k => `<span class="px-2 py-0.5 rounded badge-${STAFF_DUTY[k].cls} text-[10px] font-bold font-mono">${STAFF_DUTY[k].name}</span>`).join(' ');
     }
 
@@ -2848,12 +2759,12 @@
       const ws1 = document.getElementById('duty-edit-ws1').value;
       const ws2 = document.getElementById('duty-edit-ws2').value;
       const ws2d = document.getElementById('duty-edit-ws2d').value;
-      const backup = document.getElementById('duty-edit-backup').value || null;
-      const online = Object.keys(STAFF_DUTY).filter(k => k !== ws1 && k !== ws2 && k !== ws2d && k !== backup);
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
+      const online = mobileKeys.filter(k => k !== ws1 && k !== ws2 && k !== ws2d);
 
       const monthKey = getMonthKey(currentYear, currentMonth);
       if (!SCHEDULE_STORE[monthKey]) SCHEDULE_STORE[monthKey] = {};
-      SCHEDULE_STORE[monthKey][dayNum] = { ws1, ws2, ws2d, backup, online, tc: backup !== null };
+      SCHEDULE_STORE[monthKey][dayNum] = { ws1, ws2, ws2d, backup: null, online, tc: false };
       saveData();
       closeModal('duty-edit-modal');
       renderDutyBoard();
@@ -2873,7 +2784,8 @@
       a.download = `DLS_Duty_Schedule_AllMonths.json`;
       document.body.appendChild(a); a.click(); a.remove();
     }
-	function exportDutyToExcel() {
+
+    function exportDutyToExcel() {
       const monthKey = getMonthKey(currentYear, currentMonth);
       const sched = SCHEDULE_STORE[monthKey];
       if (!sched || Object.keys(sched).length === 0) {
@@ -2903,12 +2815,12 @@
       const wsData = [];
       const merges = [];
 
-      // Tiêu đề chính
       wsData.push([`DLS CONSULTANT - WORKSTATION & DUTY ROSTER (${monthTitle})`, "", "", "", "", "", ""]);
       merges.push({ s: { r: 0, c: 0 }, e: { r: 0, c: 6 } });
+      wsData.push(["Chú thích vị trí: WS1 = WorkStation1 | WS2 = WorkStation2 | WS3 = WorkStation3 | Cố định: 1C (Bảo Long), 3D (M.Trung)", "", "", "", "", "", ""]);
+      merges.push({ s: { r: 1, c: 0 }, e: { r: 1, c: 6 } });
       wsData.push([]);
 
-      // Header các thứ trong tuần
       wsData.push(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]);
 
       const firstOfMonth = new Date(currentYear, currentMonth, 1);
@@ -2918,13 +2830,11 @@
 
       const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
       const totalCells = Math.ceil((isoDow + daysInMonth) / 7) * 7;
-
-      const cellStyleMap = {}; // lưu style theo tọa độ "r,c"
+      const cellStyleMap = {};
 
       for (let w = 0; w < totalCells / 7; w++) {
         const weekStartRow = wsData.length;
-        // Mỗi tuần gồm 6 dòng: Ngày | 1A | 2A | 2D | BK | WFH
-        const rDate = [], r1A = [], r2A = [], r2D = [], rBK = [], rWFH = [];
+        const rDate = [], rWS1 = [], rWS2 = [], rWS3 = [], rWFH = [];
 
         for (let dIdx = 0; dIdx < 7; dIdx++) {
           const cur = new Date(gridStart);
@@ -2934,7 +2844,7 @@
           const isWeekend = dIdx >= 5;
 
           if (!inMonth) {
-            rDate.push(""); r1A.push(""); r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
+            rDate.push(""); rWS1.push(""); rWS2.push(""); rWS3.push(""); rWFH.push("");
             continue;
           }
 
@@ -2943,9 +2853,9 @@
 
           if (isWeekend) {
             rDate.push(`Ngày ${String(dayNum).padStart(2, '0')} (${dIdx === 5 ? 'T7' : 'CN'})`);
-            r1A.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "Weekend");
-            r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
-            for (let offset = 0; offset < 6; offset++) {
+            rWS1.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "Weekend");
+            rWS2.push(""); rWS3.push(""); rWFH.push("");
+            for (let offset = 0; offset < 5; offset++) {
               cellStyleMap[`${weekStartRow + offset},${dIdx}`] = {
                 fill: { fgColor: { rgb: "F1F5F9" } },
                 font: { name: "Arial", sz: 9, color: { rgb: "64748B" }, bold: offset === 0 },
@@ -2955,9 +2865,9 @@
             }
           } else if (!s) {
             rDate.push(`Ngày ${String(dayNum).padStart(2, '0')}`);
-            r1A.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "—");
-            r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
-            for (let offset = 0; offset < 6; offset++) {
+            rWS1.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "—");
+            rWS2.push(""); rWS3.push(""); rWFH.push("");
+            for (let offset = 0; offset < 5; offset++) {
               cellStyleMap[`${weekStartRow + offset},${dIdx}`] = {
                 fill: { fgColor: { rgb: holiday ? "FFE4E6" : "FFFFFF" } },
                 font: { name: "Arial", sz: 9, color: { rgb: holiday ? "BE123C" : "334155" }, bold: offset === 0 },
@@ -2970,13 +2880,11 @@
             const wfhText = (s.online && s.online.length) ? s.online.map(k => getName(k)).join(", ") : "—";
 
             rDate.push(holiday ? `${String(dayNum).padStart(2, '0')} 🎉 ${holiday.name.split('(')[0].trim()}` : `Ngày ${String(dayNum).padStart(2, '0')}`);
-            r1A.push(`1A: ${getName(s.ws1)}`);
-            r2A.push(`2A: ${getName(s.ws2)}`);
-            r2D.push(`2D: ${getName(s.ws2d)}`);
-            rBK.push(s.backup ? `⚡ BK: ${getName(s.backup)}` : "BK: —");
+            rWS1.push(`WS1: ${getName(s.ws1)}`);
+            rWS2.push(`WS2: ${getName(s.ws2)}`);
+            rWS3.push(`WS3: ${getName(s.ws2d)}`);
             rWFH.push(`WFH: ${wfhText}`);
 
-            // Style dòng ngày
             cellStyleMap[`${weekStartRow},${dIdx}`] = {
               fill: { fgColor: { rgb: holiday ? "FFE4E6" : "1E293B" } },
               font: { name: "Arial", sz: 9, bold: true, color: { rgb: holiday ? "BE123C" : "FFFFFF" } },
@@ -2984,8 +2892,7 @@
               border: borderThin
             };
 
-            // Style từng ô ghế theo màu nhân sự
-            const applySeatStyle = (rowOffset, staffKey, isBackup = false) => {
+            const applySeatStyle = (rowOffset, staffKey) => {
               const colInfo = staffKey && staffColors[staffKey];
               cellStyleMap[`${weekStartRow + rowOffset},${dIdx}`] = {
                 fill: { fgColor: { rgb: colInfo ? colInfo.fill : "FFFFFF" } },
@@ -2998,9 +2905,8 @@
             applySeatStyle(1, s.ws1);
             applySeatStyle(2, s.ws2);
             applySeatStyle(3, s.ws2d);
-            applySeatStyle(4, s.backup, true);
 
-            cellStyleMap[`${weekStartRow + 5},${dIdx}`] = {
+            cellStyleMap[`${weekStartRow + 4},${dIdx}`] = {
               fill: { fgColor: { rgb: "F8FAFC" } },
               font: { name: "Arial", sz: 8.5, italic: true, color: { rgb: "475569" } },
               alignment: { horizontal: "left", vertical: "center" },
@@ -3009,41 +2915,39 @@
           }
         }
 
-        wsData.push(rDate, r1A, r2A, r2D, rBK, rWFH);
-        wsData.push([]); // Dòng trống ngăn cách giữa các tuần
+        wsData.push(rDate, rWS1, rWS2, rWS3, rWFH);
+        wsData.push([]);
       }
 
-      // BẢNG THỐNG KÊ TỔNG HỢP CUỐI BÁO CÁO
       const summaryStartRow = wsData.length;
-      wsData.push(["MONTHLY WORKING-DAY BREAKDOWN (THỐNG KÊ CA TRỰC THÁNG)", "", "", "", "", "", ""]);
-      merges.push({ s: { r: summaryStartRow, c: 0 }, e: { r: summaryStartRow, c: 5 } });
+      wsData.push(["MONTHLY WORKING-DAY BREAKDOWN (THỐNG KÊ CA TRỰC MOBILE)", "", "", "", "", "", ""]);
+      merges.push({ s: { r: summaryStartRow, c: 0 }, e: { r: summaryStartRow, c: 3 } });
 
       const headerSummaryRow = wsData.length;
-      wsData.push(["Full Name", "Code", "Active In-Office (Days)", "Main Desk (1A/2A/2D)", "Backup Shifts", "WFH Days"]);
+      wsData.push(["Full Name", "Code", "Active In-Office (WS1/WS2/WS3)", "WFH Days"]);
 
+      const mobileKeys = ["DD", "XA", "VK", "TS"];
       const statsObj = {};
-      Object.keys(STAFF_DUTY).forEach(k => { statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 }; });
+      mobileKeys.forEach(k => { statsObj[k] = { on: 0, off: 0 }; });
       Object.keys(sched).forEach(d => {
         const item = sched[d];
-        if (item.ws1 && statsObj[item.ws1]) { statsObj[item.ws1].basic++; statsObj[item.ws1].on++; }
-        if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
-        if (item.ws2d && statsObj[item.ws2d]) { statsObj[item.ws2d].basic++; statsObj[item.ws2d].on++; }
-        if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
+        if (item.ws1 && statsObj[item.ws1]) statsObj[item.ws1].on++;
+        if (item.ws2 && statsObj[item.ws2]) statsObj[item.ws2].on++;
+        if (item.ws2d && statsObj[item.ws2d]) statsObj[item.ws2d].on++;
         if (item.online) item.online.forEach(k => { if (statsObj[k]) statsObj[k].off++; });
       });
 
       const statsStartRow = wsData.length;
       Object.entries(statsObj).forEach(([k, st]) => {
-        wsData.push([STAFF_DUTY[k].fullName, STAFF_DUTY[k].name, st.on, st.basic, st.backup, st.off]);
+        wsData.push([STAFF_DUTY[k].fullName, STAFF_DUTY[k].name, st.on, st.off]);
       });
 
       const ws = XLSX.utils.aoa_to_sheet(wsData);
       ws["!merges"] = merges;
       ws["!cols"] = [
-        { wch: 24 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 16 }, { wch: 16 }
+        { wch: 28 }, { wch: 26 }, { wch: 26 }, { wch: 26 }, { wch: 26 }, { wch: 16 }, { wch: 16 }
       ];
 
-      // Áp dụng Style cho tiêu đề chính
       if (ws["A1"]) {
         ws["A1"].s = {
           fill: { fgColor: { rgb: "EE2F26" } },
@@ -3051,10 +2955,16 @@
           alignment: { horizontal: "center", vertical: "center" }
         };
       }
+      if (ws["A2"]) {
+        ws["A2"].s = {
+          fill: { fgColor: { rgb: "FEF2F2" } },
+          font: { name: "Arial", sz: 9.5, italic: true, color: { rgb: "991B1B" } },
+          alignment: { horizontal: "center", vertical: "center" }
+        };
+      }
 
-      // Áp dụng Style cho Header Thứ 2 -> CN (Dòng 3 - index 2)
       for (let c = 0; c < 7; c++) {
-        const ref = XLSX.utils.encode_cell({ r: 2, c });
+        const ref = XLSX.utils.encode_cell({ r: 3, c });
         if (ws[ref]) {
           ws[ref].s = {
             fill: { fgColor: { rgb: c >= 5 ? "64748B" : "0F172A" } },
@@ -3065,14 +2975,12 @@
         }
       }
 
-      // Áp dụng Style cho toàn bộ các ô lịch
       Object.entries(cellStyleMap).forEach(([coord, style]) => {
         const [r, c] = coord.split(',').map(Number);
         const ref = XLSX.utils.encode_cell({ r, c });
         if (ws[ref]) ws[ref].s = style;
       });
 
-      // Style cho bảng Thống Kê cuối trang
       const sumTitleRef = XLSX.utils.encode_cell({ r: summaryStartRow, c: 0 });
       if (ws[sumTitleRef]) {
         ws[sumTitleRef].s = {
@@ -3081,7 +2989,7 @@
           alignment: { horizontal: "left", vertical: "center" }
         };
       }
-      for (let c = 0; c < 6; c++) {
+      for (let c = 0; c < 4; c++) {
         const hRef = XLSX.utils.encode_cell({ r: headerSummaryRow, c });
         if (ws[hRef]) {
           ws[hRef].s = {
@@ -3095,7 +3003,7 @@
       Object.keys(statsObj).forEach((k, idx) => {
         const r = statsStartRow + idx;
         const colInfo = staffColors[k];
-        for (let c = 0; c < 6; c++) {
+        for (let c = 0; c < 4; c++) {
           const ref = XLSX.utils.encode_cell({ r, c });
           if (ws[ref]) {
             ws[ref].s = {
@@ -3120,7 +3028,6 @@
       reader.onload = (e) => {
         try {
           SCHEDULE_STORE = JSON.parse(e.target.result);
-          // SCHEDULE_STORE["2026-10"] = OCTOBER_2026_SCHEDULE;
           saveData(); renderAll(); alert("Import thành công!");
         } catch(err) { alert("File JSON không hợp lệ!"); }
       };
