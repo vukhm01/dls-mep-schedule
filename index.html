@@ -6,6 +6,8 @@
   <title>DLS Consultant - Workstation & Duty Roster Management</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- SheetJS (XLSX) để xuất file Excel chuẩn format -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
@@ -429,9 +431,9 @@
                 <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Import</span>
                 <input type="file" id="import-json-file" accept=".json" onchange="importScheduleJSON(event)" class="hidden">
               </label>
-              <button onclick="window.print()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-slate-800 hover:bg-slate-900 text-white text-xs transition">
-                <i class="fa-solid fa-print"></i>
-                <span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Print</span>
+			  <button onclick="exportDutyToExcel()" class="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs transition shadow-xs" title="Xuất báo cáo Excel (.xlsx)">
+				<i class="fa-solid fa-file-excel"></i>
+				<span class="desktop-inline text-[11px] font-medium ml-1 font-heading">Excel</span>
               </button>
             </div>
           </div>
@@ -2870,6 +2872,245 @@
       a.href = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(SCHEDULE_STORE, null, 2));
       a.download = `DLS_Duty_Schedule_AllMonths.json`;
       document.body.appendChild(a); a.click(); a.remove();
+    }
+	function exportDutyToExcel() {
+      const monthKey = getMonthKey(currentYear, currentMonth);
+      const sched = SCHEDULE_STORE[monthKey];
+      if (!sched || Object.keys(sched).length === 0) {
+        alert(currentLang === 'vi' ? "Tháng này chưa có dữ liệu lịch trực để xuất Excel!" : "No roster data for this month!");
+        return;
+      }
+
+      const monthNamesEn = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const monthTitle = `${monthNamesEn[currentMonth].toUpperCase()} ${currentYear}`;
+      const fileName = `${monthNamesEn[currentMonth]}-Duty-Board_${currentYear}.xlsx`;
+
+      const staffColors = {
+        MT: { fill: "F8DFEA", font: "A3195B" },
+        DD: { fill: "DCF1EE", font: "0A8F7F" },
+        XA: { fill: "FBE9D9", font: "B5560C" },
+        VK: { fill: "E7E5FA", font: "3B32B8" },
+        TS: { fill: "E0F2FE", font: "0284C7" }
+      };
+
+      const borderThin = {
+        top: { style: "thin", color: { rgb: "CBD5E1" } },
+        bottom: { style: "thin", color: { rgb: "CBD5E1" } },
+        left: { style: "thin", color: { rgb: "CBD5E1" } },
+        right: { style: "thin", color: { rgb: "CBD5E1" } }
+      };
+
+      const wsData = [];
+      const merges = [];
+
+      // Tiêu đề chính
+      wsData.push([`DLS CONSULTANT - WORKSTATION & DUTY ROSTER (${monthTitle})`, "", "", "", "", "", ""]);
+      merges.push({ s: { r: 0, c: 0 }, e: { r: 0, c: 6 } });
+      wsData.push([]);
+
+      // Header các thứ trong tuần
+      wsData.push(["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"]);
+
+      const firstOfMonth = new Date(currentYear, currentMonth, 1);
+      const isoDow = (firstOfMonth.getDay() + 6) % 7;
+      const gridStart = new Date(firstOfMonth);
+      gridStart.setDate(1 - isoDow);
+
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const totalCells = Math.ceil((isoDow + daysInMonth) / 7) * 7;
+
+      const cellStyleMap = {}; // lưu style theo tọa độ "r,c"
+
+      for (let w = 0; w < totalCells / 7; w++) {
+        const weekStartRow = wsData.length;
+        // Mỗi tuần gồm 6 dòng: Ngày | 1A | 2A | 2D | BK | WFH
+        const rDate = [], r1A = [], r2A = [], r2D = [], rBK = [], rWFH = [];
+
+        for (let dIdx = 0; dIdx < 7; dIdx++) {
+          const cur = new Date(gridStart);
+          cur.setDate(gridStart.getDate() + w * 7 + dIdx);
+          const inMonth = cur.getMonth() === currentMonth;
+          const dayNum = cur.getDate();
+          const isWeekend = dIdx >= 5;
+
+          if (!inMonth) {
+            rDate.push(""); r1A.push(""); r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
+            continue;
+          }
+
+          const holiday = getHolidayForDate(currentYear, currentMonth, dayNum);
+          const s = sched[dayNum];
+
+          if (isWeekend) {
+            rDate.push(`Ngày ${String(dayNum).padStart(2, '0')} (${dIdx === 5 ? 'T7' : 'CN'})`);
+            r1A.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "Weekend");
+            r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
+            for (let offset = 0; offset < 6; offset++) {
+              cellStyleMap[`${weekStartRow + offset},${dIdx}`] = {
+                fill: { fgColor: { rgb: "F1F5F9" } },
+                font: { name: "Arial", sz: 9, color: { rgb: "64748B" }, bold: offset === 0 },
+                alignment: { horizontal: "center", vertical: "center" },
+                border: borderThin
+              };
+            }
+          } else if (!s) {
+            rDate.push(`Ngày ${String(dayNum).padStart(2, '0')}`);
+            r1A.push(holiday ? `🎉 ${holiday.name.split('(')[0].trim()}` : "—");
+            r2A.push(""); r2D.push(""); rBK.push(""); rWFH.push("");
+            for (let offset = 0; offset < 6; offset++) {
+              cellStyleMap[`${weekStartRow + offset},${dIdx}`] = {
+                fill: { fgColor: { rgb: holiday ? "FFE4E6" : "FFFFFF" } },
+                font: { name: "Arial", sz: 9, color: { rgb: holiday ? "BE123C" : "334155" }, bold: offset === 0 },
+                alignment: { horizontal: "center", vertical: "center" },
+                border: borderThin
+              };
+            }
+          } else {
+            const getName = (k) => (k && STAFF_DUTY[k]) ? STAFF_DUTY[k].name : "—";
+            const wfhText = (s.online && s.online.length) ? s.online.map(k => getName(k)).join(", ") : "—";
+
+            rDate.push(holiday ? `${String(dayNum).padStart(2, '0')} 🎉 ${holiday.name.split('(')[0].trim()}` : `Ngày ${String(dayNum).padStart(2, '0')}`);
+            r1A.push(`1A: ${getName(s.ws1)}`);
+            r2A.push(`2A: ${getName(s.ws2)}`);
+            r2D.push(`2D: ${getName(s.ws2d)}`);
+            rBK.push(s.backup ? `⚡ BK: ${getName(s.backup)}` : "BK: —");
+            rWFH.push(`WFH: ${wfhText}`);
+
+            // Style dòng ngày
+            cellStyleMap[`${weekStartRow},${dIdx}`] = {
+              fill: { fgColor: { rgb: holiday ? "FFE4E6" : "1E293B" } },
+              font: { name: "Arial", sz: 9, bold: true, color: { rgb: holiday ? "BE123C" : "FFFFFF" } },
+              alignment: { horizontal: "center", vertical: "center" },
+              border: borderThin
+            };
+
+            // Style từng ô ghế theo màu nhân sự
+            const applySeatStyle = (rowOffset, staffKey, isBackup = false) => {
+              const colInfo = staffKey && staffColors[staffKey];
+              cellStyleMap[`${weekStartRow + rowOffset},${dIdx}`] = {
+                fill: { fgColor: { rgb: colInfo ? colInfo.fill : "FFFFFF" } },
+                font: { name: "Arial", sz: 9, bold: !!colInfo, color: { rgb: colInfo ? colInfo.font : "64748B" } },
+                alignment: { horizontal: "left", vertical: "center" },
+                border: borderThin
+              };
+            };
+
+            applySeatStyle(1, s.ws1);
+            applySeatStyle(2, s.ws2);
+            applySeatStyle(3, s.ws2d);
+            applySeatStyle(4, s.backup, true);
+
+            cellStyleMap[`${weekStartRow + 5},${dIdx}`] = {
+              fill: { fgColor: { rgb: "F8FAFC" } },
+              font: { name: "Arial", sz: 8.5, italic: true, color: { rgb: "475569" } },
+              alignment: { horizontal: "left", vertical: "center" },
+              border: borderThin
+            };
+          }
+        }
+
+        wsData.push(rDate, r1A, r2A, r2D, rBK, rWFH);
+        wsData.push([]); // Dòng trống ngăn cách giữa các tuần
+      }
+
+      // BẢNG THỐNG KÊ TỔNG HỢP CUỐI BÁO CÁO
+      const summaryStartRow = wsData.length;
+      wsData.push(["MONTHLY WORKING-DAY BREAKDOWN (THỐNG KÊ CA TRỰC THÁNG)", "", "", "", "", "", ""]);
+      merges.push({ s: { r: summaryStartRow, c: 0 }, e: { r: summaryStartRow, c: 5 } });
+
+      const headerSummaryRow = wsData.length;
+      wsData.push(["Full Name", "Code", "Active In-Office (Days)", "Main Desk (1A/2A/2D)", "Backup Shifts", "WFH Days"]);
+
+      const statsObj = {};
+      Object.keys(STAFF_DUTY).forEach(k => { statsObj[k] = { on: 0, basic: 0, backup: 0, off: 0 }; });
+      Object.keys(sched).forEach(d => {
+        const item = sched[d];
+        if (item.ws1 && statsObj[item.ws1]) { statsObj[item.ws1].basic++; statsObj[item.ws1].on++; }
+        if (item.ws2 && statsObj[item.ws2]) { statsObj[item.ws2].basic++; statsObj[item.ws2].on++; }
+        if (item.ws2d && statsObj[item.ws2d]) { statsObj[item.ws2d].basic++; statsObj[item.ws2d].on++; }
+        if (item.backup && statsObj[item.backup]) { statsObj[item.backup].backup++; statsObj[item.backup].on++; }
+        if (item.online) item.online.forEach(k => { if (statsObj[k]) statsObj[k].off++; });
+      });
+
+      const statsStartRow = wsData.length;
+      Object.entries(statsObj).forEach(([k, st]) => {
+        wsData.push([STAFF_DUTY[k].fullName, STAFF_DUTY[k].name, st.on, st.basic, st.backup, st.off]);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet(wsData);
+      ws["!merges"] = merges;
+      ws["!cols"] = [
+        { wch: 24 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 22 }, { wch: 16 }, { wch: 16 }
+      ];
+
+      // Áp dụng Style cho tiêu đề chính
+      if (ws["A1"]) {
+        ws["A1"].s = {
+          fill: { fgColor: { rgb: "EE2F26" } },
+          font: { name: "Arial", sz: 13, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "center", vertical: "center" }
+        };
+      }
+
+      // Áp dụng Style cho Header Thứ 2 -> CN (Dòng 3 - index 2)
+      for (let c = 0; c < 7; c++) {
+        const ref = XLSX.utils.encode_cell({ r: 2, c });
+        if (ws[ref]) {
+          ws[ref].s = {
+            fill: { fgColor: { rgb: c >= 5 ? "64748B" : "0F172A" } },
+            font: { name: "Arial", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: borderThin
+          };
+        }
+      }
+
+      // Áp dụng Style cho toàn bộ các ô lịch
+      Object.entries(cellStyleMap).forEach(([coord, style]) => {
+        const [r, c] = coord.split(',').map(Number);
+        const ref = XLSX.utils.encode_cell({ r, c });
+        if (ws[ref]) ws[ref].s = style;
+      });
+
+      // Style cho bảng Thống Kê cuối trang
+      const sumTitleRef = XLSX.utils.encode_cell({ r: summaryStartRow, c: 0 });
+      if (ws[sumTitleRef]) {
+        ws[sumTitleRef].s = {
+          fill: { fgColor: { rgb: "1E293B" } },
+          font: { name: "Arial", sz: 10, bold: true, color: { rgb: "FFFFFF" } },
+          alignment: { horizontal: "left", vertical: "center" }
+        };
+      }
+      for (let c = 0; c < 6; c++) {
+        const hRef = XLSX.utils.encode_cell({ r: headerSummaryRow, c });
+        if (ws[hRef]) {
+          ws[hRef].s = {
+            fill: { fgColor: { rgb: "E2E8F0" } },
+            font: { name: "Arial", sz: 9.5, bold: true, color: { rgb: "0F172A" } },
+            alignment: { horizontal: "center", vertical: "center" },
+            border: borderThin
+          };
+        }
+      }
+      Object.keys(statsObj).forEach((k, idx) => {
+        const r = statsStartRow + idx;
+        const colInfo = staffColors[k];
+        for (let c = 0; c < 6; c++) {
+          const ref = XLSX.utils.encode_cell({ r, c });
+          if (ws[ref]) {
+            ws[ref].s = {
+              fill: { fgColor: { rgb: (c === 1 && colInfo) ? colInfo.fill : "FFFFFF" } },
+              font: { name: "Arial", sz: 9.5, bold: c <= 2, color: { rgb: (c === 1 && colInfo) ? colInfo.font : "1E293B" } },
+              alignment: { horizontal: c === 0 ? "left" : "center", vertical: "center" },
+              border: borderThin
+            };
+          }
+        }
+      });
+
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, `${monthNamesEn[currentMonth]}_${currentYear}`);
+      XLSX.writeFile(wb, fileName);
     }
 
     function importScheduleJSON(event) {
